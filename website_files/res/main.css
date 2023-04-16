@@ -1,0 +1,17 @@
+p {
+    font-size: 18px;
+}
+
+.border-black > thead > tr > th {
+    border:1px solid black;
+}
+
+.border-black-td > tbody > tr > td {
+    border: 1px solid black;
+}
+  
+.table-hlimit {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}

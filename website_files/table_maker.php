@@ -81,15 +81,33 @@ try {
 }
 echo "</p>";
 
+$sql = 'CREATE TABLE Room (
+    Room_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    Hotel_ID INT UNSIGNED NOT NULL,
+    Room_Num INT(5) UNSIGNED NOT NULL,
+    Price FLOAT UNSIGNED NOT NULL,
+    FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID)
+    )';
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Table Room created successfully";
+    } else {
+        echo "Error creating table: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
 $sql = 'CREATE TABLE Booking (
     Booking_NO INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    Hotel_ID INT UNSIGNED NOT NULL,
+    Room_ID INT UNSIGNED NOT NULL,
     Customer_ID INT UNSIGNED NOT NULL,
-    Room_Num INT(4) UNSIGNED NOT NULL,
     `Start_Date` DATETIME NOT NULL,
     End_Date DATETIME NOT NULL,
-    Price FLOAT UNSIGNED NOT NULL,
-    FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID),
+    FOREIGN KEY (Room_ID) REFERENCES Room(Room_ID),
     FOREIGN KEY (Customer_ID) REFERENCES Customer(Customer_ID)
     )';
 
@@ -164,12 +182,10 @@ echo "</p>";
 
 $sql = 'CREATE TABLE Hotel_Service (
     Service_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    Hotel_ID INT UNSIGNED NOT NULL,
-    Customer_ID INT UNSIGNED NOT NULL,
+    Booking_NO INT UNSIGNED NOT NULL,
     ST_ID INT UNSIGNED NOT NULL,
     Service_Date DATETIME NOT NULL,
-    FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID),
-    FOREIGN KEY (Customer_ID) REFERENCES Customer(Customer_ID),
+    FOREIGN KEY (Booking_NO) REFERENCES Booking(Booking_NO),
     FOREIGN KEY (ST_ID) REFERENCES Service_Type(ST_ID)
     )';
 
@@ -177,6 +193,26 @@ echo "<p>";
 try {
     if ($conn->query($sql) === TRUE) {
         echo "Table Hotel_Service created successfully";
+    } else {
+        echo "Error creating table: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+$sql = 'CREATE TABLE Service_Assignment (
+    SA_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    Service_ID INT UNSIGNED NOT NULL,
+    Employee_ID INT UNSIGNED NOT NULL,
+    FOREIGN KEY (Service_ID) REFERENCES Hotel_Service(Service_ID),
+    FOREIGN KEY (Employee_ID) REFERENCES Employees(Employee_ID)
+    )';
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Table Service Assignment created successfully";
     } else {
         echo "Error creating table: " . $conn->error;
     }
@@ -224,10 +260,8 @@ echo "</p>";
 
 $sql = 'CREATE TABLE Service_Worker (
     Employee_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    Service_ID INT UNSIGNED,
-    Role VARCHAR(45) NOT NULL,
-    FOREIGN KEY (Employee_ID) REFERENCES Employees(Employee_ID),
-    FOREIGN KEY (Service_ID) REFERENCES Hotel_Service(Service_ID)
+    `Role` VARCHAR(45) NOT NULL,
+    FOREIGN KEY (Employee_ID) REFERENCES Employees(Employee_ID)
     )';
 
 echo "<p>";
