@@ -13,7 +13,7 @@ include "../res/head.php";
             ?>
         <h2 class = "text-center">Rooms:</h2>
             <?php 
-                $gte_rooms = generateTableEditable($conn, "b-rv-rooms", "Room", "SELECT * FROM Room ORDER BY Room_Num ASC", "Inf");
+                $gte_rooms = generateTableEditable($conn, "b-rv-rooms", "Room", "SELECT * FROM Room ORDER BY Room_ID ASC", "Inf");
                 echo $gte_rooms;
             ?>
         <h2 class = "text-center">Bookings:</h2>

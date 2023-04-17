@@ -1,5 +1,5 @@
 <?php
-include 'connect.php';
+include 'res/connect.php';
 # Make tables
 # Initializes all database tables
 $sql = 'CREATE TABLE Users (
@@ -88,6 +88,7 @@ $sql = 'CREATE TABLE Room (
     Hotel_ID INT UNSIGNED NOT NULL,
     Room_Num INT(5) UNSIGNED NOT NULL,
     Price FLOAT UNSIGNED NOT NULL,
+    Capacity FLOAT UNSIGNED NOT NULL,
     FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID)
     )';
 
