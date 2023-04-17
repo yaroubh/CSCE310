@@ -2,12 +2,16 @@ p {
     font-size: 18px;
 }
 
+.table-sql-view {
+    margin-left: 50px;
+}
+
 .border-black > thead > tr > th {
     border:1px solid black;
 }
 
 .border-black-td > tbody > tr > td {
-    border: 1px solid black;
+    border: 1px solid black !important;
 }
   
 .table-hlimit {
