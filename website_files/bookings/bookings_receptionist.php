@@ -7,9 +7,18 @@ include "../res/head.php";
 <div>
     <h1 class = "text-center">Bookings (Receptionist View)</h1>
         <h2 class = "text-center">Hotels:</h2>
-            <?php echo generateTableView($conn, "b-rv-hotels", "Hotel", "SELECT * FROM Hotel ORDER BY Hotel_ID ASC", "Inf")?>
+            <?php 
+                $gtv_hotels = generateTableView($conn, "b-rv-hotels", "Hotel", "SELECT * FROM Hotel ORDER BY Hotel_ID ASC", "Inf");
+                echo $gtv_hotels;    
+            ?>
         <h2 class = "text-center">Rooms:</h2>
-            <?php echo generateTableEditable($conn, "b-rv-rooms", "Room", "SELECT * FROM Room ORDER BY Room_Num ASC", "Inf")?>
+            <?php 
+                $gte_rooms = generateTableEditable($conn, "b-rv-rooms", "Room", "SELECT * FROM Room ORDER BY Room_Num ASC", "Inf");
+                echo $gte_rooms;
+            ?>
         <h2 class = "text-center">Bookings:</h2>
-            <?php echo generateTableView($conn, "b-rv-bookings", "Booking", "SELECT * FROM Booking ORDER BY Booking_NO ASC", "Inf")?>
+            <?php
+                $gte_bookings = generateTableEditable($conn, "b-rv-bookings", "Booking", "SELECT * FROM Booking ORDER BY Booking_NO ASC", "Inf");
+                echo $gte_bookings;    
+            ?>
 </div>

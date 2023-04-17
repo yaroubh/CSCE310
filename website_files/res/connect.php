@@ -9,6 +9,6 @@
    if(!$conn){
        die('Could not Connect MySql Server:' . $conn -> connect_error);
      } else {
-      print("success!");
+      # print("success!");
      }
 ?>

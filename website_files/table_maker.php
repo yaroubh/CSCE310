@@ -46,10 +46,11 @@ try {
 echo "</p>";
 
 $sql = 'CREATE TABLE Employees (
-    Employee_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    User_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Hotel_ID INT UNSIGNED NOT NULL,
     Employee_JobType VARCHAR(45) NOT NULL,
-    FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID)
+    FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID),
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
     )';
 
 echo "<p>";
@@ -65,8 +66,9 @@ try {
 echo "</p>";
 
 $sql = 'CREATE TABLE Customer (
-    Customer_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    Booking_NO INT UNSIGNED
+    User_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    Booking_NO INT UNSIGNED,
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
     )';
 
 echo "<p>";
@@ -104,11 +106,11 @@ echo "</p>";
 $sql = 'CREATE TABLE Booking (
     Booking_NO INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Room_ID INT UNSIGNED NOT NULL,
-    Customer_ID INT UNSIGNED NOT NULL,
+    User_ID INT UNSIGNED NOT NULL,
     `Start_Date` DATETIME NOT NULL,
     End_Date DATETIME NOT NULL,
     FOREIGN KEY (Room_ID) REFERENCES Room(Room_ID),
-    FOREIGN KEY (Customer_ID) REFERENCES Customer(Customer_ID)
+    FOREIGN KEY (User_ID) REFERENCES Customer(User_ID)
     )';
 
 echo "<p>";
@@ -142,12 +144,12 @@ echo "</p>";
 $sql = 'CREATE TABLE Reviews (
     Review_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Hotel_ID INT UNSIGNED NOT NULL,
-    Customer_ID INT UNSIGNED NOT NULL,
+    User_ID INT UNSIGNED NOT NULL,
     Rating INT(2) UNSIGNED NOT NULL,
     `Description` VARCHAR(300) NOT NULL,
     Review_Date DATETIME NOT NULL,
     FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID),
-    FOREIGN KEY (Customer_ID) REFERENCES Customer(Customer_ID)
+    FOREIGN KEY (User_ID) REFERENCES Customer(User_ID)
     )';
 
 echo "<p>";
@@ -204,9 +206,9 @@ echo "</p>";
 $sql = 'CREATE TABLE Service_Assignment (
     SA_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Service_ID INT UNSIGNED NOT NULL,
-    Employee_ID INT UNSIGNED NOT NULL,
+    User_ID INT UNSIGNED NOT NULL,
     FOREIGN KEY (Service_ID) REFERENCES Hotel_Service(Service_ID),
-    FOREIGN KEY (Employee_ID) REFERENCES Employees(Employee_ID)
+    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID)
     )';
 
 echo "<p>";
@@ -222,10 +224,10 @@ try {
 echo "</p>";
 
 $sql = 'CREATE TABLE Receptionist (
-    Employee_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    User_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Shift_Start_Time TIME NOT NULL,
     Shift_End_Time TIME NOT NULL,
-    FOREIGN KEY (Employee_ID) REFERENCES Employees(Employee_ID)
+    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID)
     )';
 
 echo "<p>";
@@ -241,9 +243,9 @@ try {
 echo "</p>";
 
 $sql = 'CREATE TABLE Administrator (
-    Employee_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    User_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Speciality VARCHAR(45) NOT NULL,
-    FOREIGN KEY (Employee_ID) REFERENCES Employees(Employee_ID)
+    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID)
     )';
 
 echo "<p>";
@@ -259,9 +261,9 @@ try {
 echo "</p>";
 
 $sql = 'CREATE TABLE Service_Worker (
-    Employee_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    User_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `Role` VARCHAR(45) NOT NULL,
-    FOREIGN KEY (Employee_ID) REFERENCES Employees(Employee_ID)
+    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID)
     )';
 
 echo "<p>";
