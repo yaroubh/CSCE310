@@ -1,18 +1,19 @@
 <?php
+session_start();
 # set credentials
- $servername='localhost';
- $username='root';
- $password='';
- $dbname = "test";
- # make connection
- $conn = new mysqli($servername,$username,$password,"$dbname");
+$servername='localhost';
+$username='root';
+$password='';
+$dbname = "test";
+# make connection
+$conn = new mysqli($servername,$username,$password,"$dbname");
 if(!$conn){
     die('Could not Connect MySql Server:' . $conn -> connect_error);
 } else {
     # print("success!");
 }
 
-# Get the base path of the file and ignore everything else.
+# Get the base path of the file and ignore everything else. We can use this to easily navigate to other files
 $path = getcwd() . "/";
 $path = str_replace('\\', '/', $path);
 $path_parts = explode('/website_files/', $path);
