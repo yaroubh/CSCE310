@@ -120,8 +120,28 @@ function make_room($conn, $hotel_id, $room_num, $price, $capacity) {
     return true;
 }
 
+function make_review($conn, $review_id, $hotel_id, $user_id, $rating, $desc, $date){
+    $sql = "INSERT INTO Reviews (Review_ID, Hotel_ID, User_ID, Rating, Description, Review_Date)
+    VALUES ('$review_id', '$hotel_id', '$user_id', '$rating', '$desc', '$date')";
+    echo "<p>";
+    try {
+        if ($conn->query($sql) === TRUE) {
+            echo "Added Review " . $review_id  . " at Hotel" . $hotel_id . " successfully";
+        } else {
+            echo "Error creating room: " . $conn->error;
+        }
+    } catch (Exception $ex) {
+            echo $ex;
+            return false;
+    }
+    echo "</p>";
+    return true;
+}
+
 make_hotel($conn, 1, "BCS Hotel", "BCS", "Texas", "United States");
 make_hotel($conn, 2, "Magico", "Monte Cristo", "Livorno", "Italy");
+
+make_review($conn, 1, 1, 1, 4, "Overall Good. Would come again", '2023-05-02 12:45:36');
 
 make_customer($conn, 1, "Sam", "Sammy", '1234567890', "Sam.Sammy@tamu.edu", "Sammy1", "1Sammy");
 make_customer($conn, 2, "Bob", "Bobby", '0123456789', "BobbyBob@tamu.edu", "Bob2", "Bobby2");
