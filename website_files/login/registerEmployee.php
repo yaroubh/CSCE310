@@ -1,3 +1,4 @@
+<?php include "../res/head.php"?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -47,7 +48,7 @@
 
 				<input type="submit" value="Register">
 			</form>
-            <form action="http://localhost/phplogin/login.html" method="POST">
+            <form action="<?php echo $backup . "login/login.php"?>" method="POST">
                 <button >Back to Log In</button>
             </form>
 		</div>
