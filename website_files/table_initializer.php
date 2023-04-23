@@ -128,7 +128,7 @@ function make_review($conn, $review_id, $hotel_id, $user_id, $rating, $desc, $da
         if ($conn->query($sql) === TRUE) {
             echo "Added Review " . $review_id  . " at Hotel" . $hotel_id . " successfully";
         } else {
-            echo "Error creating room: " . $conn->error;
+            echo "Error creating review: " . $conn->error;
         }
     } catch (Exception $ex) {
             echo $ex;
