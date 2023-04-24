@@ -32,6 +32,7 @@ if ($stmt = $con->prepare('SELECT user_id, password FROM users WHERE username = 
 	if ($stmt->num_rows > 0) {
 		// Username already exists
 		echo 'Username exists, please choose another!';
+        echo '<p><a href="login.php">Go to login page</a></p>';
 	} else {
 		// Insert new account
         // Username doesn't exists, insert new account
