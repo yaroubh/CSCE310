@@ -4,9 +4,9 @@
   <h1 class="title">Hotel Reviews</h1>
   
     <?php
-    $q = "SELECT * FROM Reviews ORDER BY Review_ID ASC";
+    $q = "SELECT * FROM Reviews ORDER BY Review_Date ASC";
     $data = $conn->query($q);
-    
+    // iterate through reviews in db and print to screen. If there are no reviews, print 0.
     if ($data->num_rows > 0) {
         while ($row = $data->fetch_assoc()) {
             echo "<div class='review'>";

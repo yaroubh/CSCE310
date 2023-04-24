@@ -142,6 +142,8 @@ make_hotel($conn, 1, "BCS Hotel", "BCS", "Texas", "United States");
 make_hotel($conn, 2, "Magico", "Monte Cristo", "Livorno", "Italy");
 
 make_review($conn, 1, 1, 1, 4, "Overall Good. Would come again", '2023-05-02 12:45:36');
+make_review($conn, 2, 2, 2, 5, "Such a wonderful experience. The family loved.", '2022-05-12 13:55:12');
+
 
 make_customer($conn, 1, "Sam", "Sammy", '1234567890', "Sam.Sammy@tamu.edu", "Sammy1", "1Sammy");
 make_customer($conn, 2, "Bob", "Bobby", '0123456789', "BobbyBob@tamu.edu", "Bob2", "Bobby2");
