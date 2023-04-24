@@ -14,9 +14,9 @@
             $u_name_query = $conn->query("SELECT * FROM Users WHERE User_ID = $row[User_ID]");
             $u_name = $u_name_query->fetch_assoc();
             echo "<div class='user-id'>User: " . $u_name["Username"] . "</div>";
-            $h_name_query = $conn->query("SELECT * FROM Hotel WHERE Hotel_ID = $row[Hotel_ID]");
-            $h_name = $h_name_query->fetch_assoc();
-            echo "<div class='hotel-info'>" . $h_name["Hotel_Name"] . " | " . $row["Review_Date"] . "</div>";
+            $h_data_query = $conn->query("SELECT * FROM Hotel WHERE Hotel_ID = $row[Hotel_ID]");
+            $h_data = $h_data_query->fetch_assoc();
+            echo "<div class='hotel-info'>" . $h_data["Hotel_Name"] . " | Rating: " . $row["Rating"] . " | ". $row["Review_Date"] . "</div>";
             echo "</div>";
             echo "<div class='review-description'>" . $row["Description"] . "</div>";
             echo "</div>";
