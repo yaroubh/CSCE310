@@ -10,7 +10,7 @@
 	<body>
 		<div class="register">
 			<h1>Employee Registration</h1>
-			<form action="register.php" method="post" autocomplete="off">
+			<form action="registerE.php" method="post" autocomplete="off">
                 <label for="firstname">
 					<i class="fas fa-user"></i>
 				</label>
