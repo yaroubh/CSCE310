@@ -141,9 +141,9 @@ function make_review($conn, $review_id, $hotel_id, $user_id, $rating, $desc, $da
 make_hotel($conn, 1, "BCS Hotel", "BCS", "Texas", "United States");
 make_hotel($conn, 2, "Magico", "Monte Cristo", "Livorno", "Italy");
 
+
 make_review($conn, 1, 1, 1, 4, "Overall Good. Would come again", '2023-05-02 12:45:36');
 make_review($conn, 2, 2, 2, 5, "Such a wonderful experience. The family loved.", '2022-05-12 13:55:12');
-
 
 make_customer($conn, 1, "Sam", "Sammy", '1234567890', "Sam.Sammy@tamu.edu", "Sammy1", "1Sammy");
 make_customer($conn, 2, "Bob", "Bobby", '0123456789', "BobbyBob@tamu.edu", "Bob2", "Bobby2");
@@ -155,6 +155,9 @@ make_employee($conn, 7, "Lorali", "Jones", '0001113333', "Lorali1@tamu.edu", "Lo
 make_employee($conn, 8, "Loralil", "Jones", '0001113334', "Lorali2@tamu.edu", "Loarli2", "LP2", 1, "Service_Worker", "Plumber", "00:00:00");
 make_employee($conn, 9, "Loralia", "Jones", '0001113335', "Lorali3@tamu.edu", "Loarli3", "LP3", 2, "Service_Worker", "Janitor", "00:00:00");
 make_employee($conn, 10, "Loralip", "Jones", '0001113336', "Lorali4@tamu.edu", "Loarli4", "LP4", 2, "Service_Worker", "Electrician", "00:00:00");
+
+make_review($conn, 1, 1, 1, 4, "Overall Good. Would come again", '2023-05-02 12:45:36');
+
 
 # Randomly generate rooms
 for ($i = 1; $i < 3; $i++) {

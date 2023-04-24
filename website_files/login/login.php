@@ -1,7 +1,8 @@
+<?php include "../res/head_no_nav.php"?>
 <!DOCTYPE html>
 <html>
 	<head>
-        <link href="style.css" rel="stylesheet" type="text/css">
+        <link href="login.css" rel="stylesheet" type="text/css">
 		<meta charset="utf-8">
 		<title>Login</title>
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
@@ -20,6 +21,12 @@
 				<input type="password" name="password" placeholder="Password" id="password" required>
 				<input type="submit" value="Login">
 			</form>
+            <form action="<?php echo $backup . "login/registerCustomer.php"?>" method="POST">
+                <button>Register as Customer</button>
+            </form>
+			<form action="<?php echo $backup . "login/registerEmployee.php"?>" method="POST">
+                <button>Register as Employee</button>
+            </form>
 		</div>
 	</body>
 </html>

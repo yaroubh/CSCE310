@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2023 at 01:43 AM
+-- Generation Time: Apr 23, 2023 at 03:05 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `administrator` (
   `User_ID` int(10) UNSIGNED NOT NULL,
   `Speciality` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `administrator`
@@ -51,7 +51,7 @@ CREATE TABLE `booking` (
   `User_ID` int(10) UNSIGNED NOT NULL,
   `Start_Date` datetime NOT NULL,
   `End_Date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -62,7 +62,7 @@ CREATE TABLE `booking` (
 CREATE TABLE `customer` (
   `User_ID` int(10) UNSIGNED NOT NULL,
   `Booking_NO` int(10) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `customer`
@@ -82,7 +82,7 @@ CREATE TABLE `employees` (
   `User_ID` int(10) UNSIGNED NOT NULL,
   `Hotel_ID` int(10) UNSIGNED NOT NULL,
   `Employee_JobType` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `employees`
@@ -110,7 +110,7 @@ CREATE TABLE `hotel` (
   `Hotel_City` varchar(45) NOT NULL,
   `Hotel_State` varchar(45) NOT NULL,
   `Hotel_Country` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `hotel`
@@ -131,7 +131,7 @@ CREATE TABLE `hotel_service` (
   `Booking_NO` int(10) UNSIGNED NOT NULL,
   `ST_ID` int(10) UNSIGNED NOT NULL,
   `Service_Date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -143,7 +143,7 @@ CREATE TABLE `receptionist` (
   `User_ID` int(10) UNSIGNED NOT NULL,
   `Shift_Start_Time` time NOT NULL,
   `Shift_End_Time` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `receptionist`
@@ -167,7 +167,14 @@ CREATE TABLE `reviews` (
   `Rating` int(2) UNSIGNED NOT NULL,
   `Description` varchar(300) NOT NULL,
   `Review_Date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`Review_ID`, `Hotel_ID`, `User_ID`, `Rating`, `Description`, `Review_Date`) VALUES
+(1, 1, 1, 4, 'Overall Good. Would come again', '2023-05-02 12:45:36');
 
 -- --------------------------------------------------------
 
@@ -181,81 +188,116 @@ CREATE TABLE `room` (
   `Room_Num` int(5) UNSIGNED NOT NULL,
   `Price` float UNSIGNED NOT NULL,
   `Capacity` float UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `room`
 --
 
 INSERT INTO `room` (`Room_ID`, `Hotel_ID`, `Room_Num`, `Price`, `Capacity`) VALUES
-(1, 1, 101, 38.2, 9),
-(2, 1, 102, 24.01, 9),
-(3, 1, 103, 84.46, 6),
-(4, 1, 104, 99.56, 1),
-(5, 1, 105, 22.43, 6),
-(6, 1, 106, 95.34, 5),
-(7, 1, 107, 42.2, 2),
-(8, 1, 201, 45.74, 6),
-(9, 1, 202, 21.69, 6),
-(10, 1, 203, 87.68, 4),
-(11, 1, 204, 65.8, 1),
-(12, 1, 205, 22.43, 1),
-(13, 1, 206, 37.46, 6),
-(14, 1, 207, 79.15, 7),
-(15, 1, 208, 51.79, 4),
-(16, 1, 209, 11.95, 8),
-(17, 1, 210, 97.07, 9),
-(18, 1, 211, 54.59, 8),
-(19, 1, 212, 45.13, 1),
-(20, 1, 213, 28.78, 2),
-(21, 1, 214, 39.56, 3),
-(22, 1, 215, 23.09, 4),
-(23, 1, 216, 63.48, 4),
-(24, 1, 217, 1.35, 8),
-(25, 1, 218, 28.62, 9),
-(26, 1, 219, 71.82, 9),
-(27, 1, 220, 3.44, 3),
-(28, 1, 301, 93.29, 8),
-(29, 1, 302, 64.54, 4),
-(30, 1, 303, 17.45, 4),
-(31, 1, 304, 79.99, 7),
-(32, 1, 305, 20.07, 7),
-(33, 1, 306, 3.6, 8),
-(34, 1, 307, 60.29, 8),
-(35, 1, 308, 8.1, 1),
-(36, 1, 309, 15.7, 4),
-(37, 1, 310, 0.54, 8),
-(38, 1, 311, 65.19, 1),
-(39, 1, 312, 32.83, 7),
-(40, 1, 313, 61.12, 5),
-(41, 1, 314, 58.23, 2),
-(42, 1, 315, 48.86, 7),
-(43, 1, 316, 85.65, 3),
-(44, 1, 317, 50.54, 9),
-(45, 1, 318, 83.4, 7),
-(46, 1, 401, 98.37, 9),
-(47, 1, 402, 21.46, 3),
-(48, 1, 403, 22.48, 8),
-(49, 1, 404, 15.56, 4),
-(50, 1, 405, 72.01, 9),
-(51, 1, 406, 69.03, 9),
-(52, 1, 407, 42.67, 5),
-(53, 1, 408, 98.11, 1),
-(54, 1, 409, 79.51, 9),
-(55, 1, 410, 17.44, 9),
-(56, 1, 411, 28.5, 9),
-(57, 1, 501, 67.12, 7),
-(58, 1, 502, 75.73, 8),
-(59, 1, 503, 47.64, 4),
-(60, 1, 504, 24.33, 4),
-(61, 1, 505, 49.46, 1),
-(62, 2, 101, 66.87, 5),
-(63, 2, 102, 76.24, 9),
-(64, 2, 201, 72.88, 7),
-(65, 2, 202, 84.5, 1),
-(66, 2, 203, 72.4, 8),
-(67, 2, 204, 19.98, 9),
-(68, 2, 205, 46.24, 9);
+(1, 1, 101, 82.12, 2),
+(2, 1, 102, 13.93, 2),
+(3, 1, 103, 43.03, 6),
+(4, 1, 104, 68.25, 8),
+(5, 1, 105, 56.06, 4),
+(6, 1, 106, 24.78, 9),
+(7, 1, 107, 55.6, 1),
+(8, 1, 108, 4.68, 1),
+(9, 1, 109, 63.16, 8),
+(10, 1, 201, 13.83, 2),
+(11, 1, 202, 30.02, 3),
+(12, 1, 203, 30.05, 8),
+(13, 1, 204, 34.74, 3),
+(14, 1, 205, 89.98, 3),
+(15, 1, 301, 81.28, 7),
+(16, 1, 302, 20.29, 9),
+(17, 1, 303, 40.7, 7),
+(18, 1, 304, 74.32, 6),
+(19, 1, 305, 82.42, 2),
+(20, 1, 306, 84.71, 2),
+(21, 1, 307, 6.63, 8),
+(22, 1, 308, 52.83, 4),
+(23, 1, 309, 38.24, 7),
+(24, 1, 310, 16.27, 4),
+(25, 1, 311, 75.09, 6),
+(26, 1, 312, 75.98, 2),
+(27, 1, 313, 89.65, 3),
+(28, 1, 401, 61.61, 1),
+(29, 1, 402, 28.46, 8),
+(30, 1, 403, 35.95, 9),
+(31, 1, 404, 11.36, 7),
+(32, 1, 405, 10.17, 3),
+(33, 1, 406, 35.89, 4),
+(34, 1, 407, 88.66, 3),
+(35, 1, 408, 30.5, 2),
+(36, 1, 409, 24.86, 9),
+(37, 1, 410, 14.07, 2),
+(38, 1, 411, 23.42, 2),
+(39, 1, 412, 79.9, 1),
+(40, 1, 413, 49.34, 4),
+(41, 1, 501, 18.53, 5),
+(42, 1, 502, 43.83, 8),
+(43, 1, 503, 81.77, 3),
+(44, 1, 504, 0.36, 9),
+(45, 1, 505, 87.27, 8),
+(46, 1, 506, 66.61, 1),
+(47, 1, 507, 52.13, 2),
+(48, 1, 508, 26.3, 4),
+(49, 1, 509, 34.72, 1),
+(50, 1, 510, 60.7, 1),
+(51, 1, 511, 81.61, 4),
+(52, 1, 512, 52.93, 3),
+(53, 1, 513, 62.34, 7),
+(54, 1, 514, 49.73, 5),
+(55, 1, 515, 36.92, 2),
+(56, 1, 516, 97.17, 3),
+(57, 1, 517, 34.81, 8),
+(58, 1, 518, 65.14, 8),
+(59, 1, 519, 15.77, 9),
+(60, 1, 520, 3.25, 6),
+(61, 1, 521, 64.99, 8),
+(62, 1, 522, 53.57, 9),
+(63, 2, 101, 27.76, 9),
+(64, 2, 102, 84.31, 5),
+(65, 2, 103, 31.31, 8),
+(66, 2, 104, 58.59, 9),
+(67, 2, 105, 71.65, 8),
+(68, 2, 106, 50.2, 6),
+(69, 2, 107, 43.14, 7),
+(70, 2, 108, 12.44, 3),
+(71, 2, 109, 35.73, 2),
+(72, 2, 110, 36.89, 1),
+(73, 2, 111, 54.72, 6),
+(74, 2, 112, 18.02, 8),
+(75, 2, 113, 8.97, 9),
+(76, 2, 114, 35.69, 8),
+(77, 2, 115, 66.77, 4),
+(78, 2, 116, 83.42, 6),
+(79, 2, 117, 92.72, 1),
+(80, 2, 118, 21.8, 5),
+(81, 2, 119, 6.1, 5),
+(82, 2, 120, 73.07, 3),
+(83, 2, 121, 75.03, 5),
+(84, 2, 201, 57.68, 7),
+(85, 2, 202, 99.3, 9),
+(86, 2, 203, 92.07, 9),
+(87, 2, 204, 19.74, 4),
+(88, 2, 205, 67.56, 8),
+(89, 2, 206, 91.53, 1),
+(90, 2, 207, 81.71, 1),
+(91, 2, 208, 60.66, 9),
+(92, 2, 209, 27.26, 4),
+(93, 2, 210, 20.7, 2),
+(94, 2, 211, 91.74, 3),
+(95, 2, 212, 69.65, 2),
+(96, 2, 213, 12.15, 7),
+(97, 2, 214, 2.88, 1),
+(98, 2, 215, 64.7, 8),
+(99, 2, 216, 67.38, 3),
+(100, 2, 217, 39.29, 9),
+(101, 2, 218, 29.87, 5),
+(102, 2, 219, 68.27, 7),
+(103, 2, 220, 48.28, 2);
 
 -- --------------------------------------------------------
 
@@ -267,7 +309,7 @@ CREATE TABLE `service_assignment` (
   `SA_ID` int(10) UNSIGNED NOT NULL,
   `Service_ID` int(10) UNSIGNED NOT NULL,
   `User_ID` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -279,7 +321,7 @@ CREATE TABLE `service_type` (
   `ST_ID` int(10) UNSIGNED NOT NULL,
   `Service_Type` varchar(45) NOT NULL,
   `Price` float UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -290,7 +332,7 @@ CREATE TABLE `service_type` (
 CREATE TABLE `service_worker` (
   `User_ID` int(10) UNSIGNED NOT NULL,
   `Role` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `service_worker`
@@ -317,7 +359,7 @@ CREATE TABLE `users` (
   `Username` varchar(45) NOT NULL,
   `Password` varchar(45) NOT NULL,
   `User_Type` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
@@ -478,13 +520,13 @@ ALTER TABLE `receptionist`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `Review_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `Review_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
-  MODIFY `Room_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `Room_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- AUTO_INCREMENT for table `service_assignment`

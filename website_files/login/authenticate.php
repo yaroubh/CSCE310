@@ -20,7 +20,7 @@ if ( !isset($_POST['username'], $_POST['password']) ) {
 }
 
 // Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-if ($stmt = $con->prepare('SELECT User_ID, Password FROM users WHERE username = ?')) {
+if ($stmt = $con->prepare('SELECT User_ID, Password FROM Users WHERE username = ?')) {
 	// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 	$stmt->bind_param('s', $_POST['username']);
 	$stmt->execute();
@@ -38,14 +38,17 @@ if ($stmt = $con->prepare('SELECT User_ID, Password FROM users WHERE username = 
             $_SESSION['loggedin'] = TRUE;
             $_SESSION['name'] = $_POST['username'];
             $_SESSION['id'] = $id;
-            echo 'Welcome ' . $_SESSION['name'] . '!';
+            // echo 'Welcome ' . $_SESSION['name'] . '!';
+            header('Location: home.php');
         } else {
             // Incorrect password
             echo 'Incorrect username and/or password!';
+            // header('Location: login.html');
         }
     } else {
         // Incorrect username
         echo 'Incorrect username and/or password!';
+        // header('Location: login.html');
     }
 
 	$stmt->close();
