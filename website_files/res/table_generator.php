@@ -170,4 +170,21 @@ if(isset($_POST['generate_table_viewable']))
     echo json_encode(array("Success!", $table_array));
     exit();
 }
+
+if(isset($_POST['generate_table_viewable_filterable']))
+{
+    $table_name = $_POST['table_name'];
+    $table_query_name = $_POST['table_query_name'];
+    $query = $_POST['query'];
+    $check_key_code = $_POST['key_code'];
+    $key_code = hash("md5", ":>VIEW-SELECT<:" . $table_name . ":>FROM<:" . str_repeat($table_query_name,2) . $query);
+    $good_key_code = key_code_check($key_code, $check_key_code);
+    if ($good_key_code === false) {
+        echo json_encode(array("Invalid key code!", ""));
+        exit();
+    }
+    $table_array = generate_table_editable($conn, $table_name, $table_query_name, $query);
+    echo json_encode(array("Success!", $table_array));
+    exit();
+}
 ?>
