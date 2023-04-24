@@ -29,7 +29,6 @@ for ($i = 0; $i < $folder_depth; $i++) {
 }
 # echo "<p>Backup: " . $backup . "</p>";
 # echo "<p>Folder Depth: " . $folder_depth . "</p>";
-include $backup . "nav/navbar.php";
 include $backup . "res/table_editor.php"; 
 ?>
 

@@ -1,4 +1,4 @@
-<?php include "../res/head.php"?>
+<?php include "../res/head_no_nav.php"?>
 <!DOCTYPE html>
 <html>
 	<head>
