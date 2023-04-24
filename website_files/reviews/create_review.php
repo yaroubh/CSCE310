@@ -48,27 +48,29 @@
   <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Retrieve input values
-        $username = strtolower(trim($_POST["username"]));
-        $hotel = strtolower(trim($_POST["hotel"]));
-        $rating = intval($_POST["rating"]);
-        $description = $_POST["description"];
-        $date_time = date('Y-m-d H:i:s', strtotime($_POST["date_time"]));
+        $username = strtolower(trim($_POST['username']));
+        $hotel = strtolower(trim($_POST['hotel']));
+        $rating = intval($_POST['rating']);
+        $description = $_POST['description'];
+        $date_time = date('Y-m-d H:i:s', strtotime($_POST['date_time']));
       
         // Query database to check if username and hotel exist
         $username_result = $conn->query("SELECT * FROM Users WHERE lower(trim(Username)) = '$username'");
-        $hotel_result = $conn->query("SELECT * FROM Hotels WHERE lower(trim(Hotel_Name)) = '$hotel'");
-      
+        $hotel_result = $conn->query("SELECT * FROM Hotel WHERE lower(trim(Hotel_Name)) = '$hotel'");
+
         if ($username_result->num_rows == 0) {
           echo "<p class='error'>Error: Username does not exist</p>";
-        } elseif ($hotel_result->num_rows == 0) {
+          
+        } 
+        elseif ($hotel_result->num_rows == 0) {
           echo "<p class='error'>Error: Hotel name does not exist</p>";
-        } else {
+        } 
+
+        else {
           // Retrieve the user and hotel IDs
           $user_id = $username_result->fetch_assoc()["User_ID"];
-          echo "<p>".$user_id."</p>";
           $hotel_id = $hotel_result->fetch_assoc()["Hotel_ID"];
-          echo "<p>".$user_id."</p>";
-      
+
           // Insert review into database
           $q = "INSERT INTO Reviews (Hotel_ID, User_ID, Rating, Description, Review_Date) VALUES ($hotel_id, $user_id, $rating, '$description', '$date_time')";
           if ($conn->query($q) === TRUE) {
@@ -78,7 +80,6 @@
           }
         }
       }
-      
   ?>
 
 </div>
