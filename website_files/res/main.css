@@ -71,3 +71,12 @@ p {
 .date-range-text {
     display: inline-block;
 }
+
+.date-range-group {
+	margin-left: 50px;
+}
+
+.form-check-input {
+	width: 20px;
+	height: 20px;
+}

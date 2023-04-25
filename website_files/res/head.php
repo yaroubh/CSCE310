@@ -40,7 +40,6 @@ include $backup . "res/table_editor.php";
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@popperjs/core@2"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-
 <link rel="stylesheet" href="<?php echo $backup . "res/main.css";?>" type="text/css">
 <!--<link rel="stylesheet" href="res/main.css">-->
 <title>Hotel Management System</title>
