@@ -112,12 +112,12 @@ function generate_date_range_filter($div_name, $table_name, $sd_cond_name_start,
             <input class="form-check-input" 
                 type="checkbox" value="" 
                 id="flexCheckDefault-<?php echo $div_name?>" 
-                onClick = "toggle_filters('<?php echo $table_name?>',['<?php echo $div_name . "-start" ?>', '<?php echo $div_name . "-end" ?>'])"
+                onClick = "toggle_filters('<?php echo $table_name?>', ['<?php echo $div_name . "-start" ?>', '<?php echo $div_name . "-end" ?>'])"
                 checked>
             <label>Enable '<?php echo $cond_label ?>' Date Range
             </label>
         </div>
-        <div id = "<?php echo $div_name?>">
+        <div id = "<?php echo $div_name?>-form">
             <label for="date_time" class = "date-range-label"><?php echo $cond_label?></label>
             <input type = "datetime-local" 
                 class = "form-control date-range-filter" 
@@ -139,37 +139,46 @@ function generate_date_range_filter($div_name, $table_name, $sd_cond_name_start,
 
 <?php
 // Generates a search filter for a table
-/**
- * @param parent_div
- */
-function generate_search_filter($parent_div, $div_name, $table_name, $cond_name, $default_start, $default_end) {
-    // Buffer the output so we can store it
-    ob_start();
-    $key_code = generate_viewer_key_code($table_name, $table_query_name, $query);
-    ?>
-    <script>
-        // Initialize arrays for table filter maps
-        if (table_filters["<?php echo $table_name?>"] == null) {
-            table_filters["<?php echo $table_name?>"] = [];
-        }
-        if (table_filters_elements["<?php echo $table_name?>"] == null)  {
-            table_filters_elements["<?php echo $table_name?>"] = [];
-        }
-        // Store relevant data
-        table_filters["<?php echo $table_name?>"].push(['<?php echo $cond_name?>' + '-START', '<?php echo $cond_op?>',
-            '<?php echo $cond_type?>', '<?php echo $default_start?>', '<?php echo $key_code?>']);
-        table_filters["<?php echo $table_name?>"].push(['<?php echo $cond_name?>' + '-END', '<?php echo $cond_op?>',
-            '<?php echo $cond_type?>', '<?php echo $default_start?>', '<?php echo $key_code?>']);
-        table_filter_elements["<?php echo $table_name?>"].push(['', 2]);
-        table_codes["<?php echo $table_name?>"] = "<?php echo $key_code?>";
-        table_types["<?php echo $table_name?>"] = "viewer";
-        table_queries["<?php echo $table_name?>"] = "<?php echo $query?>";
-        table_mwidths["<?php echo $table_name?>"] = "<?php echo $max_width?>";
-        // Generate the table
-        // generate_table_view("<?php echo $table_name?>", "<?php echo $table_query_name?>", "<?php echo $query?>", "<?php echo $key_code?>", "<?php echo $max_width?>");
-    </script>
-    <?php
-    return ob_get_clean();
+
+function generate_search_filter($div_name, $table_name, $cond_name_start, $cond_op, $cond_name_end, $cond_type, $cond_label) {
+   // Buffer the output so we can store it
+   ob_start();
+   $key_code = generate_filter_key_code($cond_name_start, $cond_op, $cond_name_end, $cond_type);
+   ?>
+   <script>
+       // Initialize arrays for table filter maps
+       if (table_filters["<?php echo $table_name?>"] == null) {
+           table_filters["<?php echo $table_name?>"] = {};
+       }
+       if (table_filter_elements["<?php echo $table_name?>"] == null)  {
+           table_filter_elements["<?php echo $table_name?>"] = {};
+       }
+       // Store relevant data
+       table_filters["<?php echo $table_name?>"]['<?php echo $div_name?>'] = ['<?php echo $cond_name_start?>', '<?php echo $cond_op?>',
+           '<?php echo $cond_type?>', '', '<?php echo $cond_name_end?>', '<?php echo $key_code?>', false, ''];
+       table_filter_elements["<?php echo $table_name?>"]['<?php echo $div_name?>'] = [1];
+   </script>
+   <div id = "<?php echo $div_name?>-group" class = "date-range-group"> 
+       <div class="form-check">
+           <input class="form-check-input" 
+               type="checkbox" value="" 
+               id="flexCheckDefault-<?php echo $div_name?>" 
+               onClick = "toggle_filters('<?php echo $table_name?>', ['<?php echo $div_name?>'])">
+           <label>Enable '<?php echo $cond_label ?>' Filter
+           </label>
+       </div>
+       <div id = "<?php echo $div_name?>-form">
+           <label for="text" class = "filter-label"><?php echo $cond_label?></label>
+           <input type = "text" 
+               class = "form-control filter-text" 
+               id = "<?php echo $div_name?>" 
+               name = "filter-text" 
+               disabled
+               onChange = "update_filter('<?php echo $div_name?>', '<?php echo $table_name?>', table_filters['<?php echo $table_name?>']['<?php echo $div_name?>'])">
+       </div>
+   </div>
+   <?php
+   return ob_get_clean();
 }?>
 
 <script>
@@ -532,13 +541,14 @@ function generate_table_editable(table_name, table_query_name, query, key_code, 
  * 
  * @param {string} table_name ID of table element
  * @param {string[]} filter_array List of strings corresponding to filter elements
+ * @return void
  */
 function toggle_filters(table_name, filter_array) {
     // Toggle each filter
     for (let i = 0; i < filter_array.length; i++) {
         let curr_elem_name = filter_array[i];
         let curr_elem = document.getElementById(curr_elem_name);
-        curr_elem.enabled = !curr_elem.enabled;
+        curr_elem.disabled = !curr_elem.disabled;
         table_filters[table_name][curr_elem_name][6] = !table_filters[table_name][curr_elem_name][6];
     }
     // Update table
@@ -551,6 +561,36 @@ function toggle_filters(table_name, filter_array) {
     }
 }
 
+/**
+ * Pulls the text from an input field, and updates the appropriate table
+ * 
+ * @param {string} div_name ID of the input date field
+ * @param {string} table_name ID of table that the field affects
+ * @param {array} filter_array array of elements that contains the filter options
+ * @return void
+ */
+function update_filter(div_name, table_name, filter_array) {
+    let val = document.getElementById(div_name).value;
+    // Convert date from js format to MySQL format
+    // Update the filter value
+    filter_array[3] = val;
+    // Update the table
+    if (table_types[table_name] == "editor") {
+        generate_table_editable(table_name, table_qnames[table_name], table_queries[table_name], table_codes[table_name], table_mwidths[table_name]);
+    } else if (table_types[table_name] == "viewer") {
+        generate_table_view(table_name, table_qnames[table_name], table_queries[table_name], table_codes[table_name], table_mwidths[table_name]);
+    } else {
+        console.log("Error! Invalid Table Type!");
+    }
+
+}
+
+/**
+ * Converts a js date to a MySQL date
+ * 
+ * @param {string} date_text js formatting of a date
+ * @return {string} MySQL formmating of a date
+ */
 function get_mysql_date(date_text) {
     let mysql_date_value = new Date(date_text);
     let offset = mysql_date_value.getTimezoneOffset() * 60 * 1000;
@@ -558,13 +598,24 @@ function get_mysql_date(date_text) {
     return mysql_date_value;
 }
 
-// Pulls the date from an input date field, and updates the appropriate table
+
+/**
+ * Pulls the date from an input date field, and updates the appropriate table
+ * 
+ * @param {string} div_name ID of the input date field
+ * @param {string?} start_date_element ID of field that handles starting date (div_name would be end date), null if N/A
+ * @param {string?} end_date_element ID of field that handles ending date (div_name would be start date), null if N/A
+ * @param {string} table_name ID of table that the field affects
+ * @param {array} filter_array array of elements that contains the filter options
+ * @return void
+ */
 function update_date(div_name, start_date_element, end_date_element, table_name, filter_array) {
     let date_value = document.getElementById(div_name).value;
     // Convert date from js format to MySQL format
     let mysql_date_value = get_mysql_date(date_value);
-
+    // Update the filter value
     filter_array[3] = mysql_date_value;
+    // Update the table
     if (table_types[table_name] == "editor") {
         generate_table_editable(table_name, table_qnames[table_name], table_queries[table_name], table_codes[table_name], table_mwidths[table_name]);
     } else if (table_types[table_name] == "viewer") {

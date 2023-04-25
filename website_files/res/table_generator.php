@@ -59,6 +59,7 @@ function generate_table_viewable_filterable($conn, $table_name, $table_query_nam
     // Put filters into query
     $filter_params = array();
     $filter_types = "";
+    $query .=  " WHERE ";
     for ($i = 0; $i < sizeof($filters); $i++) {
         $curr_filter = $filters[$i];
         $query .= $curr_filter[0] . " " . $curr_filter[1] . " ?" . $curr_filter[2];
