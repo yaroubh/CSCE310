@@ -59,3 +59,15 @@ p {
     white-space: nowrap;
 }
 
+.date-range-label {
+    display: block;
+}
+
+.date-range-filter {
+    width: 40%;
+    display: inline-block;
+}
+
+.date-range-text {
+    display: inline-block;
+}

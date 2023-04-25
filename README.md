@@ -10,7 +10,7 @@ Guide:
 
 - Make sure to then import `test.sql`.
 
-![Create Database](readme_guide/ImportDatabase.png "Import the Database Named 'test.sql'")
+![Import Database](readme_guide/ImportDatabase.png "Import the Database Named 'test.sql'")
 
 - Then create a folder for your desired functionality. Next, to create make sure to include the path to "res/head.php". You can then make viewable tables and editable tables. Feel free to make your own functionality as well.
 
