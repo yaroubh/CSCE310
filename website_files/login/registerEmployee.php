@@ -26,6 +26,11 @@
 				</label>
 				<input type="text" name="username" placeholder="Username" id="username" required>
 
+				<label for="hotelid">
+                    <i class="fas fa-hotel"></i>
+                </label>
+                <input type="text" name="hotelid" placeholder="Hotel ID" id="hotelid" required>
+
                 <label for="employeeType">
 					<i class="fas fa-bell"></i>
 				</label>
