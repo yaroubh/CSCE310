@@ -66,3 +66,17 @@ body.loggedin {
 	padding: 5px;
 	margin: 0 0 10px 0;
 }
+
+.content button[type="submit"] {
+	background-color: #2f3947;
+	color: #fff;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 4px;
+	cursor: pointer;
+  }
+  
+.content button[type="submit"]:hover {
+	background-color: #1d232c;
+  }
+  

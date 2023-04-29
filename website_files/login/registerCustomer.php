@@ -38,7 +38,7 @@
 				<input type="submit" value="Register">
 			</form>
             <form action="<?php echo $backup . "login/login.php"?>" method="POST">
-                <button >Back to Log In</button>
+                <button>Back to Log In</button>
             </form>
 		</div>
 	</body>

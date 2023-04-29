@@ -50,7 +50,7 @@ $sql = 'CREATE TABLE Employees (
     Hotel_ID INT UNSIGNED NOT NULL,
     Employee_JobType VARCHAR(45) NOT NULL,
     FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID),
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID) ON DELETE CASCADE
     )';
 
 echo "<p>";
@@ -68,7 +68,7 @@ echo "</p>";
 $sql = 'CREATE TABLE Customer (
     User_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Booking_NO INT UNSIGNED,
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID) ON DELETE CASCADE
     )';
 
 echo "<p>";
@@ -111,7 +111,7 @@ $sql = 'CREATE TABLE Booking (
     `Start_Date` DATETIME NOT NULL,
     End_Date DATETIME NOT NULL,
     FOREIGN KEY (Room_ID) REFERENCES Room(Room_ID),
-    FOREIGN KEY (User_ID) REFERENCES Customer(User_ID)
+    FOREIGN KEY (User_ID) REFERENCES Customer(User_ID) ON DELETE CASCADE
     )';
 
 echo "<p>";
@@ -150,7 +150,7 @@ $sql = 'CREATE TABLE Reviews (
     `Description` VARCHAR(300) NOT NULL,
     Review_Date DATETIME NOT NULL,
     FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID),
-    FOREIGN KEY (User_ID) REFERENCES Customer(User_ID)
+    FOREIGN KEY (User_ID) REFERENCES Customer(User_ID) ON DELETE CASCADE
     )';
 
 echo "<p>";
@@ -188,7 +188,7 @@ $sql = 'CREATE TABLE Hotel_Service (
     Booking_NO INT UNSIGNED NOT NULL,
     ST_ID INT UNSIGNED NOT NULL,
     Service_Date DATETIME NOT NULL,
-    FOREIGN KEY (Booking_NO) REFERENCES Booking(Booking_NO),
+    FOREIGN KEY (Booking_NO) REFERENCES Booking(Booking_NO) ON DELETE CASCADE,
     FOREIGN KEY (ST_ID) REFERENCES Service_Type(ST_ID)
     )';
 
@@ -208,8 +208,8 @@ $sql = 'CREATE TABLE Service_Assignment (
     SA_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Service_ID INT UNSIGNED NOT NULL,
     User_ID INT UNSIGNED NOT NULL,
-    FOREIGN KEY (Service_ID) REFERENCES Hotel_Service(Service_ID),
-    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID)
+    FOREIGN KEY (Service_ID) REFERENCES Hotel_Service(Service_ID) ON DELETE CASCADE,
+    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID) 
     )';
 
 echo "<p>";
@@ -228,7 +228,7 @@ $sql = 'CREATE TABLE Receptionist (
     User_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Shift_Start_Time TIME NOT NULL,
     Shift_End_Time TIME NOT NULL,
-    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID)
+    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID) ON DELETE CASCADE
     )';
 
 echo "<p>";
@@ -246,7 +246,7 @@ echo "</p>";
 $sql = 'CREATE TABLE Administrator (
     User_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Speciality VARCHAR(45) NOT NULL,
-    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID)
+    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID) ON DELETE CASCADE
     )';
 
 echo "<p>";
@@ -264,7 +264,7 @@ echo "</p>";
 $sql = 'CREATE TABLE Service_Worker (
     User_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `Role` VARCHAR(45) NOT NULL,
-    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID)
+    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID) ON DELETE CASCADE
     )';
 
 echo "<p>";
