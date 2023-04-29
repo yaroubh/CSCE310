@@ -25,6 +25,29 @@ $stmt->close();
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 	</head>
 	<body class="loggedin">
+		<!-- <div class="account-form">
+			<h2>Edit Account Details</h2>
+			<form method="post" action="update_account.php">
+				<input type="hidden" name="id" value="<?php echo $fname; ?>" />
+				<label for="firstname">First Name:</label>
+				<input type="text" name="name" value="<?php echo $lname; ?>" required />
+				<label for="lastname">Last Name:</label>
+				<input type="email" name="email" value="<?php echo $email; ?>" required />
+				<label for="email">Email:</label>
+				<input type="password" name="password" required />
+				<button type="submit" name="update">Update Account</button>
+			</form>
+		</div>
+
+		<div class="account-form">
+			<h2>Delete Account</h2>
+			<form method="post" action="delete_account.php">
+				<input type="hidden" name="id" value="<?php echo $user_id; ?>" />
+				<p>Are you sure you want to delete your account?</p>
+				<button type="submit" name="delete">Delete Account</button>
+			</form>
+		</div> -->
+	
 		<div class="content">
 			<h2>Profile Page</h2>
 			<div>
@@ -56,6 +79,11 @@ $stmt->close();
 					</tr>
 				</table>
 			</div>
+			<form action="update_account_cust.php" method="POST">
+                <button>Edit Account</button>
+            </form>
 		</div>
 	</body>
 </html>
+
+
