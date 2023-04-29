@@ -25,6 +25,7 @@ function generate_table_viewable_filterable($conn, $table_name, $table_query_nam
     $filter_params = array();
     $filter_types = "";
     $query .=  " WHERE ";
+    // Apply each filter to the query
     for ($i = 0; $i < sizeof($filters); $i++) {
         $curr_filter = $filters[$i];
         $query .= $curr_filter[0] . " " . $curr_filter[1] . " ?" . $curr_filter[2];
