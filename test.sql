@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2023 at 05:54 AM
+-- Generation Time: Apr 29, 2023 at 06:39 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -69,8 +69,8 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`User_ID`, `Booking_NO`) VALUES
-(2, NULL),
-(15, NULL);
+(1, NULL),
+(2, NULL);
 
 -- --------------------------------------------------------
 
@@ -97,6 +97,22 @@ INSERT INTO `employees` (`User_ID`, `Hotel_ID`, `Employee_JobType`) VALUES
 (8, 1, 'Service_Worker'),
 (9, 2, 'Service_Worker'),
 (10, 2, 'Service_Worker');
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `employee_view`
+-- (See below for the actual view)
+--
+CREATE TABLE `employee_view` (
+`FName` varchar(45)
+,`LName` varchar(45)
+,`Phone_No` int(10)
+,`Email` varchar(60)
+,`Username` varchar(45)
+,`Password` varchar(45)
+,`Employee_JobType` varchar(45)
+);
 
 -- --------------------------------------------------------
 
@@ -132,6 +148,19 @@ CREATE TABLE `hotel_service` (
   `ST_ID` int(10) UNSIGNED NOT NULL,
   `Service_Date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `hotel_view`
+-- (See below for the actual view)
+--
+CREATE TABLE `hotel_view` (
+`Hotel_Name` varchar(45)
+,`Hotel_City` varchar(45)
+,`Hotel_State` varchar(45)
+,`Hotel_Country` varchar(45)
+);
 
 -- --------------------------------------------------------
 
@@ -174,7 +203,7 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`Review_ID`, `Hotel_ID`, `User_ID`, `Rating`, `Description`, `Review_Date`) VALUES
-(2, 2, 2, 5, 'Such a wonderful experience. The family loved.', '2022-05-12 13:55:12');
+(1, 1, 1, 4, 'Overall Good. Would come again', '2023-05-02 12:45:36');
 
 -- --------------------------------------------------------
 
@@ -195,80 +224,96 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`Room_ID`, `Hotel_ID`, `Room_Num`, `Price`, `Capacity`) VALUES
-(1, 1, 101, 72.66, 3),
-(2, 1, 102, 46.28, 9),
-(3, 1, 103, 38.82, 2),
-(4, 1, 104, 17.93, 3),
-(5, 1, 105, 16.76, 9),
-(6, 1, 106, 45.96, 1),
-(7, 1, 201, 62.71, 8),
-(8, 1, 202, 29.51, 8),
-(9, 1, 203, 3.38, 1),
-(10, 1, 204, 96.68, 4),
-(11, 1, 205, 93.91, 5),
-(12, 1, 206, 46.65, 8),
-(13, 1, 207, 62.11, 6),
-(14, 1, 208, 33.67, 4),
-(15, 1, 209, 54.01, 5),
-(16, 1, 210, 36.2, 3),
-(17, 1, 211, 30.78, 7),
-(18, 1, 212, 6.19, 1),
-(19, 1, 213, 56.39, 4),
-(20, 1, 214, 80.33, 2),
-(21, 1, 215, 62.39, 5),
-(22, 1, 216, 81.93, 6),
-(23, 1, 217, 32.24, 8),
-(24, 1, 218, 20.03, 6),
-(25, 1, 219, 54.11, 7),
-(26, 1, 220, 36.33, 3),
-(27, 1, 221, 37.92, 3),
-(28, 1, 222, 34.78, 6),
-(29, 1, 223, 90.65, 1),
-(30, 1, 224, 20.86, 3),
-(31, 2, 101, 64.56, 4),
-(32, 2, 201, 58.22, 4),
-(33, 2, 301, 57.93, 7),
-(34, 2, 302, 18.7, 4),
-(35, 2, 303, 36.73, 7),
-(36, 2, 304, 42.11, 7),
-(37, 2, 305, 23.8, 5),
-(38, 2, 306, 31.67, 8),
-(39, 2, 307, 6.57, 4),
-(40, 2, 308, 4.58, 5),
-(41, 2, 309, 96.14, 8),
-(42, 2, 310, 46.62, 6),
-(43, 2, 311, 26.35, 8),
-(44, 2, 312, 61.21, 9),
-(45, 2, 313, 82.26, 1),
-(46, 2, 314, 93.77, 6),
-(47, 2, 315, 31.66, 6),
-(48, 2, 316, 54.26, 3),
-(49, 2, 317, 33, 9),
-(50, 2, 318, 16.89, 2),
-(51, 2, 319, 62.27, 2),
-(52, 2, 320, 13.23, 3),
-(53, 2, 401, 70.2, 8),
-(54, 2, 402, 64.2, 7),
-(55, 2, 403, 10.48, 8),
-(56, 2, 404, 33.02, 9),
-(57, 2, 405, 16.64, 7),
-(58, 2, 406, 30.17, 9),
-(59, 2, 407, 30.89, 2),
-(60, 2, 408, 81.01, 7),
-(61, 2, 409, 59.21, 9),
-(62, 2, 410, 72.06, 9),
-(63, 2, 411, 30.47, 1),
-(64, 2, 412, 24.43, 9),
-(65, 2, 413, 55.69, 3),
-(66, 2, 414, 13.1, 8),
-(67, 2, 415, 27.28, 7),
-(68, 2, 416, 32.5, 7),
-(69, 2, 417, 29.9, 3),
-(70, 2, 418, 45.24, 9),
-(71, 2, 419, 81.44, 2),
-(72, 2, 420, 20.21, 6),
-(73, 2, 421, 52.63, 5),
-(74, 2, 422, 25.91, 5);
+(1, 1, 101, 39.26, 7),
+(2, 1, 201, 63.32, 3),
+(3, 1, 202, 2.91, 2),
+(4, 1, 203, 28.59, 1),
+(5, 1, 204, 24.89, 6),
+(6, 1, 205, 15.12, 3),
+(7, 1, 206, 16.63, 1),
+(8, 1, 207, 68.12, 4),
+(9, 1, 208, 85.68, 3),
+(10, 1, 209, 71.09, 7),
+(11, 1, 210, 84.81, 1),
+(12, 1, 211, 25.81, 5),
+(13, 1, 212, 65.87, 9),
+(14, 1, 213, 74.49, 7),
+(15, 1, 214, 98.44, 1),
+(16, 1, 215, 0.73, 5),
+(17, 1, 216, 94.32, 7),
+(18, 1, 217, 35.58, 5),
+(19, 1, 218, 23.91, 5),
+(20, 1, 219, 53.87, 7),
+(21, 1, 220, 64.15, 8),
+(22, 1, 221, 3.22, 2),
+(23, 1, 222, 22.47, 1),
+(24, 2, 101, 59.49, 3),
+(25, 2, 102, 91.76, 2),
+(26, 2, 103, 93.38, 9),
+(27, 2, 104, 37.55, 3),
+(28, 2, 105, 87.91, 6),
+(29, 2, 106, 11.84, 2),
+(30, 2, 107, 89.02, 5),
+(31, 2, 108, 30.78, 6),
+(32, 2, 109, 93.89, 5),
+(33, 2, 110, 89.78, 8),
+(34, 2, 111, 99.12, 9),
+(35, 2, 112, 18.45, 8),
+(36, 2, 113, 38.18, 3),
+(37, 2, 114, 74.36, 9),
+(38, 2, 115, 69.08, 9),
+(39, 2, 116, 6.24, 5),
+(40, 2, 117, 98.09, 1),
+(41, 2, 118, 34.37, 9),
+(42, 2, 119, 27.84, 2),
+(43, 2, 120, 77.11, 6),
+(44, 2, 121, 34.49, 6),
+(45, 2, 122, 41.4, 1),
+(46, 2, 123, 79.5, 4),
+(47, 2, 201, 61.93, 4),
+(48, 2, 202, 23.7, 4),
+(49, 2, 203, 25.12, 2),
+(50, 2, 204, 7.8, 4),
+(51, 2, 205, 78.92, 6),
+(52, 2, 206, 93.58, 1),
+(53, 2, 207, 64.24, 5),
+(54, 2, 208, 55.48, 7),
+(55, 2, 209, 91.19, 4),
+(56, 2, 210, 22.86, 2),
+(57, 2, 211, 88.29, 5),
+(58, 2, 212, 21.26, 4),
+(59, 2, 213, 24.97, 8),
+(60, 2, 301, 45.61, 7),
+(61, 2, 302, 19.7, 5),
+(62, 2, 303, 27.96, 9),
+(63, 2, 304, 12.58, 7),
+(64, 2, 305, 36.34, 7),
+(65, 2, 306, 43.84, 7),
+(66, 2, 307, 68.48, 1),
+(67, 2, 308, 87.91, 8),
+(68, 2, 309, 21.33, 1),
+(69, 2, 401, 31.5, 7),
+(70, 2, 402, 21.16, 3),
+(71, 2, 403, 56.2, 2),
+(72, 2, 404, 42.18, 1),
+(73, 2, 405, 65.36, 5),
+(74, 2, 406, 24.48, 4),
+(75, 2, 407, 43.25, 4),
+(76, 2, 408, 89.39, 9),
+(77, 2, 409, 98.42, 6),
+(78, 2, 410, 64.53, 3),
+(79, 2, 411, 91.29, 3),
+(80, 2, 501, 15.46, 4),
+(81, 2, 502, 31.84, 3),
+(82, 2, 503, 33.11, 5),
+(83, 2, 504, 69.66, 3),
+(84, 2, 505, 37.14, 3),
+(85, 2, 506, 51.46, 7),
+(86, 2, 507, 25.55, 4),
+(87, 2, 508, 35.36, 6),
+(88, 2, 509, 95.28, 5),
+(89, 2, 510, 93.49, 3),
+(90, 2, 511, 45.47, 7);
 
 -- --------------------------------------------------------
 
@@ -337,6 +382,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`User_ID`, `FName`, `LName`, `Phone_NO`, `Email`, `Username`, `Password`, `User_Type`) VALUES
+(1, 'Sam', 'Sammy', 1234567890, 'Sam.Sammy@tamu.edu', 'Sammy1', '1Sammy', 'Customer'),
 (2, 'Bob', 'Bobby', 123456789, 'BobbyBob@tamu.edu', 'Bob2', 'Bobby2', 'Customer'),
 (3, 'Joe', 'Bobby', 1112222, 'BobbyBob@tamu.edu', 'Bob3', 'Bobby3', 'Employee'),
 (4, 'Robby', 'Roe', 2147483647, 'RowRowRob@tamu.edu', 'RobRoe', 'Robby3', 'Employee'),
@@ -345,8 +391,50 @@ INSERT INTO `users` (`User_ID`, `FName`, `LName`, `Phone_NO`, `Email`, `Username
 (7, 'Lorali', 'Jones', 1113333, 'Lorali1@tamu.edu', 'Loarli1', 'LP1', 'Employee'),
 (8, 'Loralil', 'Jones', 1113334, 'Lorali2@tamu.edu', 'Loarli2', 'LP2', 'Employee'),
 (9, 'Loralia', 'Jones', 1113335, 'Lorali3@tamu.edu', 'Loarli3', 'LP3', 'Employee'),
-(10, 'Loralip', 'Jones', 1113336, 'Lorali4@tamu.edu', 'Loarli4', 'LP4', 'Employee'),
-(15, 'Sam', 'Sammy', 1234567899, 'Sammy@tamu.edu', 'Sammy1', '1Sammy', 'Customer');
+(10, 'Loralip', 'Jones', 1113336, 'Lorali4@tamu.edu', 'Loarli4', 'LP4', 'Employee');
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `user_view`
+-- (See below for the actual view)
+--
+CREATE TABLE `user_view` (
+`FName` varchar(45)
+,`LName` varchar(45)
+,`Phone_No` int(10)
+,`Email` varchar(60)
+,`Username` varchar(45)
+,`Password` varchar(45)
+,`User_Type` varchar(30)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `employee_view`
+--
+DROP TABLE IF EXISTS `employee_view`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `employee_view`  AS SELECT `users`.`FName` AS `FName`, `users`.`LName` AS `LName`, `users`.`Phone_NO` AS `Phone_No`, `users`.`Email` AS `Email`, `users`.`Username` AS `Username`, `users`.`Password` AS `Password`, `employees`.`Employee_JobType` AS `Employee_JobType` FROM (`users` join `employees` on(`users`.`User_ID` = `employees`.`User_ID`))  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `hotel_view`
+--
+DROP TABLE IF EXISTS `hotel_view`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `hotel_view`  AS SELECT `hotel`.`Hotel_Name` AS `Hotel_Name`, `hotel`.`Hotel_City` AS `Hotel_City`, `hotel`.`Hotel_State` AS `Hotel_State`, `hotel`.`Hotel_Country` AS `Hotel_Country` FROM `hotel``hotel`  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `user_view`
+--
+DROP TABLE IF EXISTS `user_view`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_view`  AS SELECT `users`.`FName` AS `FName`, `users`.`LName` AS `LName`, `users`.`Phone_NO` AS `Phone_No`, `users`.`Email` AS `Email`, `users`.`Username` AS `Username`, `users`.`Password` AS `Password`, `users`.`User_Type` AS `User_Type` FROM `users``users`  ;
 
 --
 -- Indexes for dumped tables
@@ -462,13 +550,13 @@ ALTER TABLE `booking`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `User_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `User_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `User_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `User_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `hotel`
@@ -492,13 +580,13 @@ ALTER TABLE `receptionist`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `Review_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Review_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
-  MODIFY `Room_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `Room_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT for table `service_assignment`
@@ -522,7 +610,7 @@ ALTER TABLE `service_worker`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `User_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `User_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
@@ -532,48 +620,49 @@ ALTER TABLE `users`
 -- Constraints for table `administrator`
 --
 ALTER TABLE `administrator`
-  ADD CONSTRAINT `administrator_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `employees` (`User_ID`) ON DELETE CASCADE;
+  ADD CONSTRAINT `administrator_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `employees` (`User_ID`);
 
 --
 -- Constraints for table `booking`
 --
 ALTER TABLE `booking`
   ADD CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`Room_ID`) REFERENCES `room` (`Room_ID`),
-  ADD CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `customer` (`User_ID`) ON DELETE CASCADE;
+  ADD CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `customer` (`User_ID`);
 
 --
 -- Constraints for table `customer`
 --
 ALTER TABLE `customer`
-  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `users` (`User_ID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `customer_ibfk_2` FOREIGN KEY (`Booking_NO`) REFERENCES `booking` (`Booking_NO`);
+  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `users` (`User_ID`),
+  ADD CONSTRAINT `customer_ibfk_2` FOREIGN KEY (`Booking_NO`) REFERENCES `booking` (`Booking_NO`),
+  ADD CONSTRAINT `customer_ibfk_3` FOREIGN KEY (`Booking_NO`) REFERENCES `booking` (`Booking_NO`);
 
 --
 -- Constraints for table `employees`
 --
 ALTER TABLE `employees`
   ADD CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`Hotel_ID`) REFERENCES `hotel` (`Hotel_ID`),
-  ADD CONSTRAINT `employees_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `users` (`User_ID`) ON DELETE CASCADE;
+  ADD CONSTRAINT `employees_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `users` (`User_ID`);
 
 --
 -- Constraints for table `hotel_service`
 --
 ALTER TABLE `hotel_service`
-  ADD CONSTRAINT `hotel_service_ibfk_1` FOREIGN KEY (`Booking_NO`) REFERENCES `booking` (`Booking_NO`) ON DELETE CASCADE,
+  ADD CONSTRAINT `hotel_service_ibfk_1` FOREIGN KEY (`Booking_NO`) REFERENCES `booking` (`Booking_NO`),
   ADD CONSTRAINT `hotel_service_ibfk_2` FOREIGN KEY (`ST_ID`) REFERENCES `service_type` (`ST_ID`);
 
 --
 -- Constraints for table `receptionist`
 --
 ALTER TABLE `receptionist`
-  ADD CONSTRAINT `receptionist_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `employees` (`User_ID`) ON DELETE CASCADE;
+  ADD CONSTRAINT `receptionist_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `employees` (`User_ID`);
 
 --
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
   ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`Hotel_ID`) REFERENCES `hotel` (`Hotel_ID`),
-  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `customer` (`User_ID`) ON DELETE CASCADE;
+  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `customer` (`User_ID`);
 
 --
 -- Constraints for table `room`
@@ -585,14 +674,14 @@ ALTER TABLE `room`
 -- Constraints for table `service_assignment`
 --
 ALTER TABLE `service_assignment`
-  ADD CONSTRAINT `service_assignment_ibfk_1` FOREIGN KEY (`Service_ID`) REFERENCES `hotel_service` (`Service_ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `service_assignment_ibfk_1` FOREIGN KEY (`Service_ID`) REFERENCES `hotel_service` (`Service_ID`),
   ADD CONSTRAINT `service_assignment_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `employees` (`User_ID`);
 
 --
 -- Constraints for table `service_worker`
 --
 ALTER TABLE `service_worker`
-  ADD CONSTRAINT `service_worker_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `employees` (`User_ID`) ON DELETE CASCADE;
+  ADD CONSTRAINT `service_worker_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `employees` (`User_ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
