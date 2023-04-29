@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL);
-include "../res/head.php";
+include "../res/head_no_nav.php";
 // Change this to your connection info.
 $DATABASE_HOST = 'localhost';
 $DATABASE_USER = 'root';
@@ -15,15 +15,14 @@ if (mysqli_connect_errno()) {
 }
 
 //Get user ID from POST
-$user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['id'];
 
 // Construct the SQL query to delete the user
-$sql = "DELETE FROM users WHERE id = '$user_id'";
+$sql = "DELETE FROM users WHERE user_id = '$user_id'";
 
 // Execute the query and check if it was successful
 if (mysqli_query($con, $sql)) {
-  echo 'User deleted successfully';
-  echo '<p><a href="login.php">Go to login page</a></p>';
+  header('Location: login.php');
 } else {
   echo 'Error deleting user: ' . mysqli_error($con);
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 23, 2023 at 03:05 AM
+-- Generation Time: Apr 29, 2023 at 05:54 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -69,8 +69,8 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`User_ID`, `Booking_NO`) VALUES
-(1, NULL),
-(2, NULL);
+(2, NULL),
+(15, NULL);
 
 -- --------------------------------------------------------
 
@@ -174,7 +174,7 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`Review_ID`, `Hotel_ID`, `User_ID`, `Rating`, `Description`, `Review_Date`) VALUES
-(1, 1, 1, 4, 'Overall Good. Would come again', '2023-05-02 12:45:36');
+(2, 2, 2, 5, 'Such a wonderful experience. The family loved.', '2022-05-12 13:55:12');
 
 -- --------------------------------------------------------
 
@@ -195,109 +195,80 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`Room_ID`, `Hotel_ID`, `Room_Num`, `Price`, `Capacity`) VALUES
-(1, 1, 101, 82.12, 2),
-(2, 1, 102, 13.93, 2),
-(3, 1, 103, 43.03, 6),
-(4, 1, 104, 68.25, 8),
-(5, 1, 105, 56.06, 4),
-(6, 1, 106, 24.78, 9),
-(7, 1, 107, 55.6, 1),
-(8, 1, 108, 4.68, 1),
-(9, 1, 109, 63.16, 8),
-(10, 1, 201, 13.83, 2),
-(11, 1, 202, 30.02, 3),
-(12, 1, 203, 30.05, 8),
-(13, 1, 204, 34.74, 3),
-(14, 1, 205, 89.98, 3),
-(15, 1, 301, 81.28, 7),
-(16, 1, 302, 20.29, 9),
-(17, 1, 303, 40.7, 7),
-(18, 1, 304, 74.32, 6),
-(19, 1, 305, 82.42, 2),
-(20, 1, 306, 84.71, 2),
-(21, 1, 307, 6.63, 8),
-(22, 1, 308, 52.83, 4),
-(23, 1, 309, 38.24, 7),
-(24, 1, 310, 16.27, 4),
-(25, 1, 311, 75.09, 6),
-(26, 1, 312, 75.98, 2),
-(27, 1, 313, 89.65, 3),
-(28, 1, 401, 61.61, 1),
-(29, 1, 402, 28.46, 8),
-(30, 1, 403, 35.95, 9),
-(31, 1, 404, 11.36, 7),
-(32, 1, 405, 10.17, 3),
-(33, 1, 406, 35.89, 4),
-(34, 1, 407, 88.66, 3),
-(35, 1, 408, 30.5, 2),
-(36, 1, 409, 24.86, 9),
-(37, 1, 410, 14.07, 2),
-(38, 1, 411, 23.42, 2),
-(39, 1, 412, 79.9, 1),
-(40, 1, 413, 49.34, 4),
-(41, 1, 501, 18.53, 5),
-(42, 1, 502, 43.83, 8),
-(43, 1, 503, 81.77, 3),
-(44, 1, 504, 0.36, 9),
-(45, 1, 505, 87.27, 8),
-(46, 1, 506, 66.61, 1),
-(47, 1, 507, 52.13, 2),
-(48, 1, 508, 26.3, 4),
-(49, 1, 509, 34.72, 1),
-(50, 1, 510, 60.7, 1),
-(51, 1, 511, 81.61, 4),
-(52, 1, 512, 52.93, 3),
-(53, 1, 513, 62.34, 7),
-(54, 1, 514, 49.73, 5),
-(55, 1, 515, 36.92, 2),
-(56, 1, 516, 97.17, 3),
-(57, 1, 517, 34.81, 8),
-(58, 1, 518, 65.14, 8),
-(59, 1, 519, 15.77, 9),
-(60, 1, 520, 3.25, 6),
-(61, 1, 521, 64.99, 8),
-(62, 1, 522, 53.57, 9),
-(63, 2, 101, 27.76, 9),
-(64, 2, 102, 84.31, 5),
-(65, 2, 103, 31.31, 8),
-(66, 2, 104, 58.59, 9),
-(67, 2, 105, 71.65, 8),
-(68, 2, 106, 50.2, 6),
-(69, 2, 107, 43.14, 7),
-(70, 2, 108, 12.44, 3),
-(71, 2, 109, 35.73, 2),
-(72, 2, 110, 36.89, 1),
-(73, 2, 111, 54.72, 6),
-(74, 2, 112, 18.02, 8),
-(75, 2, 113, 8.97, 9),
-(76, 2, 114, 35.69, 8),
-(77, 2, 115, 66.77, 4),
-(78, 2, 116, 83.42, 6),
-(79, 2, 117, 92.72, 1),
-(80, 2, 118, 21.8, 5),
-(81, 2, 119, 6.1, 5),
-(82, 2, 120, 73.07, 3),
-(83, 2, 121, 75.03, 5),
-(84, 2, 201, 57.68, 7),
-(85, 2, 202, 99.3, 9),
-(86, 2, 203, 92.07, 9),
-(87, 2, 204, 19.74, 4),
-(88, 2, 205, 67.56, 8),
-(89, 2, 206, 91.53, 1),
-(90, 2, 207, 81.71, 1),
-(91, 2, 208, 60.66, 9),
-(92, 2, 209, 27.26, 4),
-(93, 2, 210, 20.7, 2),
-(94, 2, 211, 91.74, 3),
-(95, 2, 212, 69.65, 2),
-(96, 2, 213, 12.15, 7),
-(97, 2, 214, 2.88, 1),
-(98, 2, 215, 64.7, 8),
-(99, 2, 216, 67.38, 3),
-(100, 2, 217, 39.29, 9),
-(101, 2, 218, 29.87, 5),
-(102, 2, 219, 68.27, 7),
-(103, 2, 220, 48.28, 2);
+(1, 1, 101, 72.66, 3),
+(2, 1, 102, 46.28, 9),
+(3, 1, 103, 38.82, 2),
+(4, 1, 104, 17.93, 3),
+(5, 1, 105, 16.76, 9),
+(6, 1, 106, 45.96, 1),
+(7, 1, 201, 62.71, 8),
+(8, 1, 202, 29.51, 8),
+(9, 1, 203, 3.38, 1),
+(10, 1, 204, 96.68, 4),
+(11, 1, 205, 93.91, 5),
+(12, 1, 206, 46.65, 8),
+(13, 1, 207, 62.11, 6),
+(14, 1, 208, 33.67, 4),
+(15, 1, 209, 54.01, 5),
+(16, 1, 210, 36.2, 3),
+(17, 1, 211, 30.78, 7),
+(18, 1, 212, 6.19, 1),
+(19, 1, 213, 56.39, 4),
+(20, 1, 214, 80.33, 2),
+(21, 1, 215, 62.39, 5),
+(22, 1, 216, 81.93, 6),
+(23, 1, 217, 32.24, 8),
+(24, 1, 218, 20.03, 6),
+(25, 1, 219, 54.11, 7),
+(26, 1, 220, 36.33, 3),
+(27, 1, 221, 37.92, 3),
+(28, 1, 222, 34.78, 6),
+(29, 1, 223, 90.65, 1),
+(30, 1, 224, 20.86, 3),
+(31, 2, 101, 64.56, 4),
+(32, 2, 201, 58.22, 4),
+(33, 2, 301, 57.93, 7),
+(34, 2, 302, 18.7, 4),
+(35, 2, 303, 36.73, 7),
+(36, 2, 304, 42.11, 7),
+(37, 2, 305, 23.8, 5),
+(38, 2, 306, 31.67, 8),
+(39, 2, 307, 6.57, 4),
+(40, 2, 308, 4.58, 5),
+(41, 2, 309, 96.14, 8),
+(42, 2, 310, 46.62, 6),
+(43, 2, 311, 26.35, 8),
+(44, 2, 312, 61.21, 9),
+(45, 2, 313, 82.26, 1),
+(46, 2, 314, 93.77, 6),
+(47, 2, 315, 31.66, 6),
+(48, 2, 316, 54.26, 3),
+(49, 2, 317, 33, 9),
+(50, 2, 318, 16.89, 2),
+(51, 2, 319, 62.27, 2),
+(52, 2, 320, 13.23, 3),
+(53, 2, 401, 70.2, 8),
+(54, 2, 402, 64.2, 7),
+(55, 2, 403, 10.48, 8),
+(56, 2, 404, 33.02, 9),
+(57, 2, 405, 16.64, 7),
+(58, 2, 406, 30.17, 9),
+(59, 2, 407, 30.89, 2),
+(60, 2, 408, 81.01, 7),
+(61, 2, 409, 59.21, 9),
+(62, 2, 410, 72.06, 9),
+(63, 2, 411, 30.47, 1),
+(64, 2, 412, 24.43, 9),
+(65, 2, 413, 55.69, 3),
+(66, 2, 414, 13.1, 8),
+(67, 2, 415, 27.28, 7),
+(68, 2, 416, 32.5, 7),
+(69, 2, 417, 29.9, 3),
+(70, 2, 418, 45.24, 9),
+(71, 2, 419, 81.44, 2),
+(72, 2, 420, 20.21, 6),
+(73, 2, 421, 52.63, 5),
+(74, 2, 422, 25.91, 5);
 
 -- --------------------------------------------------------
 
@@ -366,7 +337,6 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`User_ID`, `FName`, `LName`, `Phone_NO`, `Email`, `Username`, `Password`, `User_Type`) VALUES
-(1, 'Sam', 'Sammy', 1234567890, 'Sam.Sammy@tamu.edu', 'Sammy1', '1Sammy', 'Customer'),
 (2, 'Bob', 'Bobby', 123456789, 'BobbyBob@tamu.edu', 'Bob2', 'Bobby2', 'Customer'),
 (3, 'Joe', 'Bobby', 1112222, 'BobbyBob@tamu.edu', 'Bob3', 'Bobby3', 'Employee'),
 (4, 'Robby', 'Roe', 2147483647, 'RowRowRob@tamu.edu', 'RobRoe', 'Robby3', 'Employee'),
@@ -375,7 +345,8 @@ INSERT INTO `users` (`User_ID`, `FName`, `LName`, `Phone_NO`, `Email`, `Username
 (7, 'Lorali', 'Jones', 1113333, 'Lorali1@tamu.edu', 'Loarli1', 'LP1', 'Employee'),
 (8, 'Loralil', 'Jones', 1113334, 'Lorali2@tamu.edu', 'Loarli2', 'LP2', 'Employee'),
 (9, 'Loralia', 'Jones', 1113335, 'Lorali3@tamu.edu', 'Loarli3', 'LP3', 'Employee'),
-(10, 'Loralip', 'Jones', 1113336, 'Lorali4@tamu.edu', 'Loarli4', 'LP4', 'Employee');
+(10, 'Loralip', 'Jones', 1113336, 'Lorali4@tamu.edu', 'Loarli4', 'LP4', 'Employee'),
+(15, 'Sam', 'Sammy', 1234567899, 'Sammy@tamu.edu', 'Sammy1', '1Sammy', 'Customer');
 
 --
 -- Indexes for dumped tables
@@ -468,7 +439,8 @@ ALTER TABLE `service_worker`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`User_ID`);
+  ADD PRIMARY KEY (`User_ID`),
+  ADD UNIQUE KEY `Username` (`Username`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -490,13 +462,13 @@ ALTER TABLE `booking`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `User_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `User_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `User_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `User_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `hotel`
@@ -520,13 +492,13 @@ ALTER TABLE `receptionist`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `Review_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Review_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
-  MODIFY `Room_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+  MODIFY `Room_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT for table `service_assignment`
@@ -550,7 +522,7 @@ ALTER TABLE `service_worker`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `User_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `User_ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables
@@ -560,20 +532,20 @@ ALTER TABLE `users`
 -- Constraints for table `administrator`
 --
 ALTER TABLE `administrator`
-  ADD CONSTRAINT `administrator_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `employees` (`User_ID`);
+  ADD CONSTRAINT `administrator_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `employees` (`User_ID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `booking`
 --
 ALTER TABLE `booking`
   ADD CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`Room_ID`) REFERENCES `room` (`Room_ID`),
-  ADD CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `customer` (`User_ID`);
+  ADD CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `customer` (`User_ID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `customer`
 --
 ALTER TABLE `customer`
-  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `users` (`User_ID`),
+  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `users` (`User_ID`) ON DELETE CASCADE,
   ADD CONSTRAINT `customer_ibfk_2` FOREIGN KEY (`Booking_NO`) REFERENCES `booking` (`Booking_NO`);
 
 --
@@ -581,27 +553,27 @@ ALTER TABLE `customer`
 --
 ALTER TABLE `employees`
   ADD CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`Hotel_ID`) REFERENCES `hotel` (`Hotel_ID`),
-  ADD CONSTRAINT `employees_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `users` (`User_ID`);
+  ADD CONSTRAINT `employees_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `users` (`User_ID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `hotel_service`
 --
 ALTER TABLE `hotel_service`
-  ADD CONSTRAINT `hotel_service_ibfk_1` FOREIGN KEY (`Booking_NO`) REFERENCES `booking` (`Booking_NO`),
+  ADD CONSTRAINT `hotel_service_ibfk_1` FOREIGN KEY (`Booking_NO`) REFERENCES `booking` (`Booking_NO`) ON DELETE CASCADE,
   ADD CONSTRAINT `hotel_service_ibfk_2` FOREIGN KEY (`ST_ID`) REFERENCES `service_type` (`ST_ID`);
 
 --
 -- Constraints for table `receptionist`
 --
 ALTER TABLE `receptionist`
-  ADD CONSTRAINT `receptionist_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `employees` (`User_ID`);
+  ADD CONSTRAINT `receptionist_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `employees` (`User_ID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
   ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`Hotel_ID`) REFERENCES `hotel` (`Hotel_ID`),
-  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `customer` (`User_ID`);
+  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `customer` (`User_ID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `room`
@@ -613,14 +585,14 @@ ALTER TABLE `room`
 -- Constraints for table `service_assignment`
 --
 ALTER TABLE `service_assignment`
-  ADD CONSTRAINT `service_assignment_ibfk_1` FOREIGN KEY (`Service_ID`) REFERENCES `hotel_service` (`Service_ID`),
+  ADD CONSTRAINT `service_assignment_ibfk_1` FOREIGN KEY (`Service_ID`) REFERENCES `hotel_service` (`Service_ID`) ON DELETE CASCADE,
   ADD CONSTRAINT `service_assignment_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `employees` (`User_ID`);
 
 --
 -- Constraints for table `service_worker`
 --
 ALTER TABLE `service_worker`
-  ADD CONSTRAINT `service_worker_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `employees` (`User_ID`);
+  ADD CONSTRAINT `service_worker_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `employees` (`User_ID`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

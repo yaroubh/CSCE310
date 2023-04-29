@@ -102,7 +102,7 @@ $stmt->close();
                 <button type="submit" name="update">Update Account</button>
 			</form>
 
-            <form method="post" action="delete_account_cust.php">
+            <form method="post" action="delete_account.php">
 				<input type="hidden" name="id" value="<?php echo $user_id; ?>" />
 				<!-- <p>Are you sure you want to delete your account?</p> -->
 				<button onclick="return showWarning()" type="submit" name="delete">
