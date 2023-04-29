@@ -59,3 +59,28 @@ p {
     white-space: nowrap;
 }
 
+.date-range-label {
+    display: block;
+}
+
+.date-range-filter {
+    width: 40%;
+    display: inline-block;
+}
+
+.date-range-text {
+    display: inline-block;
+}
+
+.date-range-group {
+	margin-left: 50px;
+}
+
+.form-check-input {
+	width: 20px;
+	height: 20px;
+}
+
+.filter-text {
+	width: 45%;
+}

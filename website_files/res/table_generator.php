@@ -1,13 +1,54 @@
 <?php 
 include "connect.php";
 
+/**
+ * Generates data for an non-editable table view
+ *
+ * @param mysqli $conn MySQLi connection object
+ * @param string $table_name id of table element
+ * @param string $table_query_name Name of table used in the query
+ * @param string $query Query to be executed
+ * @return array Array containing information useful for front end to construct the table view
+ */
 function generate_table_viewable($conn, $table_name, $table_query_name, $query) {
-    // Creates an non-editable table view
+        // Execute Query
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $result = $stmt -> get_result();
+        // Generate table information
+        return generate_table_viewable_helper($table_name, $table_query_name, $result);
+}
+
+// Generates data for an non-editable table view with filters
+function generate_table_viewable_filterable($conn, $table_name, $table_query_name, $query, $filters) {
+    // Put filters into query
+    $filter_params = array();
+    $filter_types = "";
+    $query .=  " WHERE ";
+    // Apply each filter to the query
+    for ($i = 0; $i < sizeof($filters); $i++) {
+        $curr_filter = $filters[$i];
+        $query .= $curr_filter[0] . " " . $curr_filter[1] . " ?" . $curr_filter[2];
+        $filter_types .= $curr_filter[3];
+        array_push($filter_params, $curr_filter[4]);
+        // Add an AND if this is not the last condition to filter through
+        if ($i < sizeof($filters) - 1) {
+            $query .= " AND ";
+        }
+    }
+    // return $query;
+    // Execute Query
     $stmt = $conn->prepare($query);
-    $stmt->execute();
+    $stmt -> bind_param($filter_types, ...$filter_params);
+    $stmt -> execute();
     $result = $stmt -> get_result();
+    // Generate the table
+    return generate_table_viewable_helper($table_name, $table_query_name, $result);
+}
+
+// Generates data for an non-editable table view
+function generate_table_viewable_helper($table_name, $table_query_name, $result) {
     // Generate the table header row
-    $field_count = 0;
     $field_array = array();
     $id_field = "";
     $data_array = array();
@@ -53,8 +94,11 @@ function generate_table_viewable($conn, $table_name, $table_query_name, $query) 
     return $data_array;
 }
 
+
+
+// Generates data for an editable table view
 function generate_table_editable($conn, $table_name, $table_query_name, $query) {
-    // Creates editable table view
+    // Execute query
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $result = $stmt -> get_result();
@@ -135,19 +179,50 @@ function key_code_check($generated_key_code, $check_key_code) {
     }
 }
 
+// Checks the validity of key codes of filters
+function filter_key_code_check($filters) {
+    // The filter array is contained of tuples
+    // The first element is the condition text start
+    // The second element is the condition operator
+    // The third element is the condition text end
+    // The fourth element is the condition value type
+    // The fifth element is the condition value (not part of key code because it's variable)
+    // The sixth element is the key code
+    for($i=0; $i < sizeof($filters); $i++){
+        // Extract values from current filter tuple
+        $curr_filter = $filters[$i];
+        $cond_text_start = $curr_filter[0];
+        $cond_op = $curr_filter[1];
+        $cond_text_end = $curr_filter[2];
+        $cond_type = $curr_filter[3];
+        $check_key_code = $curr_filter[5];
+        // Verify validity of key code
+        $key_code = hash("md5", "||KEY_CODE||" . $cond_text_start . str_repeat($cond_op, 3) . $cond_type . $cond_text_end .  "-KC");
+        $good_key_code = key_code_check($key_code, $check_key_code);
+        if ($good_key_code === false) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
 // Generate an editable table
 if(isset($_POST['generate_table_editable']))
 {
+    // Get POST fields
     $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
     $query = $_POST['query'];
     $check_key_code = $_POST['key_code'];
+    // Make sure key code is valid
     $key_code = hash("md5", ":>EDIT-SELECT<:" . $table_name . ":>FROM<:" . str_repeat($table_query_name,2) . $query);
     $good_key_code = key_code_check($key_code, $check_key_code);
     if ($good_key_code === false) {
         echo json_encode(array("Invalid key code!", ""));
         exit();
     }
+    // Make the table
     $table_array = generate_table_editable($conn, $table_name, $table_query_name, $query);
     echo json_encode(array("Success!", $table_array));
     exit();
@@ -156,18 +231,39 @@ if(isset($_POST['generate_table_editable']))
 // Generate an editable table
 if(isset($_POST['generate_table_viewable']))
 {
+    // Get POST fields
     $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
     $query = $_POST['query'];
     $check_key_code = $_POST['key_code'];
+    // Make sure key code is valid
     $key_code = hash("md5", ":>VIEW-SELECT<:" . $table_name . ":>FROM<:" . str_repeat($table_query_name,2) . $query);
     $good_key_code = key_code_check($key_code, $check_key_code);
     if ($good_key_code === false) {
         echo json_encode(array("Invalid key code!", ""));
         exit();
     }
-    $table_array = generate_table_editable($conn, $table_name, $table_query_name, $query);
-    echo json_encode(array("Success!", $table_array));
-    exit();
+    if (isset($_POST["filters"])) {
+        $filters_json = $_POST['filters'];
+        // Extract filter arrays
+        $filters = json_decode($filters_json, true);
+        // Check validity of filters
+        $good_key_code = filter_key_code_check($filters);
+        if ($good_key_code === false) {
+            echo json_encode(array("Invalid filter key code!", ""));
+            exit();
+        }
+        $table_array = generate_table_viewable_filterable($conn, $table_name, $table_query_name, $query, $filters);
+        echo json_encode(array("Success!", $table_array));
+        exit();
+    } else {
+        // Make the table
+        $table_array = generate_table_viewable($conn, $table_name, $table_query_name, $query);
+        echo json_encode(array("Success!", $table_array));
+        exit();
+    }
 }
+
+
+
 ?>
