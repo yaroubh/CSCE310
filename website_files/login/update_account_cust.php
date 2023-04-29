@@ -27,30 +27,8 @@ $stmt->bind_result($username, $password, $email, $fname, $lname, $phone_no);
 $stmt->fetch();
 $stmt->close();
 
-//updating values for the table
-// $username = $_POST['username'];
-// $fname = $_POST['fname'];
-// $lname = $_POST['lname'];
-// $phone = $_POST['phone_no'];
-// $email = $_POST['email'];
-// $password = $_POST['new_password'];
-
-    // In this case we can use the account ID to get the account info.
-    // $stmt->bind_param('i', $_SESSION['id']);
-    // $stmt->execute();
-    // $stmt->bind_result($username, $password, $email, $fname, $lname, $phone_no);
-    // $stmt->fetch();
 
 
-    // Update user's account details in the database
-    // $sql = "UPDATE users SET username='$username', fname='$fname', lname='$lname', phone_no='$phone', email='$email', password='$password' WHERE id=$id";
-
-    // if (mysqli_query($con, $sql)) {
-    //     echo "User account updated successfully";
-    //     // header('Location: profile.php');
-    // } else {
-    //     echo "Error updating user account: " . $conn->error;
-    // }
 
     // mysqli_close($con);
 
@@ -78,7 +56,7 @@ $stmt->close();
 		<div class="account-form">
 			<h2>Edit Account Details</h2>
 
-			<form method="post" action="update_account.php">
+			<form method="post" action="update_account_handler_c.php">
                 <input type="hidden" name="id" value="<?php echo $user_id; ?>" />
 
                 <label for="name">Username:</label>
@@ -97,7 +75,7 @@ $stmt->close();
                 <input type="email" name="email" placeholder="<?php echo $email?>" value="<?php echo $email; ?>" required />
 
                 <label for="password">Password:</label>
-                <input type="password" name="current_password" placeholder="If desired, enter new password." />
+                <input type="password" name="new_password" placeholder="If desired, enter new password." />
 
                 <button type="submit" name="update">Update Account</button>
 			</form>

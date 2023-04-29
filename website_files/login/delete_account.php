@@ -14,7 +14,7 @@ if (mysqli_connect_errno()) {
     exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 
-//Get user ID from POST
+//Get user ID from Session
 $user_id = $_SESSION['id'];
 
 // Construct the SQL query to delete the user
