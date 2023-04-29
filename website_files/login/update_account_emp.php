@@ -14,15 +14,17 @@ if (mysqli_connect_errno()) {
     exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 
+// // We don't have the password or email info stored in sessions, so instead, we can get the results from the database.
 
+//USE EMP_VIEW INSTEAD
 
-//USE USER_VIEW INSTEAD: does not work, buggy and takes root as username and deletes password and removes placeholders
-
-$stmt = $conn->prepare('SELECT username, password, email, fname, lname, phone_no FROM users WHERE user_id = ?');
+// $stmt = $conn->prepare('SELECT username, password, email, fname, lname, phone_no FROM users WHERE user_id = ?');
+$stmt =$conn->prepare('SELECT Users.Username, Users.Password, Users.Email, users.FName, Users.LName, Users.Phone_No, Employees.Employee_JobType, Employees.Hotel_ID FROM Users Inner Join Employees ON Users.user_ID = Employees.user_ID WHERE Users.user_id = ?');
 // In this case we can use the account ID to get the account info.
 $stmt->bind_param('i', $_SESSION['id']);
 $stmt->execute();
-$stmt->bind_result($username, $password, $email, $fname, $lname, $phone_no);
+// $stmt->bind_result($username, $password, $email, $fname, $lname, $phone_no);
+$stmt->bind_result($username, $password, $email, $fname, $lname, $phone_no, $employee_jobtype, $hotel_id);
 $stmt->fetch();
 $stmt->close();
 
@@ -50,7 +52,7 @@ $stmt->close();
 		<div class="account-form">
 			<h2>Edit Account Details</h2>
 
-			<form method="post" action="update_account_handler_c.php">
+			<form method="post" action="update_account_handler_e.php">
                 <input type="hidden" name="id" value="<?php echo $user_id; ?>" />
 
                 <label for="name">Username:</label>
@@ -61,6 +63,12 @@ $stmt->close();
 
                 <label for="name">Last Name:</label>
                 <input type="text" name="lname" placeholder="<?php echo $lname; ?>" value="<?php echo $lname; ?>" required />
+
+                <label for="name">Hotel ID:</label>
+                <input type="text" name="hotelid" placeholder="<?php echo $hotel_id; ?>" value="<?php echo $hotel_id; ?>" required />
+
+                <label for="name">Role:</label>
+                <input type="text" name="jobtype" placeholder="<?php echo $employee_jobtype; ?>" value="<?php echo $employee_jobtype; ?>" required />
 
                 <label for="email">Phone Number:</label>
                 <input type="text" name="phone_no" placeholder="<?php echo $phone_no?>" value="<?php echo $phone_no; ?>" required />
