@@ -25,6 +25,22 @@ try {
 }
 echo "</p>";
 
+$sql = 'CREATE VIEW User_View AS
+        SELECT FName, LName, Phone_No, Email, Username, Password, User_Type
+        FROM Users';
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "View User_View created successfully";
+    } else {
+        echo "Error creating table: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
 $sql = 'CREATE TABLE Hotel (
     Hotel_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Hotel_Name VARCHAR(45) NOT NULL,
@@ -45,6 +61,22 @@ try {
 }
 echo "</p>";
 
+$sql = 'CREATE VIEW Hotel_View AS
+        SELECT Hotel_Name, Hotel_City, Hotel_State, Hotel_Country
+        FROM Hotel';
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "View Hotel_View created successfully";
+    } else {
+        echo "Error creating table: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
 $sql = 'CREATE TABLE Employees (
     User_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Hotel_ID INT UNSIGNED NOT NULL,
@@ -57,6 +89,22 @@ echo "<p>";
 try {
     if ($conn->query($sql) === TRUE) {
         echo "Table Employees created successfully";
+    } else {
+        echo "Error creating table: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+$sql = 'CREATE VIEW Employee_View AS
+        SELECT Users.FName, Users.LName, Users.Phone_No, Users.Email, Users.Username, Users.Password, Employees.Employee_JobType
+        FROM Users Inner Join Employees ON Users.user_ID = Employees.user_ID';
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "View Employee_View created successfully";
     } else {
         echo "Error creating table: " . $conn->error;
     }

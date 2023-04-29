@@ -14,7 +14,7 @@ include "../res/head.php";
             <h2 class = "text-center">Hotels:</h2>
         <div id = "hotels-div">
                 <?php 
-                $gtv_hotels = generate_table_view("hotels-div", "b-rv-hotels", "Hotel", "SELECT Hotel_Name, Hotel_City, Hotel_State, Hotel_Country FROM Hotel ORDER BY Hotel_ID ASC", "Inf");
+                $gtv_hotels = generate_table_view("hotels-div", "b-rv-hotels", "Hotel", "SELECT * FROM Hotel_View", "Inf");
                 echo $gtv_hotels;    
                 ?>
             </div>
