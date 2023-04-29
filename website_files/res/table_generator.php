@@ -1,57 +1,22 @@
 <?php 
 include "connect.php";
 
-// Generates data for an non-editable table view
+/**
+ * Generates data for an non-editable table view
+ *
+ * @param mysqli $conn MySQLi connection object
+ * @param string $table_name id of table element
+ * @param string $table_query_name Name of table used in the query
+ * @param string $query Query to be executed
+ * @return array Array containing information useful for front end to construct the table view
+ */
 function generate_table_viewable($conn, $table_name, $table_query_name, $query) {
-    // Execute Query
-    $stmt = $conn->prepare($query);
-    $stmt->execute();
-    $result = $stmt -> get_result();
-    // Generate the table header row
-    $field_count = 0;
-    $field_array = array();
-    $id_field = "";
-    $data_array = array();
-    $field_name_array = array();
-    for ($i = 0; $field = $result -> fetch_field(); $i++)
-    { 
-        if ($i == 0) {
-            // store the id field
-            $id_field = $field->name;
-        }
-        // Add field to front of array
-        array_unshift($field_array, $field);
-        array_push($field_name_array, $field->name);
-    }
-    // Add the field array to our data array
-    array_push($data_array, $field_name_array);
-    // Go through and add each row of data
-    $row_data_array = array();
-    for($i=0; $row = $result->fetch_row(); $i++){
-        $field_array_copy = $field_array;
-        $curr_row_data = array();
-        for($j=0; $field = array_pop($field_array_copy); $j++){
-            $curr_field_array = array();
-            array_push($curr_field_array, $table_name);
-            array_push($curr_field_array, $table_query_name);
-            array_push($curr_field_array, $field->name);
-            array_push($curr_field_array, $id_field);
-            array_push($curr_field_array, $row[0]);
-            array_push($curr_field_array, $i);
-            array_push($curr_field_array, $j);
-            array_push($curr_field_array, $row[$j]);
-            
-            // Add the data from our current field to the current row array
-            array_push($curr_row_data, $curr_field_array);
-        }
-        // Add the data from our current row to our total row array
-        array_push($row_data_array, $curr_row_data);
-    }
-    // Add the total row array to our data array that will be returned to the post request
-    array_push($data_array, $row_data_array);
-
-    // Return the data array
-    return $data_array;
+        // Execute Query
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $result = $stmt -> get_result();
+        // Generate table information
+        return generate_table_viewable_helper($table_name, $table_query_name, $result);
 }
 
 // Generates data for an non-editable table view with filters
@@ -76,8 +41,13 @@ function generate_table_viewable_filterable($conn, $table_name, $table_query_nam
     $stmt -> bind_param($filter_types, ...$filter_params);
     $stmt -> execute();
     $result = $stmt -> get_result();
+    // Generate the table
+    return generate_table_viewable_helper($table_name, $table_query_name, $result);
+}
+
+// Generates data for an non-editable table view
+function generate_table_viewable_helper($table_name, $table_query_name, $result) {
     // Generate the table header row
-    $field_count = 0;
     $field_array = array();
     $id_field = "";
     $data_array = array();
@@ -122,6 +92,8 @@ function generate_table_viewable_filterable($conn, $table_name, $table_query_nam
     // Return the data array
     return $data_array;
 }
+
+
 
 // Generates data for an editable table view
 function generate_table_editable($conn, $table_name, $table_query_name, $query) {

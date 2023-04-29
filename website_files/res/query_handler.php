@@ -63,7 +63,7 @@ if(isset($_POST['update_field']))
         } else {
             $valid_id_field = verify_column($conn, $table_query_name, $id_field);
             if ($valid_id_field  === false) {
-                echo json_encode(arrray("Invalid ID Field Name!", ""));
+                echo json_encode(array("Invalid ID Field Name!", ""));
             } else {
                 try {
                     $query = $conn -> prepare("UPDATE " . $table_query_name . " SET " . $field_name ." = ? WHERE " . $id_field . " = ?");
@@ -98,16 +98,16 @@ if(isset($_POST['get_field']))
     }
     $valid_table = verify_table($conn, $table_query_name);
     if ($valid_table === false) {
-        echo json_encode(arrray("Invalid Table Name!"));
+        echo json_encode(array("Invalid Table Name!"));
     } else {
         # echo $valid_table;
         $valid_field = verify_column($conn, $table_query_name, $field_name);
         if ($valid_field  === false) {
-            echo json_encode(arrray("Invalid Field Name!"));
+            echo json_encode(array("Invalid Field Name!"));
         } else {
             $valid_id_field = verify_column($conn, $table_query_name, $id_field);
             if ($valid_id_field  === false) {
-                echo json_encode(arrray("Invalid ID Field Name!"));
+                echo json_encode(array("Invalid ID Field Name!"));
             } else {
                 try {
                     $query = $conn -> prepare("SELECT " . $field_name . " FROM " . $table_query_name ." WHERE " . $id_field . " = ?");
@@ -191,7 +191,7 @@ if(isset($_POST['delete_row']))
         } else {
             $valid_id_field = verify_column($conn, $table_query_name, $id_field);
             if ($valid_id_field  === false) {
-                echo json_encode(arrray("Invalid ID Field Name!", ""));
+                echo json_encode(array("Invalid ID Field Name!", ""));
             } else {
                 try {
                     $query = $conn -> prepare("DELETE FROM " . $table_query_name . " WHERE " . $id_field . " = ?");
