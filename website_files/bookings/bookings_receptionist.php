@@ -16,14 +16,14 @@ include "../res/head.php";
         <h2 class = "text-center">Rooms:</h2>
             <div id = "rooms-div">
             <?php 
-                $gte_rooms = generate_table_editable("rooms-div", "b-rv-rooms", "Room", "SELECT * FROM Room ORDER BY Room_ID ASC", "Inf");
+                $gte_rooms = generate_table_editable("rooms-div", "b-rv-rooms", "Room", "SELECT * FROM Room ORDER BY Room_ID ASC", "Inf", ["text", "text", "text", "text"]);
                 echo $gte_rooms;
             ?>
             </div>
         <h2 class = "text-center">Bookings:</h2>
             <div id = "bookings-div">
             <?php
-                $gte_bookings = generate_table_editable("bookings-div", "b-rv-bookings", "Booking", "SELECT * FROM Booking ORDER BY Booking_NO ASC", "Inf");
+                $gte_bookings = generate_table_editable("bookings-div", "b-rv-bookings", "Booking", "SELECT * FROM Booking ORDER BY Booking_NO ASC", "Inf", ["text", "text", "datetime-local::start", "datetime-local::end"]);
                 echo $gte_bookings;    
             ?>
             </div>

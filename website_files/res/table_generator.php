@@ -19,9 +19,25 @@ function generate_table_viewable($conn, $table_name, $table_query_name, $query) 
         return generate_table_viewable_helper($table_name, $table_query_name, $result);
 }
 
-// Generates data for an non-editable table view with filters
+/**
+ * Generates data for an non-editable table view with filters
+ *
+ * @param mysqli $conn MySQLi connection object
+ * @param string $table_name id of table element
+ * @param string $table_query_name Name of table used in the query
+ * @param string $query Query to be executed
+ * @param string[] $filters List of filters to be added to the query 
+ * @return array Array containing information useful for front end to construct the table view
+ */
 function generate_table_viewable_filterable($conn, $table_name, $table_query_name, $query, $filters) {
     // Put filters into query
+    // NOTE: Filters have the following format:
+    // 1st param - Start of filter string
+    // 2nd param - Filter operator
+    // 3rd param - End of filter string
+    // 4th param - Filter type (string, int, double, etc.)
+    // 5th param - Filter value to be binded
+    // 6th param - Filter key code
     $filter_params = array();
     $filter_types = "";
     $query .=  " WHERE ";
@@ -46,7 +62,15 @@ function generate_table_viewable_filterable($conn, $table_name, $table_query_nam
     return generate_table_viewable_helper($table_name, $table_query_name, $result);
 }
 
-// Generates data for an non-editable table view
+
+/**
+ * Generates data for an non-editable table view
+ *
+ * @param string $table_name id of table element
+ * @param string $table_query_name Name of table used in the query
+ * @param mysqli_result $result The result of the MySQL query
+ * @return array An array containing information to build the table on the front end.
+ */
 function generate_table_viewable_helper($table_name, $table_query_name, $result) {
     // Generate the table header row
     $field_array = array();
@@ -67,7 +91,7 @@ function generate_table_viewable_helper($table_name, $table_query_name, $result)
     array_push($data_array, $field_name_array);
     // Go through and add each row of data
     $row_data_array = array();
-    for($i=0; $row = $result->fetch_row(); $i++){
+    for($i=0; $row = $result -> fetch_row(); $i++){
         $field_array_copy = $field_array;
         $curr_row_data = array();
         for($j=0; $field = array_pop($field_array_copy); $j++){
@@ -96,14 +120,33 @@ function generate_table_viewable_helper($table_name, $table_query_name, $result)
 
 
 
-// Generates data for an editable table view
+/**
+ * Generates data for an non-editable table view
+ *
+ * @param mysqli $conn MySQLi connection object
+ * @param string $table_name id of table element
+ * @param string $table_query_name Name of table used in the query
+ * @param string $query Query to be executed
+ * @return array Array containing information useful for front end to construct the table view
+ */
 function generate_table_editable($conn, $table_name, $table_query_name, $query) {
     // Execute query
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $result = $stmt -> get_result();
+    return generate_table_editable_helper($table_name, $table_query_name, $result);
+}
+
+/**
+ * Generates data for an editable table view
+ *
+ * @param string $table_name id of table element
+ * @param string $table_query_name Name of table used in the query
+ * @param mysqli_result $result The result of the MySQL query
+ * @return array An array containing information to build the table on the front end.
+ */
+function generate_table_editable_helper($table_name, $table_query_name, $result) {
     // Generate the table header row
-    $field_count = 0;
     $field_array = array();
     $id_field = "";
     $data_array = array();
@@ -170,7 +213,14 @@ function generate_table_editable($conn, $table_name, $table_query_name, $query) 
     return $data_array;
 }
 
-// Checks the validity of a key code against what we generated
+
+/**
+ * Checks the validity of a key code against what we generated
+ *
+ * @param string $generated_key_code The key code we generated
+ * @param string $check_key_code The key code we are cheving
+ * @return bool Whether or not the key codes are equivalent
+ */
 function key_code_check($generated_key_code, $check_key_code) {
     if ($generated_key_code !== $check_key_code) {
         return false;
@@ -179,7 +229,12 @@ function key_code_check($generated_key_code, $check_key_code) {
     }
 }
 
-// Checks the validity of key codes of filters
+/**
+ * Checks the validity of key codes of filters 
+ *
+ * @param string[] $filters Array of filters 
+ * @return bool Whether or not the filters each have valid key codes
+ */
 function filter_key_code_check($filters) {
     // The filter array is contained of tuples
     // The first element is the condition text start
@@ -228,7 +283,7 @@ if(isset($_POST['generate_table_editable']))
     exit();
 }
 
-// Generate an editable table
+// Generate an non-editable table
 if(isset($_POST['generate_table_viewable']))
 {
     // Get POST fields
@@ -243,6 +298,7 @@ if(isset($_POST['generate_table_viewable']))
         echo json_encode(array("Invalid key code!", ""));
         exit();
     }
+    // Check if we have filters
     if (isset($_POST["filters"])) {
         $filters_json = $_POST['filters'];
         // Extract filter arrays
