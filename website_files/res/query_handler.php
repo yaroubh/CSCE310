@@ -1,6 +1,8 @@
 <?php
 include "connect.php";
-
+include "query_overrides.php";
+// We need to use sessions, so you should always start sessions using the below code.
+session_start();
 # Verify a table exists in the database
 function verify_table($conn, $table_name) {
     $check_table_name = strtolower($table_name);
@@ -38,12 +40,13 @@ function key_code_check($generated_key_code, $check_key_code) {
 # Update a field in a table
 if(isset($_POST['update_field']))
 {
-
+    $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
     $field_name = $_POST['field_name'];
     $new_value = $_POST['new_value'];
     $id_field = $_POST['id_field'];
     $id_value = $_POST['id_value'];
+    $col_num = $_POST['col_num'];
     $check_key_code = $_POST['key_code'];
     $key_code = hash("md5", $table_query_name .  $field_name . str_repeat($id_field, 2) . str_repeat($id_value, 3) . "->1");
     # Verify the key code
@@ -58,25 +61,29 @@ if(isset($_POST['update_field']))
     } else {
         # echo $valid_table;
         $valid_field = verify_column($conn, $table_query_name, $field_name);
-        if ($valid_field  === false) {
-            echo json_encode(array("Invalid Field Name!", ""));
+        $valid_id_field = verify_column($conn, $table_query_name, $id_field);
+        if ($valid_id_field  === false) {
+            echo json_encode(array("Invalid ID Field Name!", ""));
         } else {
-            $valid_id_field = verify_column($conn, $table_query_name, $id_field);
-            if ($valid_id_field  === false) {
-                echo json_encode(array("Invalid ID Field Name!", ""));
-            } else {
-                try {
+            try {
+                $override_results = override_update_sql($conn, $table_name, $table_query_name, $field_name, $new_value, $col_num, $id_field, $id_value, $_SESSION["id"]);
+                if ($override_results  === "NO_OVERRIDE") {
+                    // We need to make sure the field name is valid first
+                    if ($valid_field  === false) {
+                        echo json_encode(array("Invalid Field Name!", ""));
+                    }
                     $query = $conn -> prepare("UPDATE " . $table_query_name . " SET " . $field_name ." = ? WHERE " . $id_field . " = ?");
                     $query -> bind_param("ss", $new_value, $id_value);
                     $stmt = $query -> execute();
                     $result = $query -> get_result();
                     echo json_encode(array("Success!", $result));
-                } catch (Exception $ex) {
-                    echo json_encode(array(get_class($ex), $ex->getMessage()));
                 }
-                # echo "Made it to end";
+            } catch (Exception $ex) {
+                echo json_encode(array(get_class($ex), $ex->getMessage()));
             }
+            # echo "Made it to end";
         }
+        
     }
     exit();
 }
@@ -131,7 +138,7 @@ if(isset($_POST['get_field']))
 # Update a field in a table
 if(isset($_POST['insert_row']))
 {
-
+    $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
     $field_name = $_POST['field_name'];
     $new_values = $_POST['new_values'];
@@ -150,14 +157,17 @@ if(isset($_POST['insert_row']))
         echo json_encode(array("Invalid Table Name!", ""));
     } else {
         try {
-            $num_params = sizeof($new_values_array);
-            $query = $conn -> prepare("INSERT INTO " . $table_query_name . " VALUES  (NULL, ". str_repeat("?, ", $num_params - 1) ."?)");
-            $query -> bind_param(str_repeat("s", $num_params), ...$new_values_array);
-            $stmt = $query -> execute();
-            $result = $query -> get_result();
-            echo json_encode(array("Success!", $result));
+            $override_results = override_insert_sql($conn, $table_name, $table_query_name, $new_values_array, $_SESSION["id"]);
+            if ($override_results  === "NO_OVERRIDE") {
+                $num_params = sizeof($new_values_array);
+                $query = $conn -> prepare("INSERT INTO " . $table_query_name . " VALUES  (NULL, ". str_repeat("?, ", $num_params - 1) ."?)");
+                $query -> bind_param(str_repeat("s", $num_params), ...$new_values_array);
+                $stmt = $query -> execute();
+                $result = $query -> get_result();
+                echo json_encode(array("Success!", $result, $override_results));
+            }
         } catch (Exception $ex) {
-            echo json_encode(array(get_class($ex), $ex->getMessage()));
+            echo json_encode(array(get_class($ex), $ex->getMessage(), $new_values_array));
         }
         # echo "Made it to end";
     }

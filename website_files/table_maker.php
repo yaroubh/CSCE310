@@ -159,13 +159,58 @@ $sql = 'CREATE TABLE Booking (
     `Start_Date` DATETIME NOT NULL,
     End_Date DATETIME NOT NULL,
     FOREIGN KEY (Room_ID) REFERENCES Room(Room_ID),
-    FOREIGN KEY (User_ID) REFERENCES Customer(User_ID) ON DELETE CASCADE
+    FOREIGN KEY (User_ID) REFERENCES Customer(User_ID) ON DELETE CASCADE,
+    CONSTRAINT Date_Consistency CHECK (Start_Date <= End_Date)
     )';
 
 echo "<p>";
 try {
     if ($conn->query($sql) === TRUE) {
         echo "Table Booking created successfully";
+    } else {
+        echo "Error creating table: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+$sql = "
+    CREATE OR REPLACE TRIGGER  Solo_Booking  BEFORE INSERT ON Booking 
+    FOR EACH ROW
+    BEGIN
+    IF EXISTS (SELECT * FROM Booking WHERE NEW.Room_ID = Booking.Room_ID AND (NEW.Start_Date <= Booking.Start_Date OR NEW.End_Date >= Booking.End_Date)) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Dates should not overlap for the booking of the same room';
+    END IF;
+    END;";
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Trigger Solo_Booking created successfully";
+    } else {
+        echo "Error creating table: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+$sql = "
+    CREATE OR REPLACE TRIGGER  Solo_Booking_Update BEFORE UPDATE ON Booking 
+    FOR EACH ROW
+    BEGIN
+    IF EXISTS (SELECT * FROM Booking WHERE NEW.Room_ID = Booking.Room_ID AND NEW.Booking_NO != Booking.Booking_NO AND (NEW.Start_Date <= Booking.Start_Date OR NEW.End_Date >= Booking.End_Date)) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Dates should not overlap for the booking of the same room';
+    END IF;
+    END;";
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Trigger Solo_Booking_Update created successfully";
     } else {
         echo "Error creating table: " . $conn->error;
     }

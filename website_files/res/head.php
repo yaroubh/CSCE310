@@ -18,6 +18,9 @@ if(!$conn){
 $path = getcwd() . "/";
 $path = str_replace('\\', '/', $path);
 $path_parts = explode('/website_files/', $path);
+$path_editor = str_replace('\\', '/',  $_SERVER["PHP_SELF"]);
+$path_editor_parts = explode('/website_files/', $path_editor);
+$local_path_editor = array_pop($path_editor_parts);
 #  foreach ($path_parts as $path_part) {
 #      echo "<p>Part: " . $path_part . "</p>";
 #  }
@@ -29,8 +32,9 @@ for ($i = 0; $i < $folder_depth; $i++) {
 }
 # echo "<p>Backup: " . $backup . "</p>";
 # echo "<p>Folder Depth: " . $folder_depth . "</p>";
-include $backup . "nav/navbar.php";
 include $backup . "res/table_editor.php"; 
+include $backup . "nav/navbar.php";
+
 ?>
 
 <!doctype html>
@@ -39,7 +43,7 @@ include $backup . "res/table_editor.php";
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@popperjs/core@2"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?php echo $backup . "res/table_editor.js";?>"></script>
 <link rel="stylesheet" href="<?php echo $backup . "res/main.css";?>" type="text/css">
 <!--<link rel="stylesheet" href="res/main.css">-->
 <title>Hotel Management System</title>
