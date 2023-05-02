@@ -1,6 +1,7 @@
 <?php
 // We need to use sessions, so you should always start sessions using the below code.
 session_start();
+
 # set credentials
 $servername='localhost';
 $username='root';
@@ -30,11 +31,22 @@ $backup = "";
 for ($i = 0; $i < $folder_depth; $i++) {
     $backup .= "../";
 }
+
+// Initialize arrays for data_tables and data_filters
+$data_tables = array();
+$data_filters = array();
+
+// Suspend output of the head.php file if desired
+if (isset($suspend_head)) {
+    ob_start();
+}
+
 # echo "<p>Backup: " . $backup . "</p>";
 # echo "<p>Folder Depth: " . $folder_depth . "</p>";
 include $backup . "res/data_table.php";
 include $backup . "res/table_editor.php"; 
 include $backup . "nav/navbar.php";
+
 
 ?>
 

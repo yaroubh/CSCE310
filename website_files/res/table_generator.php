@@ -10,7 +10,7 @@ include "connect.php";
  * @param string $query Query to be executed
  * @return array Array containing information useful for front end to construct the table view
  */
-function generate_table_viewable($conn, $table_name, $table_query_name, $query) {
+function get_table_viewable_data($conn, $table_name, $table_query_name, $query) {
         // Execute Query
         $stmt = $conn->prepare($query);
         $stmt->execute();
@@ -29,7 +29,7 @@ function generate_table_viewable($conn, $table_name, $table_query_name, $query) 
  * @param string[] $filters List of filters to be added to the query 
  * @return array Array containing information useful for front end to construct the table view
  */
-function generate_table_viewable_filterable($conn, $table_name, $table_query_name, $query, $filters) {
+function get_table_viewable_data_filterable($conn, $table_name, $table_query_name, $query, $filters) {
     // Put filters into query
     // NOTE: Filters have the following format:
     // 1st param - Start of filter string
@@ -129,7 +129,7 @@ function generate_table_viewable_helper($table_name, $table_query_name, $result)
  * @param string $query Query to be executed
  * @return array Array containing information useful for front end to construct the table view
  */
-function generate_table_editable($conn, $table_name, $table_query_name, $query) {
+function get_editable_table_data($conn, $table_name, $table_query_name, $query) {
     // Execute query
     $stmt = $conn->prepare($query);
     $stmt->execute();
@@ -213,22 +213,6 @@ function generate_table_editable_helper($table_name, $table_query_name, $result)
     return $data_array;
 }
 
-
-/**
- * Checks the validity of a key code against what we generated
- *
- * @param string $generated_key_code The key code we generated
- * @param string $check_key_code The key code we are cheving
- * @return bool Whether or not the key codes are equivalent
- */
-function key_code_check($generated_key_code, $check_key_code) {
-    if ($generated_key_code !== $check_key_code) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
 /**
  * Checks the validity of key codes of filters 
  *
@@ -253,10 +237,6 @@ function filter_key_code_check($filters) {
         $check_key_code = $curr_filter[5];
         // Verify validity of key code
         $key_code = hash("md5", "||KEY_CODE||" . $cond_text_start . str_repeat($cond_op, 3) . $cond_type . $cond_text_end .  "-KC");
-        $good_key_code = key_code_check($key_code, $check_key_code);
-        if ($good_key_code === false) {
-            return false;
-        }
     }
     return true;
 }
@@ -265,20 +245,19 @@ function filter_key_code_check($filters) {
 // Generate an editable table
 if(isset($_POST['generate_table_editable']))
 {
+    ob_get_clean();
     // Get POST fields
     $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
     $query = $_POST['query'];
-    $check_key_code = $_POST['key_code'];
-    // Make sure key code is valid
-    $key_code = hash("md5", ":>EDIT-SELECT<:" . $table_name . ":>FROM<:" . str_repeat($table_query_name,2) . $query);
-    $good_key_code = key_code_check($key_code, $check_key_code);
-    if ($good_key_code === false) {
-        echo json_encode(array("Invalid key code!", ""));
+    // $check_key_code = $_POST['key_code'];
+    // Make sure table name and query is valid
+    if (!array_key_exists($table_name . $table_query_name . $query, $data_tables)) {
+        echo json_encode(array("Invalid table name and query!", "", $table_name, $table_query_name, $data_tables));
         exit();
     }
     // Make the table
-    $table_array = generate_table_editable($conn, $table_name, $table_query_name, $query);
+    $table_array = get_editable_table_data($conn, $table_name, $table_query_name, $query);
     echo json_encode(array("Success!", $table_array));
     exit();
 }
@@ -286,16 +265,15 @@ if(isset($_POST['generate_table_editable']))
 // Generate an non-editable table
 if(isset($_POST['generate_table_viewable']))
 {
+    ob_get_clean();
     // Get POST fields
     $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
     $query = $_POST['query'];
-    $check_key_code = $_POST['key_code'];
-    // Make sure key code is valid
-    $key_code = hash("md5", ":>VIEW-SELECT<:" . $table_name . ":>FROM<:" . str_repeat($table_query_name,2) . $query);
-    $good_key_code = key_code_check($key_code, $check_key_code);
-    if ($good_key_code === false) {
-        echo json_encode(array("Invalid key code!", ""));
+    // $check_key_code = $_POST['key_code'];
+    // Make sure table name and query is valid
+    if (!array_key_exists($table_name . $table_query_name . $query, $data_tables)) {
+        echo json_encode(array("Invalid table name and query!", ""));
         exit();
     }
     // Check if we have filters
@@ -309,17 +287,16 @@ if(isset($_POST['generate_table_viewable']))
             echo json_encode(array("Invalid filter key code!", ""));
             exit();
         }
-        $table_array = generate_table_viewable_filterable($conn, $table_name, $table_query_name, $query, $filters);
+        $table_array = get_table_viewable_data_filterable($conn, $table_name, $table_query_name, $query, $filters);
         echo json_encode(array("Success!", $table_array));
         exit();
     } else {
         // Make the table
-        $table_array = generate_table_viewable($conn, $table_name, $table_query_name, $query);
+        $table_array = get_table_viewable_data($conn, $table_name, $table_query_name, $query);
         echo json_encode(array("Success!", $table_array));
         exit();
     }
 }
-
 
 
 ?>

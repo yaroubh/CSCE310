@@ -1,26 +1,45 @@
 <?php
+$suspend_head = true;
 include "../res/head.php"; 
+
+// Make the tables and filter objects
+$bookings_user_table = generate_data_table($data_tables, "bookings-user-div", "b-rv-bookings-user", "Booking", "SELECT Booking.Booking_NO, Room.Room_Num, Hotel.Hotel_Name, Booking.Start_Date, Booking.End_Date FROM Booking INNER JOIN Room ON Room.Room_ID = Booking.Room_ID INNER JOIN Hotel ON Hotel.Hotel_ID = Room.Hotel_ID  ORDER BY Booking_NO ASC", "Inf", ["text", "text", "datetime-local::start", "datetime-local::end"], []);
+if(isset($_POST['generate_table_editable'])) {
+    ob_get_clean();
+    // $data_tables["bookings-user-div"] = $bookings_user_table;
+    echo json_encode($data_tables);
+}
+$bookings_table = generate_data_table($data_tables, "bookings-div", "b-rv-bookings", "Booking", "SELECT Room.Room_Num, Hotel.Hotel_Name, Booking.Start_Date, Booking.End_Date FROM Booking INNER JOIN Room ON Room.Room_ID = Booking.Room_ID INNER JOIN Hotel ON Hotel.Hotel_ID = Room.Hotel_ID  ORDER BY Booking_NO ASC", "Inf", ["text", "text", "datetime-local::start", "datetime-local::end"], []);
+$hotels_table = generate_data_table($data_tables, "hotels-div", "b-rv-hotels", "Hotel", "SELECT * FROM Hotel_View", "Inf", ["text", "text", "text", "text"], []);
+$rooms_table = generate_data_table($data_tables, "rooms-div", "b-rv-rooms", "Room", "SELECT Hotel.Hotel_Name, Hotel.Hotel_City, Hotel.Hotel_State, Hotel.Hotel_Country, Room.Room_Num, Room.Price, Room.Capacity FROM Room Inner Join Hotel ON Room.Hotel_ID = Hotel.Hotel_ID", "Inf", ["text", "text", "text", "text", "text", "text", "text"], []);
+// Include the query handler and table generator files
+// include $backup . "res/query_handler.php";
+include $backup . "res/table_generator.php";
+
+// Print all the stuff in head like navbar
+echo ob_get_clean();
 ?>
+
 <div>
     <h1 class = "text-center">Bookings</h1>
         <h2 class = "text-center">Bookings:</h2>
             <div id = "bookings-user-div">
             <?php
-                $gte_bookings = generate_table_editable("bookings-user-div", "b-rv-bookings-user", "Booking", "SELECT Booking.Booking_NO, Room.Room_Num, Hotel.Hotel_Name, Booking.Start_Date, Booking.End_Date FROM Booking INNER JOIN Room ON Room.Room_ID = Booking.Room_ID INNER JOIN Hotel ON Hotel.Hotel_ID = Room.Hotel_ID  ORDER BY Booking_NO ASC", "Inf", ["text", "text", "datetime-local::start", "datetime-local::end"], []);
+                $gte_bookings = generate_table_editable($bookings_user_table);
                 echo $gte_bookings;   
             ?>
             </div>
         <h2 class = "text-center">Current Bookings:</h2>
             <div id = "bookings-div">
             <?php
-                $gtv_bookings = generate_table_view("bookings-div", "b-rv-bookings", "Booking", "SELECT Room.Room_Num, Hotel.Hotel_Name, Booking.Start_Date, Booking.End_Date FROM Booking INNER JOIN Room ON Room.Room_ID = Booking.Room_ID INNER JOIN Hotel ON Hotel.Hotel_ID = Room.Hotel_ID  ORDER BY Booking_NO ASC", "Inf");
+                $gtv_bookings = generate_table_view($bookings_table);
                 echo $gtv_bookings;    
             ?>
             </div>
         <h2 class = "text-center">Hotels:</h2>
             <div id = "hotels-div">
                 <?php 
-                $gtv_hotels = generate_table_view("hotels-div", "b-rv-hotels", "Hotel", "SELECT * FROM Hotel_View", "Inf");
+                $gtv_hotels = generate_table_view($hotels_table);
                 echo $gtv_hotels;    
                 ?>
             </div>
@@ -58,7 +77,7 @@ include "../res/head.php";
             ?>
             <div id = "rooms-div">
             <?php 
-                $gte_rooms = generate_table_view("rooms-div", "b-rv-rooms", "Room", "SELECT Hotel.Hotel_Name, Hotel.Hotel_City, Hotel.Hotel_State, Hotel.Hotel_Country, Room.Room_Num, Room.Price, Room.Capacity FROM Room Inner Join Hotel ON Room.Hotel_ID = Hotel.Hotel_ID", "Inf");
+                $gte_rooms = generate_table_view($rooms_table);
                 echo $gte_rooms;
             ?>
             </div>

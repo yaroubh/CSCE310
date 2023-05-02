@@ -55,9 +55,9 @@ function update_table(table_name, table_query_name, field_name, id_field, id_val
  */
 function regenerate_table(table_name) {
     if (table_types[table_name] == "editor") {
-        generate_table_editable(table_name, table_qnames[table_name], table_queries[table_name], table_codes[table_name], table_mwidths[table_name]);
+        generate_table_editable(table_name, table_qnames[table_name], table_queries[table_name], table_mwidths[table_name]);
     } else if (table_types[table_name] == "viewer") {
-        generate_table_view(table_name, table_qnames[table_name], table_queries[table_name], table_codes[table_name], table_mwidths[table_name]);
+        generate_table_view(table_name, table_qnames[table_name], table_queries[table_name], table_mwidths[table_name]);
     } else {
         console.log("Error! Invalid Table Type!");
     }
@@ -174,7 +174,7 @@ function update_table_input_child_htmls(table_name) {
 }
 
 // Generates the html for a viewable table
-function generate_table_view(table_name, table_query_name, query, key_code, max_width) {
+function generate_table_view(table_name, table_query_name, query, max_width) {
     // Prepare post request
     var ajaxurl = table_generator_url;
     // Make data object to send to post request
@@ -182,7 +182,6 @@ function generate_table_view(table_name, table_query_name, query, key_code, max_
         table_name: table_name,
         table_query_name: table_query_name,
         query: query,
-        key_code: key_code
     };
     // Add filter elements if need be
     if (table_filters[table_name] != null) {
@@ -280,20 +279,22 @@ function generate_table_view(table_name, table_query_name, query, key_code, max_
 }
 
 // Generates the html for an editable table
-function generate_table_editable(table_name, table_query_name, query, key_code, max_width) {
+function generate_table_editable(table_name, table_query_name, query, max_width) {
     // Prepare Post Request
     var ajaxurl = table_generator_url;
     // Make data object to send to post request
     let data =  {generate_table_editable: "generate_table_editable",
         table_name: table_name,
         table_query_name: table_query_name,
-        query: query,
-        key_code: key_code
+        query: query
     };
+    console.log(ajaxurl);
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
             // console.log(response);
+            console.log(response);
             let parsed_resp = JSON.parse(response);
+
             if (parsed_resp[0] == "Success!") {
                 // Get the arrays
                 let data_array = parsed_resp[1];

@@ -1,5 +1,28 @@
 <?php
 # include "res/head.php"; 
+
+/**
+ * Initializes the data table with its properties
+ *
+ * @param data_table&[] $data_tables Array of data tables to add the table to for future use
+ * @param string $parent_div ID of parent div
+ * @param string $table_name ID of table element
+ * @param string $table_query_name Name of table to be used in query
+ * @param string $query Specific select query used to get data from MySQL database
+ * @param string $max_width Max width of the table (or infinity if no width constraintE)
+ * @param string[] $table_field_types The types of data in each column (ignoring the ID column)
+ * @param string[] $table_opts Other table options
+ * @return data_table The data table object that was created
+ */
+function generate_data_table(&$data_tables, $parent_div, $table_name, $table_query_name, $query, $max_width, $table_field_types, $table_opts) {
+    // Make the table
+    $table_temp = new data_table($parent_div, $table_name, $table_query_name, $query, $max_width, $table_field_types, $table_opts);
+    // Insert it into the tables array (use both the table name, the table query name, and query as a key)
+    $data_tables[$table_name . $table_query_name . $query] = $table_temp;
+    $data_tables[0] = 1;
+    return $table_temp;
+}
+
 // Generates a key code for a filter
 // A Key Code prevents post request forgery as the correct key code must be used with an SQL Query otherwise the server will reject the request
 function generate_filter_key_code($cond_text_start, $cond_op, $cond_text_end, $cond_type) {
@@ -180,7 +203,7 @@ function generate_search_filter($div_name, $table_name, $cond_name_start, $cond_
 <script>
 // Initialize query links
 var query_handler_url = '<?php echo $backup . 'res/query_handler.php'?>';
-var table_generator_url = '<?php echo $backup . 'res/table_generator.php'?>';
+var table_generator_url = '<?php echo $backup . $local_path_editor?>';
 // Initialize all table variables
 var table_parents = {};
 var table_qnames = {};
@@ -192,5 +215,6 @@ var table_dependants = {};
 var table_filters = {};
 var table_filter_elements = {};
 var table_field_types = {};
+var table_opts = {};
 var table_input_child_htmls= {};
 </script>
