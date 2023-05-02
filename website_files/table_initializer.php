@@ -145,14 +145,14 @@ make_hotel($conn, 2, "Magico", "Monte Cristo", "Livorno", "Italy");
 
 make_customer($conn, 1, "Sam", "Sammy", '1234567890', "Sam.Sammy@tamu.edu", "Sammy1", "1Sammy");
 make_customer($conn, 2, "Bob", "Bobby", '0123456789', "BobbyBob@tamu.edu", "Bob2", "Bobby2");
-make_employee($conn, 3, "Joe", "Bobby", '0001112222', "BobbyBob@tamu.edu", "Bob3", "Bobby3", 1, "Receptionist", "08:00:00", "20:00:00");
-make_employee($conn, 4, "Robby", "Roe", '2221110000', "RowRowRob@tamu.edu", "RobRoe", "Robby3", 1, "Receptionist", "20:00:00", "08:00:00");
-make_employee($conn, 5, "Yoyo", "Jojo", '5550005555', "YYJJ@tamu.edu", "YY55", "55JJ", 2, "Receptionist", "00:00:00", "00:00:00");
-make_employee($conn, 6, "Tian", "Tiap", '3334445555', "adminTNTP@tamu.edu", "Admin", "Totally_Not_The_Password", 1, "Administrator", "Site Reliability", "00:00:00");
-make_employee($conn, 7, "Lorali", "Jones", '0001113333', "Lorali1@tamu.edu", "Loarli1", "LP1", 1, "Service_Worker", "Janitor", "00:00:00");
-make_employee($conn, 8, "Loralil", "Jones", '0001113334', "Lorali2@tamu.edu", "Loarli2", "LP2", 1, "Service_Worker", "Plumber", "00:00:00");
-make_employee($conn, 9, "Loralia", "Jones", '0001113335', "Lorali3@tamu.edu", "Loarli3", "LP3", 2, "Service_Worker", "Janitor", "00:00:00");
-make_employee($conn, 10, "Loralip", "Jones", '0001113336', "Lorali4@tamu.edu", "Loarli4", "LP4", 2, "Service_Worker", "Electrician", "00:00:00");
+make_employee($conn, 3, "Joe", "Bobby", '0001112222', "BobbyBob@tamu.edu", "Bob3", "Bobby3", 1, "Receptionist");
+make_employee($conn, 4, "Robby", "Roe", '2221110000', "RowRowRob@tamu.edu", "RobRoe", "Robby3", 1, "Receptionist");
+make_employee($conn, 5, "Yoyo", "Jojo", '5550005555', "YYJJ@tamu.edu", "YY55", "55JJ", 2, "Receptionist");
+make_employee($conn, 6, "Tian", "Tiap", '3334445555', "adminTNTP@tamu.edu", "Admin", "Totally_Not_The_Password", 1, "Administrator");
+make_employee($conn, 7, "Lorali", "Jones", '0001113333', "Lorali1@tamu.edu", "Loarli1", "LP1", 1, "Service_Worker");
+make_employee($conn, 8, "Loralil", "Jones", '0001113334', "Lorali2@tamu.edu", "Loarli2", "LP2", 1, "Service_Worker");
+make_employee($conn, 9, "Loralia", "Jones", '0001113335', "Lorali3@tamu.edu", "Loarli3", "LP3", 2, "Service_Worker");
+make_employee($conn, 10, "Loralip", "Jones", '0001113336', "Lorali4@tamu.edu", "Loarli4", "LP4", 2, "Service_Worker");
 
 make_review($conn, 1, 1, 1, 4, "Overall Good. Would come again", '2023-05-02 12:45:36');
 make_review($conn, 2, 2, 2, 5, "Such a wonderful experience. The family loved.", '2022-05-12 13:55:12');

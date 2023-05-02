@@ -193,9 +193,12 @@ function generate_table_view(table_name, table_query_name, max_width) {
         Object.keys(filters_object).forEach(function(key, index) {
             let curr_filter = filters_object[key];
             // Only add current filter if the filter flag is enabled
-            if (curr_filter[6] == true) {
+            if (curr_filter[1] == true) {
                 // Generate the filter to send
-                let send_filter = [curr_filter[0], curr_filter[1], curr_filter[4], curr_filter[2], curr_filter[3], curr_filter[5]];
+                // 1st parameter -> Filter ID
+                // 2nd parameter -> Table ID
+                // 3rd parameter -> Fitler Value
+                let send_filter = [key, table_name, curr_filter[0]];
                 filters.push(send_filter);
             }
         });
@@ -454,7 +457,7 @@ function toggle_filters(table_name, filter_array) {
         let curr_elem_name = filter_array[i];
         let curr_elem = document.getElementById(curr_elem_name);
         curr_elem.disabled = !curr_elem.disabled;
-        table_filters[table_name][curr_elem_name][6] = !table_filters[table_name][curr_elem_name][6];
+        table_filters[table_name][curr_elem_name][1] = !table_filters[table_name][curr_elem_name][1];
     }
     // Update table
     regenerate_table(table_name);
@@ -471,7 +474,7 @@ function update_filter(div_name, table_name, filter_array) {
     let val = document.getElementById(div_name).value;
     // Convert date from js format to MySQL format
     // Update the filter value
-    filter_array[3] = val;
+    filter_array[0] = val;
     // Update the table
     regenerate_table(table_name);
 
@@ -525,6 +528,7 @@ function make_dates_consistent(div_name, start_date_element, end_date_element) {
  * @param {array} filter_array array of elements that contains the filter options
  */
 function update_date(div_name, start_date_element, end_date_element, table_name, filter_array) {
+    console.log(div_name + " " + start_date_element + " " + end_date_element);
     make_dates_consistent(div_name, start_date_element, end_date_element)
     let date_value = document.getElementById(div_name).value;
 
@@ -550,7 +554,7 @@ function update_date(div_name, start_date_element, end_date_element, table_name,
 
 
     // Update the filter value
-    filter_array[3] = mysql_date_value;
+    filter_array[0] = mysql_date_value;
     // Update the table
     regenerate_table(table_name);
 

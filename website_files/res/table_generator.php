@@ -23,30 +23,29 @@ function get_table_viewable_data($conn, $table_name, $table_query_name, $query) 
  * Generates data for an non-editable table view with filters
  *
  * @param mysqli $conn MySQLi connection object
+ * @param data_filter[] data_filters Array of data filter objects; will be used to retrieve a data filter
  * @param string $table_name id of table element
  * @param string $table_query_name Name of table used in the query
  * @param string $query Query to be executed
  * @param string[] $filters List of filters to be added to the query 
  * @return array Array containing information useful for front end to construct the table view
  */
-function get_table_viewable_data_filterable($conn, $table_name, $table_query_name, $query, $filters) {
+function get_table_viewable_data_filterable($conn, &$data_filters, $table_name, $table_query_name, $query, $filters) {
     // Put filters into query
     // NOTE: Filters have the following format:
-    // 1st param - Start of filter string
-    // 2nd param - Filter operator
-    // 3rd param - End of filter string
-    // 4th param - Filter type (string, int, double, etc.)
-    // 5th param - Filter value to be binded
-    // 6th param - Filter key code
+    // 1st param - Filter ID name
+    // 2nd param - Table ID name
+    // 3rd param - Filter value
     $filter_params = array();
     $filter_types = "";
     $query .=  " WHERE ";
     // Apply each filter to the query
     for ($i = 0; $i < sizeof($filters); $i++) {
         $curr_filter = $filters[$i];
-        $query .= $curr_filter[0] . " " . $curr_filter[1] . " ?" . $curr_filter[2];
-        $filter_types .= $curr_filter[3];
-        array_push($filter_params, $curr_filter[4]);
+        $curr_filter_obj = $data_filters[$curr_filter[0] . $curr_filter[1]];
+        $query .= $curr_filter_obj -> cond_name_start . " " . $curr_filter_obj -> cond_op . " ?" . $curr_filter_obj -> cond_name_end;
+        $filter_types .= $curr_filter_obj -> cond_type;
+        array_push($filter_params, $curr_filter[2]);
         // Add an AND if this is not the last condition to filter through
         if ($i < sizeof($filters) - 1) {
             $query .= " AND ";
@@ -208,29 +207,26 @@ function generate_table_editable_helper($table_name, $table_query_name, $result)
 }
 
 /**
- * Checks the validity of key codes of filters 
+ * Checks the validity of key codes of filters; checks to make sure they exist in the data_filters array
  *
+ * @param data_filter[] $data_filters Array of valid data filter objects
  * @param string[] $filters Array of filters 
  * @return bool Whether or not the filters each have valid key codes
  */
-function filter_key_code_check($filters) {
+function filter_key_code_check(&$data_filters, $filters) {
     // The filter array is contained of tuples
-    // The first element is the condition text start
-    // The second element is the condition operator
-    // The third element is the condition text end
-    // The fourth element is the condition value type
-    // The fifth element is the condition value (not part of key code because it's variable)
-    // The sixth element is the key code
+    // The first element is the filter id
+    // The second element is the table id
+    // The third element is the value to check in the filter
     for($i=0; $i < sizeof($filters); $i++){
         // Extract values from current filter tuple
         $curr_filter = $filters[$i];
-        $cond_text_start = $curr_filter[0];
-        $cond_op = $curr_filter[1];
-        $cond_text_end = $curr_filter[2];
-        $cond_type = $curr_filter[3];
-        $check_key_code = $curr_filter[5];
-        // Verify validity of key code
-        $key_code = hash("md5", "||KEY_CODE||" . $cond_text_start . str_repeat($cond_op, 3) . $cond_type . $cond_text_end .  "-KC");
+        $filter_id = $curr_filter[0];
+        $table_id = $curr_filter[1];
+        
+        if (!array_key_exists($filter_id . $table_id, $data_filters)) {
+            return false;
+        }
     }
     return true;
 }
@@ -275,12 +271,12 @@ if(isset($_POST['generate_table_viewable']))
         // Extract filter arrays
         $filters = json_decode($filters_json, true);
         // Check validity of filters
-        $good_key_code = filter_key_code_check($filters);
+        $good_key_code = filter_key_code_check($data_filters, $filters);
         if ($good_key_code === false) {
-            echo json_encode(array("Invalid filter key code!", ""));
+            echo json_encode(array("Invalid filter key code!", "", $data_filters, $filters));
             exit();
         }
-        $table_array = get_table_viewable_data_filterable($conn, $table_name, $table_query_name, $table -> query, $filters);
+        $table_array = get_table_viewable_data_filterable($conn, $data_filters, $table_name, $table_query_name, $table -> query, $filters);
         echo json_encode(array("Success!", $table_array));
         exit();
     } else {

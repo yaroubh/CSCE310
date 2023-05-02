@@ -42,7 +42,6 @@ for ($i = 0; $i < $folder_depth; $i++) {
 $data_tables = array();
 $data_editors = array();
 $data_filters = array();
-$data_filter_queries = array();
 // Suspend output of the head.php file if desired
 if (isset($suspend_head)) {
     ob_start();
@@ -51,6 +50,7 @@ if (isset($suspend_head)) {
 # echo "<p>Backup: " . $backup . "</p>";
 # echo "<p>Folder Depth: " . $folder_depth . "</p>";
 include $backup . "res/data_table.php";
+include $backup . "res/data_filter.php";
 include $backup . "res/table_editor.php"; 
 include $backup . "nav/navbar.php";
 
