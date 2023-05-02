@@ -1,19 +1,5 @@
 <?php
 # include "res/head.php"; 
-// Generate a key code for an editable table
-// A Key Code prevents post request forgery as the correct key code must be used with an SQL Query otherwise the server will reject the request
-function generate_editor_key_code($table_name, $table_query_name, $query) {
-    $key_code = hash("md5", ":>EDIT-SELECT<:" . $table_name . ":>FROM<:" . str_repeat($table_query_name,2) . $query);
-    return $key_code;
-}
-
-// Generates a key code for a non-editable table
-// A Key Code prevents post request forgery as the correct key code must be used with an SQL Query otherwise the server will reject the request
-function generate_viewer_key_code($table_name, $table_query_name, $query) {
-    $key_code = hash("md5", ":>VIEW-SELECT<:" . $table_name . ":>FROM<:" . str_repeat($table_query_name,2) . $query);
-    return $key_code;
-}
-
 // Generates a key code for a filter
 // A Key Code prevents post request forgery as the correct key code must be used with an SQL Query otherwise the server will reject the request
 function generate_filter_key_code($cond_text_start, $cond_op, $cond_text_end, $cond_type) {
@@ -24,48 +10,57 @@ function generate_filter_key_code($cond_text_start, $cond_op, $cond_text_end, $c
 
 
 <?php
-// Generates an editable table
-function generate_table_editable($parent_div, $table_name, $table_query_name, $query, $max_width, $table_field_types, $table_opts) {
+/**
+ * Generates an editable table view
+ *
+ * @param data_table $table_object The table object we want to create
+ * @return string The HTML / JS content of the table
+ */
+function generate_table_editable($table_object) {
 
     // Buffer the output so we can store it
     ob_start();
-    $key_code = generate_editor_key_code($table_name, $table_query_name, $query);
     ?>
     <script>
         // Store relevant data
-        table_parents["<?php echo $table_name?>"] = document.getElementById("<?php echo $parent_div?>");
-        table_qnames["<?php echo $table_name?>"] = "<?php echo $table_query_name?>";
-        table_codes["<?php echo $table_name?>"] = "<?php echo $key_code?>";
-        table_types["<?php echo $table_name?>"] = "editor";
-        table_queries["<?php echo $table_name?>"] = "<?php echo $query?>";
-        table_mwidths["<?php echo $table_name?>"] = "<?php echo $max_width?>";
-        table_field_types["<?php echo $table_name?>"] = JSON.parse('<?php echo json_encode($table_field_types)?>');
-        table_input_child_htmls["<?php echo $table_name?>"] = {};
+        table_parents["<?php echo $table_object -> table_name?>"] = document.getElementById("<?php echo $table_object -> parent_div?>");
+        table_qnames["<?php echo $table_object -> table_name?>"] = "<?php echo $table_object -> table_query_name?>";
+        table_types["<?php echo $table_object -> table_name?>"] = "editor";
+        table_queries["<?php echo $table_object -> table_name?>"] = "<?php echo $table_object -> query?>";
+        table_mwidths["<?php echo $table_object ->table_name?>"] = "<?php echo $table_object -> max_width?>";
+        table_field_types["<?php echo $table_object -> table_name?>"] = JSON.parse('<?php echo json_encode($table_object -> table_field_types)?>');
+        table_opts["<?php echo $table_object -> table_name?>"] = JSON.parse('<?php echo json_encode($table_object -> table_opts)?>');
+        table_input_child_htmls["<?php echo $table_object -> table_name?>"] = {};
         // Generate the table
-        generate_table_editable("<?php echo $table_name?>", "<?php echo $table_query_name?>", "<?php echo $query?>", "<?php echo $key_code?>", "<?php echo $max_width?>");
+        generate_table_editable("<?php echo $table_object -> table_name?>", "<?php echo $table_object ->table_query_name?>", "<?php echo $table_object -> query?>", "<?php echo $table_object -> max_width?>");
     </script>
     <?php
     return ob_get_clean();
 }?>
 
 <?php
-// Generates a non-editable table
-function generate_table_view($parent_div, $table_name, $table_query_name, $query, $max_width) {
+/**
+ * Generates an editable table view
+ *
+ * @param data_table $table_object The table object we want to create
+ * @return string The HTML / JS content of the table
+ */
+function generate_table_view($table_object) {
 
     // Buffer the output so we can store it
     ob_start();
-    $key_code = generate_viewer_key_code($table_name, $table_query_name, $query);
     ?>
     <script>
         // Store relevant data
-        table_parents["<?php echo $table_name?>"] = document.getElementById("<?php echo $parent_div?>");
-        table_qnames["<?php echo $table_name?>"] = "<?php echo $table_query_name?>";
-        table_codes["<?php echo $table_name?>"] = "<?php echo $key_code?>";
-        table_types["<?php echo $table_name?>"] = "viewer";
-        table_queries["<?php echo $table_name?>"] = "<?php echo $query?>";
-        table_mwidths["<?php echo $table_name?>"] = "<?php echo $max_width?>";
+        table_parents["<?php echo $table_object -> table_name?>"] = document.getElementById("<?php echo $table_object -> parent_div?>");
+        table_qnames["<?php echo $table_object -> table_name?>"] = "<?php echo $table_object -> table_query_name?>";
+        table_types["<?php echo $table_object -> table_name?>"] = "viewer";
+        table_queries["<?php echo $table_object -> table_name?>"] = "<?php echo $table_object -> query?>";
+        table_mwidths["<?php echo $table_object -> table_name?>"] = "<?php echo $table_object -> max_width?>";
+        table_field_types["<?php echo $table_object -> table_name?>"] = JSON.parse('<?php echo json_encode($table_object -> table_field_types)?>');
+        table_opts["<?php echo $table_object -> table_name?>"] = JSON.parse('<?php echo json_encode($table_object -> table_opts)?>');
         // Generate the table
-        generate_table_view("<?php echo $table_name?>", "<?php echo $table_query_name?>", "<?php echo $query?>", "<?php echo $key_code?>", "<?php echo $max_width?>");
+        generate_table_view("<?php echo $table_object -> table_name?>", "<?php echo $table_object -> table_query_name?>", "<?php echo $table_object -> query?>", "<?php echo $table_object ->max_width?>");
     </script>
     <?php
     return ob_get_clean();

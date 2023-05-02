@@ -42,7 +42,7 @@ function make_customer($conn, $id, $fname, $lname, $phone_num, $email, $username
     return true;
 }
 
-function make_employee($conn, $id, $fname, $lname, $phone_num, $email, $username, $password, $hotel_id, $employee_type, $employee_attribute1, $employee_attribute2) {
+function make_employee($conn, $id, $fname, $lname, $phone_num, $email, $username, $password, $hotel_id, $employee_type) {
     $made_user = make_user($conn, $id, $fname, $lname, $phone_num, $email, $username, $password, "Employee");
     if ($made_user === false) {
         return false;
@@ -54,25 +54,6 @@ function make_employee($conn, $id, $fname, $lname, $phone_num, $email, $username
     try {
         if ($conn->query($sql) === TRUE) {
             echo "Added Employee " . $fname . " " . $lname . " successfully";
-        } else {
-            echo "Error creating table: " . $conn->error;
-        }
-    } catch (Exception $ex) {
-            echo $ex;
-            return false;
-    }
-    echo "</p>";
-
-    $sql = "INSERT INTO " . $employee_type . "
-    VALUES ('$id', '$employee_attribute1')";
-    if ($employee_type === "Receptionist") {
-        $sql = "INSERT INTO " . $employee_type . "
-        VALUES ('$id', '$employee_attribute1', '$employee_attribute2')";
-    }
-    echo "<p>";
-    try {
-        if ($conn->query($sql) === TRUE) {
-            echo "Added Employee Subtype " . $fname . " " . $lname . " successfully";
         } else {
             echo "Error creating table: " . $conn->error;
         }
@@ -138,6 +119,24 @@ function make_review($conn, $review_id, $hotel_id, $user_id, $rating, $desc, $da
     return true;
 }
 
+function make_booking($conn, $room_id, $user_id, $start_date, $end_date) {
+    $sql = "INSERT INTO Reviews (Booking_NO, Room_ID, User_ID, Start_Date, End_Date)
+    VALUES (null, '$room_id', '$user_id', '$start_date', '$end_date')";
+    echo "<p>";
+    try {
+        if ($conn->query($sql) === TRUE) {
+            echo "Added Booking for room " . $room_id  . " for user " . $user_id . " successfully";
+        } else {
+            echo "Error creating review: " . $conn->error;
+        }
+    } catch (Exception $ex) {
+            echo $ex;
+            return false;
+    }
+    echo "</p>";
+    return true;
+}
+
 make_hotel($conn, 1, "BCS Hotel", "BCS", "Texas", "United States");
 make_hotel($conn, 2, "Magico", "Monte Cristo", "Livorno", "Italy");
 
@@ -158,8 +157,6 @@ make_employee($conn, 10, "Loralip", "Jones", '0001113336', "Lorali4@tamu.edu", "
 make_review($conn, 1, 1, 1, 4, "Overall Good. Would come again", '2023-05-02 12:45:36');
 make_review($conn, 2, 2, 2, 5, "Such a wonderful experience. The family loved.", '2022-05-12 13:55:12');
 
-
-
 # Randomly generate rooms
 for ($i = 1; $i < 3; $i++) {
     $floors = rand(1, 5);
@@ -175,3 +172,6 @@ for ($i = 1; $i < 3; $i++) {
     }
 }
 
+make_booking($conn, 1, 1, "2022-05-12 13:55:12", "2022-05-15 13:55:12");
+make_booking($conn, 1, 2, "2022-05-17 10:10:10", "2022-05-19 10:10:10");
+make_booking($conn, 2, 2, "2022-05-30 10:10:10", "2022-06-17 11:11:11");

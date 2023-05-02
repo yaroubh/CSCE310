@@ -2,7 +2,7 @@
 include "../res/head.php"; 
 ?>
 <div>
-    <h1 class = "text-center">Bookings <?php echo __FILE__ ?></h1>
+    <h1 class = "text-center">Bookings</h1>
         <h2 class = "text-center">Bookings:</h2>
             <div id = "bookings-user-div">
             <?php
