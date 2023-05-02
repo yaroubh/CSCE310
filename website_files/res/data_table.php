@@ -13,13 +13,13 @@ class data_table {
     public $table_opts; 
 
     /**
-     * Initializes the data table properties
+     * Initializes the data table with its properties
      *
      * @param string $parent_div id of parent div
      * @param string $table_name id of table element
      * @param string $table_query_name Name of table to be used in query
-     * @param string $query Specific query used to get data from MySQL database
-     * @param int $max_width Max width of the table
+     * @param string $query Specific select query used to get data from MySQL database
+     * @param string $max_width Max width of the table (or infinity if no width constraintE)
      * @param string[] $table_field_types The types of data in each column (ignoring the ID column)
      * @param string[] $table_opts Other table options
      */

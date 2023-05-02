@@ -161,7 +161,7 @@ $sql = "
     CREATE OR REPLACE TRIGGER  Solo_Booking  BEFORE INSERT ON Booking 
     FOR EACH ROW
     BEGIN
-    IF EXISTS (SELECT * FROM Booking WHERE NEW.Room_ID = Booking.Room_ID AND (NEW.Start_Date <= Booking.Start_Date OR NEW.End_Date >= Booking.End_Date)) THEN
+    IF EXISTS (SELECT * FROM Booking WHERE NEW.Room_ID = Booking.Room_ID AND (NEW.Start_Date <= Booking.End_Date AND Booking.Start_Date <= New.End_Date)) THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Dates should not overlap for the booking of the same room';
     END IF;
@@ -183,7 +183,7 @@ $sql = "
     CREATE OR REPLACE TRIGGER  Solo_Booking_Update BEFORE UPDATE ON Booking 
     FOR EACH ROW
     BEGIN
-    IF EXISTS (SELECT * FROM Booking WHERE NEW.Room_ID = Booking.Room_ID AND NEW.Booking_NO != Booking.Booking_NO AND (NEW.Start_Date <= Booking.Start_Date OR NEW.End_Date >= Booking.End_Date)) THEN
+    IF EXISTS (SELECT * FROM Booking WHERE NEW.Room_ID = Booking.Room_ID AND NEW.Booking_NO != Booking.Booking_NO AND (NEW.Start_Date <= Booking.End_Date AND Booking.Start_Date <= New.End_Date)) THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Dates should not overlap for the booking of the same room';
     END IF;
@@ -193,22 +193,6 @@ echo "<p>";
 try {
     if ($conn->query($sql) === TRUE) {
         echo "Trigger Solo_Booking_Update created successfully";
-    } else {
-        echo "Error creating table: " . $conn->error;
-    }
-} catch (Exception $ex) {
-        echo $ex;
-}
-echo "</p>";
-
-$sql = 'ALTER TABLE Customer
-ADD FOREIGN KEY (Booking_NO) REFERENCES Booking(Booking_NO);
-    ';
-
-echo "<p>";
-try {
-    if ($conn->query($sql) === TRUE) {
-        echo "Table Customer added foreign key to booking successfully";
     } else {
         echo "Error creating table: " . $conn->error;
     }

@@ -25,21 +25,6 @@ function make_customer($conn, $id, $fname, $lname, $phone_num, $email, $username
     if ($made_user === false) {
         return false;
     }
-    $sql = "INSERT INTO Customer
-    VALUES ('$id', NULL)";
-    echo "<p>";
-    try {
-        if ($conn->query($sql) === TRUE) {
-            echo "Added Customer " . $fname . " " . $lname . " successfully";
-        } else {
-            echo "Error creating table: " . $conn->error;
-        }
-    } catch (Exception $ex) {
-            echo $ex;
-            return false;
-    }
-    echo "</p>";
-    return true;
 }
 
 function make_employee($conn, $id, $fname, $lname, $phone_num, $email, $username, $password, $hotel_id, $employee_type) {
@@ -120,7 +105,7 @@ function make_review($conn, $review_id, $hotel_id, $user_id, $rating, $desc, $da
 }
 
 function make_booking($conn, $room_id, $user_id, $start_date, $end_date) {
-    $sql = "INSERT INTO Reviews (Booking_NO, Room_ID, User_ID, Start_Date, End_Date)
+    $sql = "INSERT INTO Booking (Booking_NO, Room_ID, User_ID, Start_Date, End_Date)
     VALUES (null, '$room_id', '$user_id', '$start_date', '$end_date')";
     echo "<p>";
     try {
@@ -139,7 +124,7 @@ function make_booking($conn, $room_id, $user_id, $start_date, $end_date) {
 
 make_hotel($conn, 1, "BCS Hotel", "BCS", "Texas", "United States");
 make_hotel($conn, 2, "Magico", "Monte Cristo", "Livorno", "Italy");
-
+make_hotel($conn, 3, "Houstonia", "Houston", "Texas", "United States");
 
 
 
@@ -158,10 +143,10 @@ make_review($conn, 1, 1, 1, 4, "Overall Good. Would come again", '2023-05-02 12:
 make_review($conn, 2, 2, 2, 5, "Such a wonderful experience. The family loved.", '2022-05-12 13:55:12');
 
 # Randomly generate rooms
-for ($i = 1; $i < 3; $i++) {
-    $floors = rand(1, 5);
+for ($i = 1; $i < 4; $i++) {
+    $floors = rand(2, 5);
     for ($j = 1; $j <= $floors; $j++) {
-        $rooms = rand(1,25);
+        $rooms = rand(5, 25);
         for ($k = 1; $k <= $rooms; $k++) {
             $room_floor_end = $k;
             if ($k < 10) {

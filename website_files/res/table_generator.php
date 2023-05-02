@@ -1,6 +1,4 @@
 <?php 
-include "connect.php";
-
 /**
  * Generates data for an non-editable table view
  *
@@ -207,13 +205,13 @@ function generate_table_editable_helper($table_name, $table_query_name, $result)
 }
 
 /**
- * Checks the validity of key codes of filters; checks to make sure they exist in the data_filters array
+ * Checks the validity of filters; checks to make sure they exist in the data_filters array
  *
  * @param data_filter[] $data_filters Array of valid data filter objects
  * @param string[] $filters Array of filters 
  * @return bool Whether or not the filters each have valid key codes
  */
-function filter_key_code_check(&$data_filters, $filters) {
+function filter_checks(&$data_filters, $filters) {
     // The filter array is contained of tuples
     // The first element is the filter id
     // The second element is the table id
@@ -273,7 +271,7 @@ if(isset($_POST['generate_table_viewable']))
         // Extract filter arrays
         $filters = json_decode($filters_json, true);
         // Check validity of filters
-        $good_key_code = filter_key_code_check($data_filters, $filters);
+        $good_key_code = filter_checks($data_filters, $filters);
         if ($good_key_code === false) {
             echo json_encode(array("Invalid filter key code!", "", $data_filters, $filters));
             exit();
