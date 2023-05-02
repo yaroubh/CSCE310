@@ -4,10 +4,14 @@ include "../res/head.php";
 
 // Make the tables and filter objects
 // Allows receptionists to view hotels
-$hotels_table = generate_data_table($data_tables, "hotels-div", "b-rv-hotels", "Hotel", "SELECT * FROM Hotel ORDER BY Hotel_ID ASC", "Inf", ["text", "text", "text", "text"], []);
+$hotels_table = generate_data_editor($data_editors, $data_tables, "hotels-div", "b-rv-hotels", "Hotel", "SELECT * FROM Hotel ORDER BY Hotel_ID ASC", "Inf", ["text", "text", "text", "text"], []);
+// Allows receptionists to edit rooms
 $rooms_table = generate_data_editor($data_editors, $data_tables, "rooms-div", "b-rv-rooms", "Room", "SELECT * FROM Room ORDER BY Room_ID ASC", "Inf", ["text", "text", "text", "text"], []);
+// Allows receptionists to view users
 $users_table = generate_data_table($data_tables, "users-div", "b-rv-users", "Users", "SELECT User_ID, FName, LName, Phone_NO, Email, Username FROM Users ORDER BY User_ID ASC", "Inf", ["text, text, text, text, text"], []);
+// Allows receptionists to edit bookings
 $bookings_table = generate_data_editor($data_editors, $data_tables, "bookings-div", "b-rv-bookings", "Booking", "SELECT * FROM Booking ORDER BY Booking_NO ASC", "Inf", ["text", "text", "datetime-local::start", "datetime-local::end"], []);
+
 // Include the query handler and table generator files
 include $backup . "res/query_handler.php";
 include $backup . "res/table_generator.php";
@@ -20,7 +24,7 @@ echo ob_get_clean();
         <h2 class = "text-center">Hotels:</h2>
             <div id = "hotels-div">
                 <?php 
-                    $gtv_hotels = generate_table_view($hotels_table);
+                    $gtv_hotels = generate_table_editable($hotels_table);
                     echo $gtv_hotels;    
                 ?>
             </div>

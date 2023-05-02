@@ -1,6 +1,7 @@
 <?php
 // We need to use sessions, so you should always start sessions using the below code.
 session_start();
+
 # set credentials
 $servername='localhost';
 $username='root';
@@ -12,6 +13,12 @@ if(!$conn){
     die('Could not Connect MySql Server:' . $conn -> connect_error);
 } else {
     # print("success!");
+}
+
+// Go to login immediately if we are not logged in
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: login.php');
+	exit;
 }
 
 # Get the base path of the file and ignore everything else. We can use this to easily navigate to other files
@@ -30,10 +37,23 @@ $backup = "";
 for ($i = 0; $i < $folder_depth; $i++) {
     $backup .= "../";
 }
+
+// Initialize arrays for data_tables and data_filters
+$data_tables = array();
+$data_editors = array();
+$data_filters = array();
+// Suspend output of the head.php file if desired
+if (isset($suspend_head)) {
+    ob_start();
+}
+
 # echo "<p>Backup: " . $backup . "</p>";
 # echo "<p>Folder Depth: " . $folder_depth . "</p>";
+include $backup . "res/data_table.php";
+include $backup . "res/data_filter.php";
 include $backup . "res/table_editor.php"; 
 include $backup . "nav/navbar.php";
+
 
 ?>
 
@@ -42,8 +62,9 @@ include $backup . "nav/navbar.php";
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@popperjs/core@2"></script>
+
 <script type="text/javascript" src="<?php echo $backup . "res/table_editor.js";?>"></script>
 <link rel="stylesheet" href="<?php echo $backup . "res/main.css";?>" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
 <!--<link rel="stylesheet" href="res/main.css">-->
 <title>Hotel Management System</title>

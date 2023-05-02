@@ -113,24 +113,6 @@ try {
 }
 echo "</p>";
 
-$sql = 'CREATE TABLE Customer (
-    User_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    Booking_NO INT UNSIGNED,
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID) ON DELETE CASCADE
-    )';
-
-echo "<p>";
-try {
-    if ($conn->query($sql) === TRUE) {
-        echo "Table Customer created successfully";
-    } else {
-        echo "Error creating table: " . $conn->error;
-    }
-} catch (Exception $ex) {
-        echo $ex;
-}
-echo "</p>";
-
 $sql = 'CREATE TABLE Room (
     Room_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Hotel_ID INT UNSIGNED NOT NULL,
@@ -159,7 +141,7 @@ $sql = 'CREATE TABLE Booking (
     `Start_Date` DATETIME NOT NULL,
     End_Date DATETIME NOT NULL,
     FOREIGN KEY (Room_ID) REFERENCES Room(Room_ID),
-    FOREIGN KEY (User_ID) REFERENCES Customer(User_ID) ON DELETE CASCADE,
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID) ON DELETE CASCADE,
     CONSTRAINT Date_Consistency CHECK (Start_Date <= End_Date)
     )';
 
@@ -179,7 +161,7 @@ $sql = "
     CREATE OR REPLACE TRIGGER  Solo_Booking  BEFORE INSERT ON Booking 
     FOR EACH ROW
     BEGIN
-    IF EXISTS (SELECT * FROM Booking WHERE NEW.Room_ID = Booking.Room_ID AND (NEW.Start_Date <= Booking.Start_Date OR NEW.End_Date >= Booking.End_Date)) THEN
+    IF EXISTS (SELECT * FROM Booking WHERE NEW.Room_ID = Booking.Room_ID AND (NEW.Start_Date <= Booking.End_Date AND Booking.Start_Date <= New.End_Date)) THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Dates should not overlap for the booking of the same room';
     END IF;
@@ -201,7 +183,7 @@ $sql = "
     CREATE OR REPLACE TRIGGER  Solo_Booking_Update BEFORE UPDATE ON Booking 
     FOR EACH ROW
     BEGIN
-    IF EXISTS (SELECT * FROM Booking WHERE NEW.Room_ID = Booking.Room_ID AND NEW.Booking_NO != Booking.Booking_NO AND (NEW.Start_Date <= Booking.Start_Date OR NEW.End_Date >= Booking.End_Date)) THEN
+    IF EXISTS (SELECT * FROM Booking WHERE NEW.Room_ID = Booking.Room_ID AND NEW.Booking_NO != Booking.Booking_NO AND (NEW.Start_Date <= Booking.End_Date AND Booking.Start_Date <= New.End_Date)) THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Dates should not overlap for the booking of the same room';
     END IF;
@@ -219,22 +201,6 @@ try {
 }
 echo "</p>";
 
-$sql = 'ALTER TABLE Customer
-ADD FOREIGN KEY (Booking_NO) REFERENCES Booking(Booking_NO);
-    ';
-
-echo "<p>";
-try {
-    if ($conn->query($sql) === TRUE) {
-        echo "Table Customer added foreign key to booking successfully";
-    } else {
-        echo "Error creating table: " . $conn->error;
-    }
-} catch (Exception $ex) {
-        echo $ex;
-}
-echo "</p>";
-
 $sql = 'CREATE TABLE Reviews (
     Review_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Hotel_ID INT UNSIGNED NOT NULL,
@@ -243,7 +209,7 @@ $sql = 'CREATE TABLE Reviews (
     `Description` VARCHAR(300) NOT NULL,
     Review_Date DATETIME NOT NULL,
     FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID),
-    FOREIGN KEY (User_ID) REFERENCES Customer(User_ID) ON DELETE CASCADE
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID) ON DELETE CASCADE
     )';
 
 echo "<p>";
@@ -316,60 +282,4 @@ try {
         echo $ex;
 }
 echo "</p>";
-
-$sql = 'CREATE TABLE Receptionist (
-    User_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    Shift_Start_Time TIME NOT NULL,
-    Shift_End_Time TIME NOT NULL,
-    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID) ON DELETE CASCADE
-    )';
-
-echo "<p>";
-try {
-    if ($conn->query($sql) === TRUE) {
-        echo "Table Receptionist created successfully";
-    } else {
-        echo "Error creating table: " . $conn->error;
-    }
-} catch (Exception $ex) {
-        echo $ex;
-}
-echo "</p>";
-
-$sql = 'CREATE TABLE Administrator (
-    User_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    Speciality VARCHAR(45) NOT NULL,
-    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID) ON DELETE CASCADE
-    )';
-
-echo "<p>";
-try {
-    if ($conn->query($sql) === TRUE) {
-        echo "Table Administrator created successfully";
-    } else {
-        echo "Error creating table: " . $conn->error;
-    }
-} catch (Exception $ex) {
-        echo $ex;
-}
-echo "</p>";
-
-$sql = 'CREATE TABLE Service_Worker (
-    User_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    `Role` VARCHAR(45) NOT NULL,
-    FOREIGN KEY (User_ID) REFERENCES Employees(User_ID) ON DELETE CASCADE
-    )';
-
-echo "<p>";
-try {
-    if ($conn->query($sql) === TRUE) {
-        echo "Table Service Worker created successfully";
-    } else {
-        echo "Error creating table: " . $conn->error;
-    }
-} catch (Exception $ex) {
-        echo $ex;
-}
-echo "</p>";
-
 ?>

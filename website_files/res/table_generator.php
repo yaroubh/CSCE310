@@ -1,6 +1,4 @@
 <?php 
-include "connect.php";
-
 /**
  * Generates data for an non-editable table view
  *
@@ -10,7 +8,7 @@ include "connect.php";
  * @param string $query Query to be executed
  * @return array Array containing information useful for front end to construct the table view
  */
-function generate_table_viewable($conn, $table_name, $table_query_name, $query) {
+function get_table_viewable_data($conn, $table_name, $table_query_name, $query) {
         // Execute Query
         $stmt = $conn->prepare($query);
         $stmt->execute();
@@ -23,30 +21,29 @@ function generate_table_viewable($conn, $table_name, $table_query_name, $query) 
  * Generates data for an non-editable table view with filters
  *
  * @param mysqli $conn MySQLi connection object
+ * @param data_filter[] data_filters Array of data filter objects; will be used to retrieve a data filter
  * @param string $table_name id of table element
  * @param string $table_query_name Name of table used in the query
  * @param string $query Query to be executed
  * @param string[] $filters List of filters to be added to the query 
  * @return array Array containing information useful for front end to construct the table view
  */
-function generate_table_viewable_filterable($conn, $table_name, $table_query_name, $query, $filters) {
+function get_table_viewable_data_filterable($conn, &$data_filters, $table_name, $table_query_name, $query, $filters) {
     // Put filters into query
     // NOTE: Filters have the following format:
-    // 1st param - Start of filter string
-    // 2nd param - Filter operator
-    // 3rd param - End of filter string
-    // 4th param - Filter type (string, int, double, etc.)
-    // 5th param - Filter value to be binded
-    // 6th param - Filter key code
+    // 1st param - Filter ID name
+    // 2nd param - Table ID name
+    // 3rd param - Filter value
     $filter_params = array();
     $filter_types = "";
     $query .=  " WHERE ";
     // Apply each filter to the query
     for ($i = 0; $i < sizeof($filters); $i++) {
         $curr_filter = $filters[$i];
-        $query .= $curr_filter[0] . " " . $curr_filter[1] . " ?" . $curr_filter[2];
-        $filter_types .= $curr_filter[3];
-        array_push($filter_params, $curr_filter[4]);
+        $curr_filter_obj = $data_filters[$curr_filter[0] . $curr_filter[1]];
+        $query .= $curr_filter_obj -> cond_name_start . " " . $curr_filter_obj -> cond_op . " ?" . $curr_filter_obj -> cond_name_end;
+        $filter_types .= $curr_filter_obj -> cond_type;
+        array_push($filter_params, $curr_filter[2]);
         // Add an AND if this is not the last condition to filter through
         if ($i < sizeof($filters) - 1) {
             $query .= " AND ";
@@ -129,7 +126,7 @@ function generate_table_viewable_helper($table_name, $table_query_name, $result)
  * @param string $query Query to be executed
  * @return array Array containing information useful for front end to construct the table view
  */
-function generate_table_editable($conn, $table_name, $table_query_name, $query) {
+function get_editable_table_data($conn, $table_name, $table_query_name, $query) {
     // Execute query
     $stmt = $conn->prepare($query);
     $stmt->execute();
@@ -172,7 +169,6 @@ function generate_table_editable_helper($table_name, $table_query_name, $result)
             $curr_field_array = array();
             if ($j != 0) {
                 // We only want the non-primary key columns to be editable.
-                $key_code = hash("md5", $table_query_name .  $field->name . str_repeat($id_field, 2) . str_repeat($row[0], 3) . "->1" );
                 array_push($curr_field_array, $table_name);
                 array_push($curr_field_array, $table_query_name);
                 array_push($curr_field_array, $field->name);
@@ -181,11 +177,8 @@ function generate_table_editable_helper($table_name, $table_query_name, $result)
                 array_push($curr_field_array, $i);
                 array_push($curr_field_array, $j);
                 array_push($curr_field_array, $row[$j]);
-                array_push($curr_field_array, $key_code);  
             } else {
-                $key_code = hash("md5", $table_query_name .  $field->name . str_repeat($id_field, 3) . str_repeat($row[0], 2) . "=>DELETE<=" );
                 array_push($curr_field_array, $row[$j]);
-                array_push($curr_field_array, $key_code);
             }
             // Add the data from our current field to the current row array
             array_push($curr_row_data, $curr_field_array);
@@ -197,14 +190,12 @@ function generate_table_editable_helper($table_name, $table_query_name, $result)
     array_push($data_array, $row_data_array);
 
     // Generate the input field data
-    $key_code = hash("md5", $table_query_name . str_repeat($id_field, 3) . "||>" . str_repeat($id_field, 2) . "||>INSERT");
     $input_field_array = array();
     array_push($input_field_array, $table_name);
     array_push($input_field_array, $table_query_name);
     array_push($input_field_array, $id_field);
     array_push($input_field_array, $id_field);
     array_push($input_field_array, sizeof($field_array));
-    array_push($input_field_array, $key_code);
     
     // Add the input field array to the return data array
     array_push($data_array, $input_field_array);
@@ -213,48 +204,25 @@ function generate_table_editable_helper($table_name, $table_query_name, $result)
     return $data_array;
 }
 
-
 /**
- * Checks the validity of a key code against what we generated
+ * Checks the validity of filters; checks to make sure they exist in the data_filters array
  *
- * @param string $generated_key_code The key code we generated
- * @param string $check_key_code The key code we are cheving
- * @return bool Whether or not the key codes are equivalent
- */
-function key_code_check($generated_key_code, $check_key_code) {
-    if ($generated_key_code !== $check_key_code) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-/**
- * Checks the validity of key codes of filters 
- *
+ * @param data_filter[] $data_filters Array of valid data filter objects
  * @param string[] $filters Array of filters 
  * @return bool Whether or not the filters each have valid key codes
  */
-function filter_key_code_check($filters) {
+function filter_checks(&$data_filters, $filters) {
     // The filter array is contained of tuples
-    // The first element is the condition text start
-    // The second element is the condition operator
-    // The third element is the condition text end
-    // The fourth element is the condition value type
-    // The fifth element is the condition value (not part of key code because it's variable)
-    // The sixth element is the key code
+    // The first element is the filter id
+    // The second element is the table id
+    // The third element is the value to check in the filter
     for($i=0; $i < sizeof($filters); $i++){
         // Extract values from current filter tuple
         $curr_filter = $filters[$i];
-        $cond_text_start = $curr_filter[0];
-        $cond_op = $curr_filter[1];
-        $cond_text_end = $curr_filter[2];
-        $cond_type = $curr_filter[3];
-        $check_key_code = $curr_filter[5];
-        // Verify validity of key code
-        $key_code = hash("md5", "||KEY_CODE||" . $cond_text_start . str_repeat($cond_op, 3) . $cond_type . $cond_text_end .  "-KC");
-        $good_key_code = key_code_check($key_code, $check_key_code);
-        if ($good_key_code === false) {
+        $filter_id = $curr_filter[0];
+        $table_id = $curr_filter[1];
+        
+        if (!array_key_exists($filter_id . $table_id, $data_filters)) {
             return false;
         }
     }
@@ -265,20 +233,20 @@ function filter_key_code_check($filters) {
 // Generate an editable table
 if(isset($_POST['generate_table_editable']))
 {
+    // Dump previous output so only the following output is sent back to the post request
+    ob_clean();
     // Get POST fields
     $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
-    $query = $_POST['query'];
-    $check_key_code = $_POST['key_code'];
-    // Make sure key code is valid
-    $key_code = hash("md5", ":>EDIT-SELECT<:" . $table_name . ":>FROM<:" . str_repeat($table_query_name,2) . $query);
-    $good_key_code = key_code_check($key_code, $check_key_code);
-    if ($good_key_code === false) {
-        echo json_encode(array("Invalid key code!", ""));
+    // $check_key_code = $_POST['key_code'];
+    // Make sure table name and query is valid
+    if (!array_key_exists($table_name . $table_query_name, $data_tables)) {
+        echo json_encode(array("Invalid table name and query!", ""));
         exit();
     }
-    // Make the table
-    $table_array = generate_table_editable($conn, $table_name, $table_query_name, $query);
+    // Get the table data
+    $table = $data_tables[$table_name . $table_query_name];
+    $table_array = get_editable_table_data($conn, $table_name, $table_query_name, $table -> query);
     echo json_encode(array("Success!", $table_array));
     exit();
 }
@@ -286,40 +254,38 @@ if(isset($_POST['generate_table_editable']))
 // Generate an non-editable table
 if(isset($_POST['generate_table_viewable']))
 {
+    // Dump previous output so only the following output is sent back to the post request
+    ob_clean();
     // Get POST fields
     $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
-    $query = $_POST['query'];
-    $check_key_code = $_POST['key_code'];
-    // Make sure key code is valid
-    $key_code = hash("md5", ":>VIEW-SELECT<:" . $table_name . ":>FROM<:" . str_repeat($table_query_name,2) . $query);
-    $good_key_code = key_code_check($key_code, $check_key_code);
-    if ($good_key_code === false) {
-        echo json_encode(array("Invalid key code!", ""));
+    if (!array_key_exists($table_name . $table_query_name, $data_tables)) {
+        echo json_encode(array("Invalid table name and query!", ""));
         exit();
     }
+    // Get the table data
+    $table = $data_tables[$table_name . $table_query_name];
     // Check if we have filters
     if (isset($_POST["filters"])) {
         $filters_json = $_POST['filters'];
         // Extract filter arrays
         $filters = json_decode($filters_json, true);
         // Check validity of filters
-        $good_key_code = filter_key_code_check($filters);
+        $good_key_code = filter_checks($data_filters, $filters);
         if ($good_key_code === false) {
-            echo json_encode(array("Invalid filter key code!", ""));
+            echo json_encode(array("Invalid filter key code!", "", $data_filters, $filters));
             exit();
         }
-        $table_array = generate_table_viewable_filterable($conn, $table_name, $table_query_name, $query, $filters);
+        $table_array = get_table_viewable_data_filterable($conn, $data_filters, $table_name, $table_query_name, $table -> query, $filters);
         echo json_encode(array("Success!", $table_array));
         exit();
     } else {
         // Make the table
-        $table_array = generate_table_viewable($conn, $table_name, $table_query_name, $query);
+        $table_array = get_table_viewable_data($conn, $table_name, $table_query_name, $table -> query);
         echo json_encode(array("Success!", $table_array));
         exit();
     }
 }
-
 
 
 ?>
