@@ -4,7 +4,7 @@
 /**
  * Initializes the data table with its properties
  *
- * @param data_table&[] $data_tables Array of data tables to add the table to for future use
+ * @param data_table[] $data_tables Array of data tables to add the table to for future use
  * @param string $parent_div ID of parent div
  * @param string $table_name ID of table element
  * @param string $table_query_name Name of table to be used in query
@@ -17,11 +17,34 @@
 function generate_data_table(&$data_tables, $parent_div, $table_name, $table_query_name, $query, $max_width, $table_field_types, $table_opts) {
     // Make the table
     $table_temp = new data_table($parent_div, $table_name, $table_query_name, $query, $max_width, $table_field_types, $table_opts);
-    // Insert it into the tables array (use both the table name, the table query name, and query as a key)
-    $data_tables[$table_name . $table_query_name . $query] = $table_temp;
-    $data_tables[0] = 1;
+    // Insert it into the tables array (use both the table name and the table query name as a key)
+    $data_tables[$table_name . $table_query_name] = $table_temp;
     return $table_temp;
 }
+
+/**
+ * Initializes an editable data table with its properties
+ *
+ * @param data_table[] $data_editors Array of editable data tables to add the table to for future use
+ * @param data_table[] $data_tables Array of data tables to add the table to for future use
+ * @param string $parent_div ID of parent div
+ * @param string $table_name ID of table element
+ * @param string $table_query_name Name of table to be used in query
+ * @param string $query Specific select query used to get data from MySQL database
+ * @param string $max_width Max width of the table (or infinity if no width constraintE)
+ * @param string[] $table_field_types The types of data in each column (ignoring the ID column)
+ * @param string[] $table_opts Other table options
+ * @return data_table The data table object that was created
+ */
+function generate_data_editor(&$data_editors, &$data_tables, $parent_div, $table_name, $table_query_name, $query, $max_width, $table_field_types, $table_opts) {
+    // Make the table
+    $table_temp = generate_data_table($data_tables, $parent_div, $table_name, $table_query_name, $query, $max_width, $table_field_types, $table_opts);
+    // Insert it into the editors array (use both the table name and the table query name as a key)
+    $data_editors[$table_name . $table_query_name] = $table_temp;
+    return $table_temp;
+}
+
+
 
 // Generates a key code for a filter
 // A Key Code prevents post request forgery as the correct key code must be used with an SQL Query otherwise the server will reject the request
@@ -49,11 +72,11 @@ function generate_table_editable($table_object) {
         table_parents["<?php echo $table_object -> table_name?>"] = document.getElementById("<?php echo $table_object -> parent_div?>");
         table_qnames["<?php echo $table_object -> table_name?>"] = "<?php echo $table_object -> table_query_name?>";
         table_types["<?php echo $table_object -> table_name?>"] = "editor";
-        table_queries["<?php echo $table_object -> table_name?>"] = "<?php echo $table_object -> query?>";
         table_mwidths["<?php echo $table_object ->table_name?>"] = "<?php echo $table_object -> max_width?>";
         table_field_types["<?php echo $table_object -> table_name?>"] = JSON.parse('<?php echo json_encode($table_object -> table_field_types)?>');
         table_opts["<?php echo $table_object -> table_name?>"] = JSON.parse('<?php echo json_encode($table_object -> table_opts)?>');
         table_input_child_htmls["<?php echo $table_object -> table_name?>"] = {};
+        table_dependants["<?php echo $table_object -> table_name?>"] = [];
         // Generate the table
         generate_table_editable("<?php echo $table_object -> table_name?>", "<?php echo $table_object ->table_query_name?>", "<?php echo $table_object -> query?>", "<?php echo $table_object -> max_width?>");
     </script>
@@ -78,10 +101,10 @@ function generate_table_view($table_object) {
         table_parents["<?php echo $table_object -> table_name?>"] = document.getElementById("<?php echo $table_object -> parent_div?>");
         table_qnames["<?php echo $table_object -> table_name?>"] = "<?php echo $table_object -> table_query_name?>";
         table_types["<?php echo $table_object -> table_name?>"] = "viewer";
-        table_queries["<?php echo $table_object -> table_name?>"] = "<?php echo $table_object -> query?>";
         table_mwidths["<?php echo $table_object -> table_name?>"] = "<?php echo $table_object -> max_width?>";
         table_field_types["<?php echo $table_object -> table_name?>"] = JSON.parse('<?php echo json_encode($table_object -> table_field_types)?>');
         table_opts["<?php echo $table_object -> table_name?>"] = JSON.parse('<?php echo json_encode($table_object -> table_opts)?>');
+        table_dependants["<?php echo $table_object -> table_name?>"] = [];
         // Generate the table
         generate_table_view("<?php echo $table_object -> table_name?>", "<?php echo $table_object -> table_query_name?>", "<?php echo $table_object -> query?>", "<?php echo $table_object ->max_width?>");
     </script>
@@ -90,7 +113,25 @@ function generate_table_view($table_object) {
 }?>
 
 <?php
+/**
+ * Adds a dependency on a table, causing it to update when another table updates
+ *
+ * @param data_Table $table Table object that is indepedent
+ * @param data_Table $dependent_table Table object that is dependent
+ * @return string JavaScript for updating the table dependencies
+ */
+function generate_table_dependency($table, $dependent_table) {
+    ob_start();
+    ?>
 
+    <script>
+    table_dependants["<?php echo $table -> table_name?>"].push("<?php echo $dependent_table -> table_name?>");
+    </script>
+<?php 
+    return ob_get_clean();
+} ?>
+
+<?php
 /**
  * Generates a date range filter for a table
  *
@@ -202,7 +243,7 @@ function generate_search_filter($div_name, $table_name, $cond_name_start, $cond_
 
 <script>
 // Initialize query links
-var query_handler_url = '<?php echo $backup . 'res/query_handler.php'?>';
+var query_handler_url = '<?php echo $backup . $local_path_editor?>';
 var table_generator_url = '<?php echo $backup . $local_path_editor?>';
 // Initialize all table variables
 var table_parents = {};

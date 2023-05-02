@@ -15,6 +15,12 @@ if(!$conn){
     # print("success!");
 }
 
+// Go to login immediately if we are not logged in
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: login.php');
+	exit;
+}
+
 # Get the base path of the file and ignore everything else. We can use this to easily navigate to other files
 $path = getcwd() . "/";
 $path = str_replace('\\', '/', $path);
@@ -34,8 +40,9 @@ for ($i = 0; $i < $folder_depth; $i++) {
 
 // Initialize arrays for data_tables and data_filters
 $data_tables = array();
+$data_editors = array();
 $data_filters = array();
-
+$data_filter_queries = array();
 // Suspend output of the head.php file if desired
 if (isset($suspend_head)) {
     ob_start();

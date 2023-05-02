@@ -172,7 +172,6 @@ function generate_table_editable_helper($table_name, $table_query_name, $result)
             $curr_field_array = array();
             if ($j != 0) {
                 // We only want the non-primary key columns to be editable.
-                $key_code = hash("md5", $table_query_name .  $field->name . str_repeat($id_field, 2) . str_repeat($row[0], 3) . "->1" );
                 array_push($curr_field_array, $table_name);
                 array_push($curr_field_array, $table_query_name);
                 array_push($curr_field_array, $field->name);
@@ -181,11 +180,8 @@ function generate_table_editable_helper($table_name, $table_query_name, $result)
                 array_push($curr_field_array, $i);
                 array_push($curr_field_array, $j);
                 array_push($curr_field_array, $row[$j]);
-                array_push($curr_field_array, $key_code);  
             } else {
-                $key_code = hash("md5", $table_query_name .  $field->name . str_repeat($id_field, 3) . str_repeat($row[0], 2) . "=>DELETE<=" );
                 array_push($curr_field_array, $row[$j]);
-                array_push($curr_field_array, $key_code);
             }
             // Add the data from our current field to the current row array
             array_push($curr_row_data, $curr_field_array);
@@ -197,14 +193,12 @@ function generate_table_editable_helper($table_name, $table_query_name, $result)
     array_push($data_array, $row_data_array);
 
     // Generate the input field data
-    $key_code = hash("md5", $table_query_name . str_repeat($id_field, 3) . "||>" . str_repeat($id_field, 2) . "||>INSERT");
     $input_field_array = array();
     array_push($input_field_array, $table_name);
     array_push($input_field_array, $table_query_name);
     array_push($input_field_array, $id_field);
     array_push($input_field_array, $id_field);
     array_push($input_field_array, sizeof($field_array));
-    array_push($input_field_array, $key_code);
     
     // Add the input field array to the return data array
     array_push($data_array, $input_field_array);
@@ -249,15 +243,15 @@ if(isset($_POST['generate_table_editable']))
     // Get POST fields
     $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
-    $query = $_POST['query'];
     // $check_key_code = $_POST['key_code'];
     // Make sure table name and query is valid
-    if (!array_key_exists($table_name . $table_query_name . $query, $data_tables)) {
-        echo json_encode(array("Invalid table name and query!", "", $table_name, $table_query_name, $data_tables));
+    if (!array_key_exists($table_name . $table_query_name, $data_tables)) {
+        echo json_encode(array("Invalid table name and query!", ""));
         exit();
     }
-    // Make the table
-    $table_array = get_editable_table_data($conn, $table_name, $table_query_name, $query);
+    // Get the table data
+    $table = $data_tables[$table_name . $table_query_name];
+    $table_array = get_editable_table_data($conn, $table_name, $table_query_name, $table -> query);
     echo json_encode(array("Success!", $table_array));
     exit();
 }
@@ -269,13 +263,12 @@ if(isset($_POST['generate_table_viewable']))
     // Get POST fields
     $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
-    $query = $_POST['query'];
-    // $check_key_code = $_POST['key_code'];
-    // Make sure table name and query is valid
-    if (!array_key_exists($table_name . $table_query_name . $query, $data_tables)) {
+    if (!array_key_exists($table_name . $table_query_name, $data_tables)) {
         echo json_encode(array("Invalid table name and query!", ""));
         exit();
     }
+    // Get the table data
+    $table = $data_tables[$table_name . $table_query_name];
     // Check if we have filters
     if (isset($_POST["filters"])) {
         $filters_json = $_POST['filters'];
@@ -287,12 +280,12 @@ if(isset($_POST['generate_table_viewable']))
             echo json_encode(array("Invalid filter key code!", ""));
             exit();
         }
-        $table_array = get_table_viewable_data_filterable($conn, $table_name, $table_query_name, $query, $filters);
+        $table_array = get_table_viewable_data_filterable($conn, $table_name, $table_query_name, $table -> query, $filters);
         echo json_encode(array("Success!", $table_array));
         exit();
     } else {
         // Make the table
-        $table_array = get_table_viewable_data($conn, $table_name, $table_query_name, $query);
+        $table_array = get_table_viewable_data($conn, $table_name, $table_query_name, $table -> query);
         echo json_encode(array("Success!", $table_array));
         exit();
     }

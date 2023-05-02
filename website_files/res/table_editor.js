@@ -1,8 +1,22 @@
 
 
 
-// Updates a field in a table
-function update_table(table_name, table_query_name, field_name, id_field, id_value, row_num, col_num, key_code) {
+/**
+ * This file handles the JavaScript required to display tables. Additionally it makes post requests to get the information from PHP for the tables
+ */
+
+/**
+ * Updates a field in the table
+ * 
+ * @param {string} table_name ID of table
+ * @param {string} table_query_name Name of table in query
+ * @param {string} field_name Column name of field to be updated
+ * @param {string} id_field ID field for table
+ * @param {int} id_value The ID value for this update item
+ * @param {int} row_num The row in the table for this field
+ * @param {int} col_num The column in the table for this field
+ */
+function update_table(table_name, table_query_name, field_name, id_field, id_value, row_num, col_num) {
     // Prepare post request
     var ajaxurl = query_handler_url;
     let div_name = table_name + "-" + row_num + "-" + col_num;
@@ -21,7 +35,6 @@ function update_table(table_name, table_query_name, field_name, id_field, id_val
         id_field: id_field,
         id_value: id_value,
         col_num: col_num,
-        key_code: key_code
     };
     console.log(data);
     // Launch post request via ajax
@@ -41,9 +54,6 @@ function update_table(table_name, table_query_name, field_name, id_field, id_val
             }
             // We need to refix the field
             regenerate_table(table_name);
-            // Tell the user they did something wrong
-
-
         }
     });
 }
@@ -55,41 +65,23 @@ function update_table(table_name, table_query_name, field_name, id_field, id_val
  */
 function regenerate_table(table_name) {
     if (table_types[table_name] == "editor") {
-        generate_table_editable(table_name, table_qnames[table_name], table_queries[table_name], table_mwidths[table_name]);
+        generate_table_editable(table_name, table_qnames[table_name], table_mwidths[table_name]);
     } else if (table_types[table_name] == "viewer") {
-        generate_table_view(table_name, table_qnames[table_name], table_queries[table_name], table_mwidths[table_name]);
+        generate_table_view(table_name, table_qnames[table_name], table_mwidths[table_name]);
     } else {
         console.log("Error! Invalid Table Type!");
     }
 }
-// Updates a field in the table - useful for checking to see if update went through
-function get_field(table_name, table_query_name, field_name, id_field, id_value, row_num, col_num, key_code) {
-    // Prepare post request
-    var ajaxurl = query_handler_url;
-    // Make data object to send to post request
-    let data =  {get_field: "get_field",
-        table_query_name: table_query_name,
-        field_name: field_name,
-        new_value: document.getElementById(table_name + "-" + row_num + "-" + col_num).value,
-        id_field: id_field,
-        id_value: id_value,
-        key_code: key_code
-    };
-    // Launch post request via ajax
-    $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
-            console.log(response);
-            let parsed_resp = JSON.parse(response);
-            if (parsed_resp[0] == "Success!") {
-                let data_array = parsed_resp[1];
-                let data_value = data_array[0][field_name];
-                document.getElementById(table_name + "-" + row_num + "-" + col_num).value = data_value;
-            }
-        }
-    });
-}
 
-// Inserts a row into the table
-function insert_row(table_name, table_query_name, field_name, id_field, num_fields, key_code) {
+/**
+ * Inserts a row into the table
+ * 
+ * @param {string} table_name ID of table
+ * @param {string} table_query_name Name of table in query
+ * @param {string} field_name Column name of field to be updated
+ * @param {int} num_fields The number of fields (excluding ID) that are part of the entity
+ */
+function insert_row(table_name, table_query_name, field_name, num_fields) {
     // Prepare post request
     var ajaxurl = query_handler_url;
     let new_values = [];
@@ -108,8 +100,7 @@ function insert_row(table_name, table_query_name, field_name, id_field, num_fiel
         table_name: table_name,
         table_query_name: table_query_name,
         field_name: field_name,
-        new_values: JSON.stringify(new_values),
-        key_code: key_code
+        new_values: JSON.stringify(new_values)
     };
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
@@ -132,8 +123,16 @@ function insert_row(table_name, table_query_name, field_name, id_field, num_fiel
     });
 }
 
-// Deletes a row in a table
-function delete_row(table_name, table_query_name, field_name, id_field, id_value, row_num, col_num, key_code) {
+/**
+ * Deletes a row in the table
+ * 
+ * @param {string} table_name ID of table
+ * @param {string} table_query_name Name of table in query
+ * @param {string} field_name Column name of field to be updated
+ * @param {string} id_field ID field for table
+ * @param {int} id_value The ID value for this update item
+ */
+function delete_row(table_name, table_query_name, field_name, id_field, id_value) {
     // Prepare post request
     var ajaxurl = query_handler_url;
     // Make data object to send to post request
@@ -142,7 +141,6 @@ function delete_row(table_name, table_query_name, field_name, id_field, id_value
         field_name: field_name,
         id_field: id_field,
         id_value: id_value,
-        key_code: key_code
     };
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
@@ -173,15 +171,20 @@ function update_table_input_child_htmls(table_name) {
     });
 }
 
-// Generates the html for a viewable table
-function generate_table_view(table_name, table_query_name, query, max_width) {
+/**
+ * Generates the html for a viewable table 
+ * 
+ * @param {string} table_name ID of table
+ * @param {string} table_query_name Name of table in query
+ * @param {int | string} max_width The maximum width of the table, or "Inf" if not constrained
+ */
+function generate_table_view(table_name, table_query_name, max_width) {
     // Prepare post request
     var ajaxurl = table_generator_url;
     // Make data object to send to post request
     let data =  {generate_table_viewable: "generate_table_viewable",
         table_name: table_name,
-        table_query_name: table_query_name,
-        query: query,
+        table_query_name: table_query_name
     };
     // Add filter elements if need be
     if (table_filters[table_name] != null) {
@@ -203,6 +206,7 @@ function generate_table_view(table_name, table_query_name, query, max_width) {
     }
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
+            console.log(response);
             let parsed_resp = JSON.parse(response);
             if (parsed_resp[0] == "Success!") {
                 console.log("Making table view");
@@ -225,7 +229,6 @@ function generate_table_view(table_name, table_query_name, query, max_width) {
                             <tr>
                 `;
                 // Get each header (field name)
-                let id_field = field_array[0];
                 for (let i = 0; i < field_array.length; i++) {
                     html_string += `
                                 <th>${field_array[i]}</th>
@@ -278,21 +281,25 @@ function generate_table_view(table_name, table_query_name, query, max_width) {
 
 }
 
-// Generates the html for an editable table
-function generate_table_editable(table_name, table_query_name, query, max_width) {
+/**
+ * Generates the html for an editable table 
+ * 
+ * @param {string} table_name ID of table
+ * @param {string} table_query_name Name of table in query
+ * @param {int | string} max_width The maximum width of the table, or "Inf" if not constrained
+ */
+function generate_table_editable(table_name, table_query_name, max_width) {
     // Prepare Post Request
     var ajaxurl = table_generator_url;
     // Make data object to send to post request
     let data =  {generate_table_editable: "generate_table_editable",
         table_name: table_name,
-        table_query_name: table_query_name,
-        query: query
+        table_query_name: table_query_name
     };
     console.log(ajaxurl);
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
             // console.log(response);
-            console.log(response);
             let parsed_resp = JSON.parse(response);
 
             if (parsed_resp[0] == "Success!") {
@@ -341,15 +348,15 @@ function generate_table_editable(table_name, table_query_name, query, max_width)
                             let curr_field_array = curr_row_array[j];
                             let curr_field_type = input_field_types[j - 1];
                             let curr_field_type_parts = curr_field_type.split("::");
-                            let on_change_text = `update_table('${table_name}', '${table_query_name}', '${curr_field_array[2]}',  '${id_field}',  '${curr_field_array[4]}',  '${i}',  '${j}', '${curr_field_array[curr_field_array.length - 1]}');`;
+                            let on_change_text = `update_table('${table_name}', '${table_query_name}', '${curr_field_array[2]}',  '${id_field}',  '${curr_field_array[4]}',  '${i}',  '${j}');`;
                             // Sync the date fields if need be or handle any constraints
                             if (curr_field_type_parts[0] == "datetime-local") {
                                 if (curr_field_type_parts.length > 1) {
                                     let constraint = curr_field_type_parts[1];
                                     if (constraint == "start") {
-                                        on_change_text += `make_dates_consistent('${table_name}-INSERT-${j}', null, '${table_name}-INSERT-${j + 1}');`;
+                                        on_change_text = `make_dates_consistent('${table_name}-INSERT-${j}', null, '${table_name}-INSERT-${j + 1}');` + on_change_text;
                                     } else if (constraint == "end") {
-                                        on_change_text += `make_dates_consistent('${table_name}-INSERT-${j}', '${table_name}-INSERT-${j - 1}', null);`;
+                                        on_change_text = `make_dates_consistent('${table_name}-INSERT-${j}', '${table_name}-INSERT-${j - 1}', null);` + on_change_text;
                                     }
                                 }
                             }
@@ -357,7 +364,7 @@ function generate_table_editable(table_name, table_query_name, query, max_width)
                                     <td>
                                         <input id = "${table_name}-${i}-${j}" 
                                             type = "${input_field_types[j - 1].split("::")[0]}"
-                                            value = "${curr_field_array[curr_field_array.length - 2]}"  
+                                            value = "${curr_field_array[curr_field_array.length - 1]}"  
                                             onChange = "${on_change_text}">
                                     </td>
                             `;
@@ -366,7 +373,7 @@ function generate_table_editable(table_name, table_query_name, query, max_width)
                             html_string += `
                                     <td>
                                         <label>${curr_row_array[j][0]}</label>
-                                        <button onClick = "delete_row('${table_name}', '${table_query_name}', '${field_array[j]}',  '${id_field}',  '${curr_field_array[0]}',  '${i}',  '${j}', '${curr_field_array[1]}')">X</button>
+                                        <button onClick = "delete_row('${table_name}', '${table_query_name}', '${field_array[j]}',  '${id_field}',  '${curr_field_array[0]}')">X</button>
                                     </td>
                             `;
                         }
@@ -401,7 +408,7 @@ function generate_table_editable(table_name, table_query_name, query, max_width)
                     } else {
                         html_string += `
                                     <td>
-                                        <button onClick="insert_row('${table_name}',  '${table_query_name}', '${field_array[j]}', '${id_field}', '${field_array.length}', '${insert_array[insert_array.length - 1]}');">Add Row</button>
+                                        <button onClick="insert_row('${table_name}',  '${table_query_name}', '${field_array[j]}', '${id_field}', '${field_array.length}');">Add Row</button>
                                     </td>
                         `;
                     }
@@ -419,13 +426,13 @@ function generate_table_editable(table_name, table_query_name, query, max_width)
                 update_table_input_child_htmls(table_name);
             }
             // Reload all dependants
-            let dependant_array = table_dependants[table_name];
-            if (dependant_array == null) {
+            let dependent_array = table_dependants[table_name];
+            if (dependent_array == null) {
                 return;
             }
-            for (let k = 0; k < dependant_array.length; k++) {
+            for (let k = 0; k < dependent_array.length; k++) {
                 // Make all dependents now
-                let d_name = depedant_array[k];
+                let d_name = dependent_array[k];
                 regenerate_table(d_name);
             }
     
@@ -440,7 +447,6 @@ function generate_table_editable(table_name, table_query_name, query, max_width)
  * 
  * @param {string} table_name ID of table element
  * @param {string[]} filter_array List of strings corresponding to filter elements
- * @return void
  */
 function toggle_filters(table_name, filter_array) {
     // Toggle each filter
@@ -460,7 +466,6 @@ function toggle_filters(table_name, filter_array) {
  * @param {string} div_name ID of the input date field
  * @param {string} table_name ID of table that the field affects
  * @param {array} filter_array array of elements that contains the filter options
- * @return void
  */
 function update_filter(div_name, table_name, filter_array) {
     let val = document.getElementById(div_name).value;

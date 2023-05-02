@@ -3,17 +3,13 @@ $suspend_head = true;
 include "../res/head.php"; 
 
 // Make the tables and filter objects
-$bookings_user_table = generate_data_table($data_tables, "bookings-user-div", "b-rv-bookings-user", "Booking", "SELECT Booking.Booking_NO, Room.Room_Num, Hotel.Hotel_Name, Booking.Start_Date, Booking.End_Date FROM Booking INNER JOIN Room ON Room.Room_ID = Booking.Room_ID INNER JOIN Hotel ON Hotel.Hotel_ID = Room.Hotel_ID  ORDER BY Booking_NO ASC", "Inf", ["text", "text", "datetime-local::start", "datetime-local::end"], []);
-if(isset($_POST['generate_table_editable'])) {
-    ob_get_clean();
-    // $data_tables["bookings-user-div"] = $bookings_user_table;
-    echo json_encode($data_tables);
-}
+$bookings_user_table = generate_data_editor($data_editors, $data_tables, "bookings-user-div", "b-rv-bookings-user", "Booking", "SELECT Booking.Booking_NO, Room.Room_Num, Hotel.Hotel_Name, Booking.Start_Date, Booking.End_Date FROM Booking INNER JOIN Room ON Room.Room_ID = Booking.Room_ID INNER JOIN Hotel ON Hotel.Hotel_ID = Room.Hotel_ID  ORDER BY Booking_NO ASC", "Inf", ["text", "text", "datetime-local::start", "datetime-local::end"], []);
 $bookings_table = generate_data_table($data_tables, "bookings-div", "b-rv-bookings", "Booking", "SELECT Room.Room_Num, Hotel.Hotel_Name, Booking.Start_Date, Booking.End_Date FROM Booking INNER JOIN Room ON Room.Room_ID = Booking.Room_ID INNER JOIN Hotel ON Hotel.Hotel_ID = Room.Hotel_ID  ORDER BY Booking_NO ASC", "Inf", ["text", "text", "datetime-local::start", "datetime-local::end"], []);
 $hotels_table = generate_data_table($data_tables, "hotels-div", "b-rv-hotels", "Hotel", "SELECT * FROM Hotel_View", "Inf", ["text", "text", "text", "text"], []);
 $rooms_table = generate_data_table($data_tables, "rooms-div", "b-rv-rooms", "Room", "SELECT Hotel.Hotel_Name, Hotel.Hotel_City, Hotel.Hotel_State, Hotel.Hotel_Country, Room.Room_Num, Room.Price, Room.Capacity FROM Room Inner Join Hotel ON Room.Hotel_ID = Hotel.Hotel_ID", "Inf", ["text", "text", "text", "text", "text", "text", "text"], []);
+
 // Include the query handler and table generator files
-// include $backup . "res/query_handler.php";
+include $backup . "res/query_handler.php";
 include $backup . "res/table_generator.php";
 
 // Print all the stuff in head like navbar
@@ -34,6 +30,9 @@ echo ob_get_clean();
             <?php
                 $gtv_bookings = generate_table_view($bookings_table);
                 echo $gtv_bookings;    
+                // Add a dependency to the bookings_user_table. This causes this view to update when the user edits the table bookings_user_table
+                $bookings_dep1 = generate_table_dependency($bookings_user_table, $bookings_table);
+                echo $bookings_dep1;
             ?>
             </div>
         <h2 class = "text-center">Hotels:</h2>
@@ -81,14 +80,4 @@ echo ob_get_clean();
                 echo $gte_rooms;
             ?>
             </div>
-            <div class="form-group">
-        
-                <label for="date_time">Date and Time:</label>
-                <input type="datetime-local" class="form-control" id="date_time" name="date_time">
-        
-                <label for="description">Review:</label>
-                <textarea class="form-control" id="description" name="description" rows="5"></textarea>
-            </div>
-        
-            <button type="submit" class="btn btn-primary">Submit</button>
 </div>
