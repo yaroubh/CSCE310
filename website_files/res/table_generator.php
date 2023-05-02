@@ -235,7 +235,8 @@ function filter_key_code_check(&$data_filters, $filters) {
 // Generate an editable table
 if(isset($_POST['generate_table_editable']))
 {
-    ob_get_clean();
+    // Dump previous output so only the following output is sent back to the post request
+    ob_clean();
     // Get POST fields
     $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
@@ -255,7 +256,8 @@ if(isset($_POST['generate_table_editable']))
 // Generate an non-editable table
 if(isset($_POST['generate_table_viewable']))
 {
-    ob_get_clean();
+    // Dump previous output so only the following output is sent back to the post request
+    ob_clean();
     // Get POST fields
     $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];

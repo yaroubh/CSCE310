@@ -43,6 +43,7 @@ function verify_column($conn, $table_name, $col_name) {
 // Update a field in a table
 if(isset($_POST['update_field']))
 {
+    // Dump previous output so only the following output is sent back to the post request
     ob_clean();
     $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
@@ -92,6 +93,7 @@ if(isset($_POST['update_field']))
 // Update a field in a table
 if(isset($_POST['insert_row']))
 {
+    // Dump previous output so only the following output is sent back to the post request
     ob_clean();
     $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
@@ -129,6 +131,7 @@ if(isset($_POST['insert_row']))
 // Delete a row in a table
 if(isset($_POST['delete_row']))
 {
+    // Dump previous output so only the following output is sent back to the post request
     ob_clean();
     $table_query_name = $_POST['table_query_name'];
     $field_name = $_POST['field_name'];
