@@ -51,7 +51,7 @@ if ($stmt = $con->prepare('SELECT User_ID, Password, User_Type FROM Users WHERE 
                 $_SESSION['employee_jobtype'] = $employee_jobtype;
 
             } else {
-                $_SESSION['employee_jobtype'] = "NA";
+                $_SESSION['employee_jobtype'] = "N/A";
             }
             // echo 'Welcome ' . $_SESSION['name'] . '!';
             header('Location: home.php');

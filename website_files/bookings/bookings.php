@@ -119,3 +119,6 @@ echo ob_get_clean();
             ?>
             </div>
 </div>
+
+<script type="text/javascript" src="<?php echo $backup . "res/toc.js";?>"></script>
+   

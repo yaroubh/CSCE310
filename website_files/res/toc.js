@@ -3,29 +3,34 @@
  * 
  */
 
-var newLine, el, title, link;
+// Table of contents variable
+var toc = `
+    <nav class='toc'>
+        <h3>Table of Contents:</h3>
+            <ul>`;
 
 $(".toc-header").each(function() {
+  
+  // Get the element and it's id
+  let element = $(this);
+  let heading = element.text();
+  // Create a link to the element
+  let link = "#" + element.attr("id");
 
-  el = $(this);
-  title = el.text();
-  link = "#" + el.attr("id");
+  let next_line = `
+    <li> 
+      <a href='${link}'> 
+        ${heading} 
+      </a> 
+    </li>
+    `;
 
-  newLine =
-    "<li>" +
-      "<a href='" + link + "'>" +
-        title +
-      "</a>" +
-    "</li>";
-
-  ToC += newLine;
-
-
-
+    toc += next_line;
 });
 
-ToC +=
-   "</ul>" +
-  "</nav>";
+toc += `
+        </ul>
+    </nav>
+`;
 
-$(".content").prepend(ToC);
+$(".content").prepend(toc);
