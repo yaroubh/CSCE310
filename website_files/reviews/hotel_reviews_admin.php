@@ -22,8 +22,6 @@
             }
         }
 
-        // create view of the rating, description and date columns from review table.
-        $sql = "CREATE VIEW Review_View AS SELECT Review_ID, Rating, Description, Review_Date FROM Reviews";
         // echo $sql;
 
         // Get reviews from Review_View
@@ -37,7 +35,9 @@
                 echo "<li>";
                 echo "<div class='review'>";
                 echo "<div class='review-header'>";
-                echo "<div class='hotel-info'>Rating: " . $row["Rating"] . " | ". $row["Review_Date"] . "</div>";
+                echo "<div class='hotel-info'><p>Username (User_ID): " . $row["username"] . " (" . $row["User_ID"] . ")</p>";
+                echo "<p>Hotel_Name (Hotel_ID): "  . $row["Hotel_Name"] . " (" . $row["Hotel_ID"] . ")</p>";
+                echo "<p>Rating: " .$row["Rating"] . " | ". $row["Review_Date"] . "</p></div>";
                 echo "</div>";
                 echo "<div class='review-description'>" . $row["Description"] . "</div>";
                 // Add delete button for each review

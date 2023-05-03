@@ -1,4 +1,4 @@
-                                    <?php include "../res/head.php"; ?>
+<?php include "../res/head.php"; ?>
 <link rel="stylesheet" href="style.css">
 <div id = "review-button">
     <a href="hotel_reviews.php" class="btn btn-primary">Back to Review</a>
@@ -51,14 +51,9 @@
         $description = $_POST['description'];
         $date_time = date('Y-m-d H:i:s', strtotime($_POST['date_time']));
 
-        // Create indexes on the relevant columns
-
-        // $conn->query("CREATE INDEX idx_users_username ON Users (Username)");
-        // $conn->query("CREATE INDEX idx_hotel_hotel_name ON Hotel (Hotel_Name)");
-
-      
+        $actual_username =  $_SESSION["name"];
         // Query database to check if username and hotel exist
-        $username_result = $conn->query("SELECT * FROM Users WHERE lower(trim(Username)) = '$username'");
+        $username_result = $conn->query("SELECT * FROM Users WHERE lower(trim(Username)) = '$actual_username'");
         $hotel_result = $conn->query("SELECT * FROM Hotel WHERE lower(trim(Hotel_Name)) = '$hotel'");
 
         if ($username_result->num_rows == 0) {
