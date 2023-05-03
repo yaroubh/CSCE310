@@ -224,6 +224,51 @@ try {
 }
 echo "</p>";
 
+$sql = 'CREATE INDEX IF NOT EXISTS idx_users_username ON Users (Username)';
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Index idx_users_username created successfully";
+    } else {
+        echo "Error creating index: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+$sql = 'CREATE INDEX IF NOT EXISTS idx_hotel_hotel_name ON Hotel (Hotel_Name)';
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Index idx_hotel_hotel_name created successfully";
+    } else {
+        echo "Error creating index: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+// create view of the rating, description and date columns from review table.
+$sql = "CREATE VIEW IF NOT EXISTS Review_View 
+AS SELECT Reviews.Review_ID, Users.User_ID, Users.username, Hotel.Hotel_ID, Hotel.Hotel_Name, Reviews.Rating, Reviews.Description, Reviews.Review_Date FROM Reviews
+INNER JOIN Users on Users.User_ID = Reviews.User_ID
+INNER JOIN Hotel on Hotel.Hotel_ID = Reviews.Hotel_ID";
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "View Review_View created successfully";
+    } else {
+        echo "Error creating view: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
 $sql = 'CREATE TABLE Service_Type (
     ST_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Service_Type VARCHAR(45) NOT NULL,

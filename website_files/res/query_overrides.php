@@ -55,8 +55,11 @@ function override_insert_sql($conn, $table_name, $table_query_name, $field_array
  * @param mysqli $conn MySQLi connection object
  * @param string $table_name ID of table element
  * @param string $table_query_name Name of table to be used in query
- * @param array $field_array List of field values to be inserted
- * @param 
+ * @param string $field_name Name of the column to be updated
+ * @param string $field_value Value of the attribute to be updated
+ * @param int $col_num The column number of the field
+ * @param string $id_field The ID field used in the table
+ * @param string $id_value The unique id for the row we are updating
  * @param int $user_id ID of the user
  * @return string Status of performing override
  */
