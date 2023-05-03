@@ -1,6 +1,6 @@
 #review-button {
     position: absolute;
-    top: 10px;
+    top: 70px;
     right: 10px;
     /* padding-top: 50px; */
   }
@@ -104,8 +104,45 @@ button[type="submit"] {
     font-size: 16px;
     cursor: pointer;
   }
+
+  button[type="delete"] {
+    background-color: #d01623c7;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
   
   button[type="submit"]:hover {
     background-color: #0069d9;
   }
+  button[type="delete"]:hover {
+    background-color: red;
+  }
   
+
+
+
+
+
+  .review-header {
+    margin-bottom: 10px;
+  }
+  
+  .hotel-info {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .review-description {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .review_list{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }

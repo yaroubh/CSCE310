@@ -21,16 +21,27 @@
                             // If we are an administrator, grant access to the administrator view of bookings page
                             if ($_SESSION["employee_jobtype"] === "Administrator") { 
                                 ?>
-                            <li class = ""><a class = "nav-link" href = <?php echo $backup . "bookings/bookings_admin.php"?>>Bookings (Administrator View)</a></li>   
+                            <li class = ""><a class = "nav-link" href = <?php echo $backup . "bookings/bookings_admin.php"?>>Bookings (Administrator View)</a></li>  
+                            <!-- <li class = ""><a class = "nav-link" href = <?php echo $backup . "reviews/hotel_reviews_admin.php"?>>Reviews (Administrator View)</a></li>    -->
+ 
                             <?php } ?>                            
                         </ul>
                     <?php } else { ?>
                         </a>
                     <?php } ?>
                 </li>
-                <li class = "nav-item">
+                <?php 
+                    // If we are an administrator, grant access to the administrator view of bookings page
+                    if ($_SESSION["employee_jobtype"] === "Administrator") { 
+                        ?>
+                        <li class = ""><a class = "nav-link" href = <?php echo $backup . "reviews/hotel_reviews_admin.php"?>>Reviews (Administrator View)</a></li>   
+
+                <?php } else{ ?>      
+                    <li class = "nav-item">
                     <a class = "nav-link" href="<?php echo $backup . "reviews/hotel_reviews.php"?>"><i class="fas"></i>Reviews</a>
-                </li>
+                </li>               
+                 <?php } ?>
+                
             </ul>
             <ul class = "nav navbar-nav ml-auto">
                 <li class = "nav-item">
