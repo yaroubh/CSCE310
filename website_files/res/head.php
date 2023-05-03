@@ -15,12 +15,6 @@ if(!$conn){
     # print("success!");
 }
 
-// Go to login immediately if we are not logged in
-if (!isset($_SESSION['loggedin'])) {
-	header('Location: login.php');
-	exit;
-}
-
 # Get the base path of the file and ignore everything else. We can use this to easily navigate to other files
 $path = getcwd() . "/";
 $path = str_replace('\\', '/', $path);
@@ -28,6 +22,7 @@ $path_parts = explode('/website_files/', $path);
 $path_editor = str_replace('\\', '/',  $_SERVER["PHP_SELF"]);
 $path_editor_parts = explode('/website_files/', $path_editor);
 $local_path_editor = array_pop($path_editor_parts);
+
 #  foreach ($path_parts as $path_part) {
 #      echo "<p>Part: " . $path_part . "</p>";
 #  }
@@ -36,6 +31,12 @@ $folder_depth = substr_count($local_path, "/");
 $backup = "";
 for ($i = 0; $i < $folder_depth; $i++) {
     $backup .= "../";
+}
+
+// Go to login immediately if we are not logged in
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: ' . $path_editor_parts[0] . "/website_files/login/login.php");
+	exit();
 }
 
 // Initialize arrays for data_tables and data_filters

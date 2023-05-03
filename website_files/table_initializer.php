@@ -1,5 +1,5 @@
 <?php
-include 'res/connect.php';
+include_once 'res/connect.php';
 # Make tables
 # Initializes all database tables with a sample dataset
 function make_user($conn, $id, $fname, $lname, $phone_num, $email, $username, $password, $userType) {

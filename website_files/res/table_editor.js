@@ -36,10 +36,10 @@ function update_table(table_name, table_query_name, field_name, id_field, id_val
         id_value: id_value,
         col_num: col_num,
     };
-    console.log(data);
+    // console.log(data);
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
-            console.log(response);
+            // console.log(response);
             let parsed_resp = JSON.parse(response);
             // Add the warning to be made
             if (parsed_resp[0] == "mysqli_sql_exception") { 
@@ -176,7 +176,7 @@ function update_table_input_child_htmls(table_name) {
  * 
  * @param {string} table_name ID of table
  * @param {string} table_query_name Name of table in query
- * @param {int | string} max_width The maximum width of the table, or "Inf" if not constrained
+ * @param {string} max_width The maximum width of the table, or "Inf" if not constrained
  */
 function generate_table_view(table_name, table_query_name, max_width) {
     // Prepare post request
@@ -209,10 +209,10 @@ function generate_table_view(table_name, table_query_name, max_width) {
     }
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
-            console.log(response);
+            // console.log(response);
             let parsed_resp = JSON.parse(response);
             if (parsed_resp[0] == "Success!") {
-                console.log("Making table view");
+                // console.log("Making table view");
                 // Get the arrays
                 let data_array = parsed_resp[1];
                 let field_array = data_array[0];
@@ -289,7 +289,7 @@ function generate_table_view(table_name, table_query_name, max_width) {
  * 
  * @param {string} table_name ID of table
  * @param {string} table_query_name Name of table in query
- * @param {int | string} max_width The maximum width of the table, or "Inf" if not constrained
+ * @param {string} max_width The maximum width of the table, or "Inf" if not constrained
  */
 function generate_table_editable(table_name, table_query_name, max_width) {
     // Prepare Post Request
@@ -299,7 +299,7 @@ function generate_table_editable(table_name, table_query_name, max_width) {
         table_name: table_name,
         table_query_name: table_query_name
     };
-    console.log(ajaxurl);
+    // console.log(ajaxurl);
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
             // console.log(response);
