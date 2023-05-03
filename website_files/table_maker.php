@@ -1,5 +1,5 @@
 <?php
-include 'res/connect.php';
+include_once 'res/connect.php';
 # Make tables
 # Initializes all database tables
 $sql = 'CREATE TABLE Users (
@@ -25,7 +25,7 @@ try {
 }
 echo "</p>";
 
-$sql = 'CREATE VIEW User_View AS
+$sql = 'CREATE VIEW IF NOT EXISTS User_View AS
         SELECT FName, LName, Phone_No, Email, Username, Password, User_Type
         FROM Users';
 
@@ -61,7 +61,7 @@ try {
 }
 echo "</p>";
 
-$sql = 'CREATE VIEW Hotel_View AS
+$sql = 'CREATE VIEW IF NOT EXISTS Hotel_View AS
         SELECT Hotel_Name, Hotel_City, Hotel_State, Hotel_Country
         FROM Hotel';
 
@@ -97,7 +97,7 @@ try {
 }
 echo "</p>";
 
-$sql = 'CREATE VIEW Employee_View AS
+$sql = 'CREATE VIEW IF NOT EXISTS Employee_View AS
         SELECT Users.FName, Users.LName, Users.Phone_No, Users.Email, Users.Username, Users.Password, Employees.Employee_JobType
         FROM Users Inner Join Employees ON Users.user_ID = Employees.user_ID';
 
