@@ -50,8 +50,7 @@
         $rating = intval($_POST['rating']);
         $description = $_POST['description'];
         $date_time = date('Y-m-d H:i:s', strtotime($_POST['date_time']));
-
-        $actual_username =  $_SESSION["name"];
+        
         // Query database to check if username and hotel exist
         $username_result = $conn->query("SELECT * FROM Users WHERE lower(trim(Username)) = '$actual_username'");
         $hotel_result = $conn->query("SELECT * FROM Hotel WHERE lower(trim(Hotel_Name)) = '$hotel'");
@@ -73,8 +72,12 @@
           $q = "INSERT INTO Reviews (Hotel_ID, User_ID, Rating, Description, Review_Date) VALUES ($hotel_id, $user_id, $rating, '$description', '$date_time')";
           if ($conn->query($q) === TRUE) {
             echo "<p class='success'>Review successfully created</p>";
+            header("refresh:1.5;url=hotel_reviews.php");
+            exit;
           } else {
             echo "<p class='error'>Error: " . $conn->error . "</p>";
+            header("refresh:1.5");
+            exit;
           }
         }
       }
