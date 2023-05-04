@@ -1,0 +1,39 @@
+For php files:
+
+<!---------------------------------------------------------------------------------------------- 
+Author of code: <Enter your name, and if applicable others names who helped>
+
+(If this file has co-authors)
+<Author 1> was responsible for coding <use function names or distinguished code blocks> at lines <lines of code>.
+<Author 2> was responsible for coding <use function names or distinguished code blocks> at lines <lines of code>.
+
+This file <give a solid summary of the purpose of this file and what other files build off of it if applciable>.
+
+----------------------------------------------------------------------------------------------->
+
+For css and js files:
+
+/************************************************************************************************
+* Author of code: <Enter your name, and if applicable others names who helped>
+*
+* (If this file has co-authors)
+* <Author 1> was responsible for coding <use function names or distinguished code blocks> at lines <lines of code>.
+* <Author 2> was responsible for coding <use function names or distinguished code blocks> at lines <lines of code>.
+*
+* This file <give a solid summary of the purpose of this file, and if applicable what other files build off of it >.
+*
+************************************************************************************************/
+
+EXAMPLE:
+
+/************************************************************************************************
+* Author of code: Yaroub and Jacob
+*
+* (If this file has co-authors)
+* Yaroub was responsible for coding the frame of the navigation bar and its functionality at lines 1-50 and 70-100.
+* Jacob was responsible for coding an extra button onto the navigation bar at lines 51-69.
+*
+* This file provides the format, frame, content, and functionality for the navigation bar which holds buttons that access
+* the reviews, bookings, profiles, and logging out. 
+*
+************************************************************************************************/
