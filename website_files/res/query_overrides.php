@@ -1,5 +1,7 @@
 <?php
-// This file overrides insertion, deletion, and updating of certain table values
+/**
+ * This file overrides insertion, deletion, and updating of certain table values
+ */ 
 
 /**
  * Overrides the insertion of elements into a table
@@ -45,7 +47,7 @@ function override_insert_sql($conn, $table_name, $table_query_name, $field_array
         }
     }    
     else if($table_name === "b-rv-users"){
-
+        // Override the customers table in the Accounts Admin view
         $num_params = sizeof($field_array);
 
         // Execute the SQL statement
@@ -56,6 +58,37 @@ function override_insert_sql($conn, $table_name, $table_query_name, $field_array
         echo json_encode(array("Success!", $result));
         return "SUCCESS";
 
+    } else if ($table_name === "b-rv-emps") {
+        // Override the employees table in the Accounts Admin view
+        $num_params = sizeof($field_array);
+        // Insert the employees data into the users table
+        $stmt = $conn->prepare('INSERT INTO users (fname, lname, phone_no, email, username, password, user_type) VALUES (?, ?, ?, ?, ?, ?, "Employee")');
+        # The first parameter indicates the types of variables for each column
+        # the first column, fname should be a string, so it's "s"
+        # The last custom column, phone_no, should be an integer, so it's "i"
+        # There are six custom columns, so there are 6 letters, one for each column
+        $user_params = array_slice($field_array, 0, 6);
+        $stmt->bind_param('ssisss', ...$user_params);
+        $stmt->execute(); 
+        $stmt->close();
+
+        // We now need to get the user id
+        $stmt = $conn->prepare('SELECT user_id FROM users WHERE username = ?');
+        // In this case we want to get the user id and bind the result to it.
+        $stmt->bind_param('s', $field_array[4]);
+        $stmt->execute();
+        $stmt->bind_result($user_id);
+        $stmt->fetch();
+        $stmt->close();
+
+        # Insert into employees table
+        $stmt = $conn->prepare('INSERT INTO employees (user_id, hotel_id, employee_jobtype) VALUES (?, ?, ?)'); 
+        $stmt->bind_param('sis', $user_id, $field_array[6], $field_array[7]);
+        $result = $stmt -> execute();
+        echo json_encode(array("Success!", $result));
+        return "SUCCESS";
+
+        
     } else {
         // echo "No override for " . $table_name;
         return "NO_OVERRIDE";
@@ -132,6 +165,25 @@ function override_update_sql($conn, $table_name, $table_query_name, $field_name,
             echo json_encode(array("mysqli_sql_exception", "No room matches that id!"));
             return "FAILURE";
         }
+    } else if ($table_name == "b-rv-emps") {
+        // Update values in the employees table of the Accounts Admin view
+        // Necessary for the last two columns -> which don't belong in Users -> requires different SQL
+        if ($col_num === "7") {
+            // Update the Hotel_ID in the employees table 
+            $query = $conn -> prepare("UPDATE Employees SET Hotel_ID = ? WHERE " . $id_field . " = ?");
+            $query -> bind_param("ii", $field_value, $id_value);
+        } else if ($col_num === "8") {
+            // Update the Employee_JobType in the employees table 
+            $query = $conn -> prepare("UPDATE Employees SET Employee_JobType = ? WHERE " . $id_field . " = ?");
+            $query -> bind_param("si", $field_value, $id_value);
+        } else {
+            // Other columns are updated by default in users table -> no need for an override
+            return "NO_OVERRIDE";
+        }
+        $stmt = $query -> execute();
+        $result = $query -> get_result();
+        echo json_encode(array("Success!", $result));
+        return "SUCCESS";
     } else {
         // echo "No override for " . $table_name;
         return "NO_OVERRIDE";

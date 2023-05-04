@@ -85,7 +85,6 @@ function insert_row(table_name, table_query_name, field_name, num_fields) {
     // Prepare post request
     var ajaxurl = query_handler_url;
     let new_values = [];
-    console.log(num_fields);
     // Get all values of the current row and save them to an array
     for (let i = 1; i < num_fields; i++) {
         let new_value = document.getElementById(table_name + "-INSERT-" + i).value;
@@ -103,10 +102,10 @@ function insert_row(table_name, table_query_name, field_name, num_fields) {
         field_name: field_name,
         new_values: JSON.stringify(new_values)
     };
-    console.log(data);
+    // console.log(data);
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
-            console.log(response);
+            // console.log(response);
             let parsed_resp = JSON.parse(response);
             if (parsed_resp[0] == "mysqli_sql_exception") { 
                 // Make an error message
@@ -147,7 +146,7 @@ function delete_row(table_name, table_query_name, field_name, id_field, id_value
     };
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
-            console.log(response);
+            // console.log(response);
             let parsed_resp = JSON.parse(response);
             if (parsed_resp[0] == "Success!") {
                 regenerate_table(table_name);
@@ -305,7 +304,7 @@ function generate_table_editable(table_name, table_query_name, max_width) {
     // console.log(ajaxurl);
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
-            console.log(response);
+            // console.log(response);
             let parsed_resp = JSON.parse(response);
 
             if (parsed_resp[0] == "Success!") {
@@ -407,6 +406,7 @@ function generate_table_editable(table_name, table_query_name, max_width) {
                                 }
                             }
                         }
+                        // Add a cell with the input
                         html_string += `
                                     <td>
                                         <input type = "${input_field_types[j - 1].split("::")[0]}" id = "${table_name}-INSERT-${j}"  ${on_change_text}>

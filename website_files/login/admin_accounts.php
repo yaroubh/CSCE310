@@ -9,7 +9,7 @@ include "../res/head.php";
 $users_table = generate_data_editor($data_editors, $data_tables, "users-div", "b-rv-users", "Users", "SELECT User_ID, FName, LName, Phone_NO, Email, Username, Password FROM Users WHERE User_Type = 'Customer'", "Inf", ["text", "text", "text", "text", "text", "text"], []);
 
 // Allows administrators to view employees
-$emps_table = generate_data_editor($data_editors, $data_tables, "emps-div", "b-rv-emps", "Employees", "SELECT Users.User_ID, Users.Username, Users.Password, Users.Email, users.FName, Users.LName, Users.Phone_No, Employees.Employee_JobType, Employees.Hotel_ID FROM Users Inner Join Employees ON Users.user_ID = Employees.user_ID", "Inf", ["text", "text", "text", "text", "text", "text", "text", "text"], []);
+$emps_table = generate_data_editor($data_editors, $data_tables, "emps-div", "b-rv-emps", "Users", "SELECT Users.User_ID, Users.FName, Users.LName, Users.Phone_NO, users.Email, Users.Username, Users.Password, Employees.Hotel_ID, Employees.Employee_JobType FROM Users Inner Join Employees ON Users.user_ID = Employees.user_ID", "Inf", ["text", "text", "text", "text", "text", "text", "text", "text"], []);
 
 // Include the query handler and table generator files
 include $backup . "res/query_handler.php";
@@ -28,7 +28,7 @@ echo ob_get_clean();
                     echo $gtv_emps;    
                 ?>
             </div>
-        <h2 class = "toc-header text-center" id = "users-toc-header">Users:</h2>
+        <h2 class = "toc-header text-center" id = "users-toc-header">Customers:</h2>
             <div id = "users-div">
             <?php 
                 $gtv_users = generate_table_editable($users_table);
