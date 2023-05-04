@@ -14,7 +14,8 @@ function verify_table($conn, $table_name) {
     $result = $conn -> query($query);
     # echo $result;
     for($i=0; $row = $result->fetch_array(); $i++){
-        if ($row[0] === $check_table_name) {
+        // echo $row[0] . ' ' . $check_table_name . '\n';
+        if (strtolower($row[0]) === $check_table_name) {
             return true;
         }
     }
@@ -118,7 +119,7 @@ if(isset($_POST['insert_row']))
                 $query -> bind_param(str_repeat("s", $num_params), ...$new_values_array);
                 $stmt = $query -> execute();
                 $result = $query -> get_result();
-                echo json_encode(array("Success!", $result, $override_results));
+                echo json_encode(array("Success!", $result));
             }
         } catch (Exception $ex) {
             echo json_encode(array(get_class($ex), $ex->getMessage(), $new_values_array));
@@ -133,7 +134,9 @@ if(isset($_POST['delete_row']))
 {
     // Dump previous output so only the following output is sent back to the post request
     ob_clean();
+    $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
+    // echo $table_name . $table_query_name;
     $field_name = $_POST['field_name'];
     $id_field = $_POST['id_field'];
     $id_value = $_POST['id_value'];

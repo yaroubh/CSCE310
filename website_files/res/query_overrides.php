@@ -43,8 +43,21 @@ function override_insert_sql($conn, $table_name, $table_query_name, $field_array
             echo json_encode(array("mysqli_sql_exception", "No room matches that room number and hotel name!"));
             return "FAILURE";
         }
+    }    
+    else if($table_name === "b-rv-users"){
+
+        $num_params = sizeof($field_array);
+
+        // Execute the SQL statement
+        $query = $conn -> prepare("INSERT INTO Users (FName, LName, Phone_NO, Email, Username, Password, User_Type) VALUES (". str_repeat("?, ", $num_params - 1) ."?, 'Customer')");
+        $query -> bind_param(str_repeat("s", $num_params), ...$field_array);
+        $stmt = $query -> execute();
+        $result = $query -> get_result();
+        echo json_encode(array("Success!", $result));
+        return "SUCCESS";
+
     } else {
-        echo "No override for " . $table_name;
+        // echo "No override for " . $table_name;
         return "NO_OVERRIDE";
     }
 }
@@ -120,7 +133,7 @@ function override_update_sql($conn, $table_name, $table_query_name, $field_name,
             return "FAILURE";
         }
     } else {
-        echo "No override for " . $table_name;
+        // echo "No override for " . $table_name;
         return "NO_OVERRIDE";
     }
 }

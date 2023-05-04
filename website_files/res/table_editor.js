@@ -85,6 +85,7 @@ function insert_row(table_name, table_query_name, field_name, num_fields) {
     // Prepare post request
     var ajaxurl = query_handler_url;
     let new_values = [];
+    console.log(num_fields);
     // Get all values of the current row and save them to an array
     for (let i = 1; i < num_fields; i++) {
         let new_value = document.getElementById(table_name + "-INSERT-" + i).value;
@@ -102,6 +103,7 @@ function insert_row(table_name, table_query_name, field_name, num_fields) {
         field_name: field_name,
         new_values: JSON.stringify(new_values)
     };
+    console.log(data);
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
             console.log(response);
@@ -137,6 +139,7 @@ function delete_row(table_name, table_query_name, field_name, id_field, id_value
     var ajaxurl = query_handler_url;
     // Make data object to send to post request
     let data =  {delete_row: "delete_row",
+        table_name: table_name,
         table_query_name: table_query_name,
         field_name: field_name,
         id_field: id_field,
@@ -302,13 +305,14 @@ function generate_table_editable(table_name, table_query_name, max_width) {
     // console.log(ajaxurl);
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
-            // console.log(response);
+            console.log(response);
             let parsed_resp = JSON.parse(response);
 
             if (parsed_resp[0] == "Success!") {
                 // Get the arrays
                 let data_array = parsed_resp[1];
                 let field_array = data_array[0];
+                // console.log(field_array);
                 let row_array = data_array[1];
                 let insert_array = data_array[2];
                 // Get the input field types
@@ -409,9 +413,10 @@ function generate_table_editable(table_name, table_query_name, max_width) {
                                     </td>
                         `;
                     } else {
+                        // console.log(field_array.length);
                         html_string += `
                                     <td>
-                                        <button onClick="insert_row('${table_name}',  '${table_query_name}', '${field_array[j]}', '${id_field}', '${field_array.length}');">Add Row</button>
+                                        <button onClick="insert_row('${table_name}',  '${table_query_name}', '${id_field}', '${field_array.length}');">Add Row</button>
                                     </td>
                         `;
                     }

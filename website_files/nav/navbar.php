@@ -33,7 +33,7 @@
                     <a class = "nav-link" href="<?php echo $backup . "reviews/hotel_reviews.php"?>"><i class="fas"></i>Reviews
                 <?php 
                 
-                    // If we are an administrator, grant access to the administrator view of bookings page
+                    // If we are an administrator, grant access to the administrator view of reviews page
                     if ($_SESSION["employee_jobtype"] === "Administrator") { 
                         ?>
                         <i class="fa fa-caret-down nav-carat"></i>
@@ -45,11 +45,29 @@
                 <?php } else{ ?>      
                     </a>             
                  <?php } ?>
+
+                 
                 
             </ul>
             <ul class = "nav navbar-nav ml-auto">
-                <li class = "nav-item">
-                    <a class = "nav-link" href="<?php echo $backup . "login/profile.php"?>"><i class="fas fa-user-circle"></i>Profile</a>
+                <li class = "nav-item dropdown">
+                    <a class = "nav-link" href="<?php echo $backup . "login/profile.php"?>"><i class="fas fa-user-circle"></i>Profile
+
+                    <?php 
+                
+                    // If we are an administrator, grant access to the administrator view of reviews page
+                    if ($_SESSION["employee_jobtype"] === "Administrator") { 
+                        ?>
+                        <i class="fa fa-caret-down nav-carat"></i>
+                        </a>
+                        <ul class = "dropdown-menu">
+                            <li class = ""><a class = "nav-link" href = <?php echo $backup . "login/admin_accounts.php"?>>Accounts (Administrator View)</a></li>   
+                        </ul>
+
+                    <?php } else{ ?>      
+                        </a>             
+                    <?php } ?>
+
                 </li>
                 <li class = "nav-item">
                     <a class = "nav-link" href="<?php echo $backup . "login/logout.php"?>"><i class="fas fa-sign-out-alt"></i>Logout</a>
