@@ -11,6 +11,8 @@ $bookings_table = generate_data_table($data_tables, "bookings-div", "b-rv-bookin
 $hotels_table = generate_data_table($data_tables, "hotels-div", "b-rv-hotels", "Hotel", "SELECT * FROM Hotel_View", "Inf", ["text", "text", "text", "text"], []);
 // Allows users to see rooms
 $rooms_table = generate_data_table($data_tables, "rooms-div", "b-rv-rooms", "Room", "SELECT Hotel.Hotel_Name, Hotel.Hotel_City, Hotel.Hotel_State, Hotel.Hotel_Country, Room.Room_Num, Room.Price, Room.Capacity FROM Room Inner Join Hotel ON Room.Hotel_ID = Hotel.Hotel_ID", "Inf", ["text", "text", "text", "text", "text", "text", "text"], []);
+// Allows users to see receptionists
+$receptionists_table = generate_data_table($data_tables, "receptionists-div", "b-rv-receptionists", "Users", "SELECT Users.FName, Users.LName, Users.Phone_NO, Users.Email, Hotel.Hotel_Name, Hotel.Hotel_City, Hotel.Hotel_State, Hotel.Hotel_Country FROM Users Inner Join Employees ON Employees.User_ID = Users.User_ID INNER JOIN Hotel ON Employees.Hotel_ID = Hotel.Hotel_ID WHERE Users.User_Type = 'Employee' AND Employees.Employee_JobType = 'Receptionist' GROUP BY Users.FName", "Inf", ["text" , "text", "text", "text"], []);
 
 // Add the ability to filter through rooms that are open (i.e. it currently is not reserved in Booking)
 // This essentially changes the Query to "SELECT Hotel.Hotel_Name, Room.Room_Num, Room.Price, Room.Capacity FROM Room Inner Join Hotel ON Room.Hotel_ID = Hotel.Hotel_ID
@@ -44,16 +46,17 @@ include $backup . "res/table_generator.php";
 echo ob_get_clean();
 ?>
 
-<div>
+<div class = "content">
     <h1 class = "text-center">Bookings</h1>
-        <h2 class = "text-center">Bookings:</h2>
+        <nav class = "">
+        <h2 class = "toc-header text-center" id = "bookings-toc-header">Bookings:</h2>
             <div id = "bookings-user-div">
             <?php
                 $gte_bookings = generate_table_editable($bookings_user_table);
                 echo $gte_bookings;   
             ?>
             </div>
-        <h2 class = "text-center">Current Bookings:</h2>
+        <h2 class = "toc-header text-center" id = "current-bookings-toc-header">Current Bookings:</h2>
             <div id = "bookings-div">
             <?php
                 $gtv_bookings = generate_table_view($bookings_table);
@@ -63,14 +66,14 @@ echo ob_get_clean();
                 echo $bookings_dep1;
             ?>
             </div>
-        <h2 class = "text-center">Hotels:</h2>
+        <h2 class = "toc-header text-center" id = "hotels-toc-header">Hotels:</h2>
             <div id = "hotels-div">
                 <?php 
                 $gtv_hotels = generate_table_view($hotels_table);
                 echo $gtv_hotels;    
                 ?>
             </div>
-        <h2 class = "text-center">Rooms:</h2>
+        <h2 class = "toc-header text-center" id = "rooms-toc-header">Rooms:</h2>
             <p class = "text-center">Note: Price is per day</p>
             <div id = "rooms-filter-div">
             <?php
@@ -108,4 +111,14 @@ echo ob_get_clean();
                 echo $gte_rooms;
             ?>
             </div>
+        <h2 class = "toc-header text-center" id = "receptionists-toc-header">Receptionists:</h2>
+            <div id = "receptionists-div">
+            <?php 
+                $gtv_receptionists = generate_table_view($receptionists_table);
+                echo $gtv_receptionists;
+            ?>
+            </div>
 </div>
+
+<script type="text/javascript" src="<?php echo $backup . "res/toc.js";?>"></script>
+   

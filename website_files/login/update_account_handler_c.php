@@ -11,6 +11,7 @@ $email = $_POST['email'];
 
 //Get user ID from Session
 $user_id = $_SESSION['id'];
+$_SESSION['name'] = $_POST['username'];
 
 // Update user's account details in the database
 if (!empty($_POST['new_password'])) {

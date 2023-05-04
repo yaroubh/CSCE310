@@ -13,6 +13,7 @@ $hotel = $_POST['hotelid'];
 
 //Get user ID from Session
 $user_id = $_SESSION['id'];
+$_SESSION['name'] = $_POST['username'];
 
 // SELECT Users.Username, Users.Password, Users.Email, users.FName, Users.LName, Users.Phone_No, Employees.Employee_JobType, Employees.Hotel_ID FROM Users Inner Join Employees ON Users.user_ID = Employees.user_ID WHERE Users.user_id = ?
 

@@ -14,15 +14,11 @@ if (mysqli_connect_errno()) {
     exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 
-
-
-//USE USER_VIEW INSTEAD: does not work, buggy and takes root as username and deletes password and removes placeholders
-
-$stmt = $conn->prepare('SELECT username, password, email, fname, lname, phone_no FROM users WHERE user_id = ?');
+$stmt = $conn->prepare('SELECT password, email, fname, lname, phone_no FROM user_view WHERE username = ?');
 // In this case we can use the account ID to get the account info.
-$stmt->bind_param('i', $_SESSION['id']);
+$stmt->bind_param('s', $_SESSION['name']);
 $stmt->execute();
-$stmt->bind_result($username, $password, $email, $fname, $lname, $phone_no);
+$stmt->bind_result($password, $email, $fname, $lname, $phone_no);
 $stmt->fetch();
 $stmt->close();
 
@@ -54,7 +50,7 @@ $stmt->close();
                 <input type="hidden" name="id" value="<?php echo $user_id; ?>" />
 
                 <label for="name">Username:</label>
-                <input type="text" name="username" placeholder="<?php echo $username; ?>" value="<?php echo $username; ?>" required />
+                <input type="text" name="username" placeholder="<?php echo $_SESSION['name']; ?>" value="<?php echo $_SESSION['name']; ?>" required />
 
                 <label for="name">First Name:</label>
                 <input type="text" name="fname" placeholder="<?php echo $fname; ?>" value="<?php echo $fname; ?>" required />
