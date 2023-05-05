@@ -352,7 +352,7 @@ try {
 echo "</p>";
 
 // create view for service operations
-$sql = 'CREATE VIEW IF NOT EXISTS Service_View WITH SCHEMABINDING AS
+$sql = 'CREATE VIEW IF NOT EXISTS Service_View AS
         SELECT Hotel_Service.Service_ID AS Service_ID, Hotel_Service.Service_Date AS Service_Date, Service_Type.ST_ID AS ST_ID,
                Service_Type.Service_Type AS Service_Type, Service_Type.Price AS Price, Service_Assignment.SA_ID AS SA_ID,
                Service_Assignment.User_ID AS Emp_ID, Users.FName AS Emp_FName, Users.LName AS Emp_LName, Users.Email AS Emp_Email,
@@ -379,7 +379,7 @@ try {
 echo "</p>";
 
 // creating index for service view
-$sql = 'CREATE UNIQUE CLUSTERED INDEX IF NOT EXISTS idx_service_service_id ON Service_View (Service_ID)';
+$sql = 'CREATE UNIQUE CLUSTERED INDEX IF NOT EXISTS idx_service_service_id ON Hotel_Service (Service_ID)';
 
 echo "<p>";
 try {
