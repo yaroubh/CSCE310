@@ -19,6 +19,10 @@ if (!isset($_SESSION['loggedin'])) {
 		<div class="content">
 			<h2>Home Page</h2>
 			<p>Welcome back, <?=$_SESSION['name']?>!</p>
+			<p> You are a <?php echo $_SESSION['user_type'];?></p>
+			<?php if ($_SESSION['user_type'] === "Employee") { ?>
+				<p> You are an employee of type <?php echo $_SESSION['employee_jobtype'];?></p>
+			<?php } ?>
 		</div>
 	</body>
 </html>
