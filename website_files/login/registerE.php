@@ -1,3 +1,16 @@
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Yaroub Hussein
+
+Yaroub was responsible for coding this entire file.
+
+This file handles the functionality of the employee registration form. It checks to make sure that
+each input field was filled, and filled properly, and then creates a new account in the users and employees
+tables within the database using the entered in information. This also checks to see if an entered
+username already exists or not to make sure duplicate accounts aren't created. If the request
+is approved, then the user is notified they've successfully registered and is redirected to the login
+page to now login with their username and password of their newly created account.
+----------------------------------------------------------------------------------------------->
+
 <?php
 // Change this to your connection info.
 $DATABASE_HOST = 'localhost';

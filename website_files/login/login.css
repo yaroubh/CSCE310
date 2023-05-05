@@ -1,3 +1,13 @@
+/************************************************************************************************
+* Author of code: Yaroub Hussein
+*
+* Yaroub was responsible for coding this entire file.
+*
+* This file provides the styling and asthetic design for login.php which is the login page when entering
+* your username and password, or registering a new account.
+*
+************************************************************************************************/
+
 * {
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, "segoe ui", roboto, oxygen, ubuntu, cantarell, "fira sans", "droid sans", "helvetica neue", Arial, sans-serif;
@@ -8,6 +18,7 @@
 body {
     background-color: #435165;
 }
+/* Setting the size, posiiton, and color of all the text boxes of the login window where the user enters their username and password, the buttons, and the window itself.*/
 .login {
     width: 400px;
     background-color: #ffffff;

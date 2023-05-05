@@ -1,3 +1,14 @@
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Yaroub Hussein
+
+Yaroub was responsible for coding this entire file.
+
+This file handles the login functionality. It takes in a username and password gathered by login.php, and authenticates
+the login credentials to see if an account exists with the entered username and password combination. It handles invalid
+inputs for username/passwords. If the account exists and the login credentials match, then this redirects to home.php.
+
+----------------------------------------------------------------------------------------------->
+
 <?php
 session_start();
 // Change this to your connection info.
@@ -30,7 +41,6 @@ if ($stmt = $con->prepare('SELECT User_ID, Password, User_Type FROM Users WHERE 
         $stmt->bind_result($id, $password, $user_type);
         $stmt->fetch();
         // Account exists, now we verify the password.
-        // Note: remember to use password_hash in your registration file to store the hashed passwords.
         if ($_POST['password'] === $password) {
             // Verification success! User has logged-in!
             // Create sessions, so we know the user is logged in, they basically act like cookies but remember the data on the server.
@@ -53,17 +63,14 @@ if ($stmt = $con->prepare('SELECT User_ID, Password, User_Type FROM Users WHERE 
             } else {
                 $_SESSION['employee_jobtype'] = "N/A";
             }
-            // echo 'Welcome ' . $_SESSION['name'] . '!';
             header('Location: home.php');
         } else {
             // Incorrect password
             echo 'Incorrect username and/or password!';
-            // header('Location: login.html');
         }
     } else {
         // Incorrect username
         echo 'Incorrect username and/or password!';
-        // header('Location: login.html');
     }
 
 	$stmt->close();
