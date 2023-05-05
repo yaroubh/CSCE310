@@ -92,12 +92,14 @@ function regenerate_table(table_name) {
  * @param {int} num_fields The number of fields (excluding ID) that are part of the entity
  */
 function insert_row(table_name, table_query_name, field_name, num_fields) {
+    console.log(num_fields);
     // Prepare post request
     var ajaxurl = query_handler_url;
     let new_values = [];
     // Get all values of the current row and save them to an array
     for (let i = 1; i < num_fields; i++) {
         let new_value = document.getElementById(table_name + "-INSERT-" + i).value;
+        console.log(new_value);
         let value_type = table_field_types[table_name][i - 1];
         // Make sure to set value as date if it's a date
         if (value_type.split("::")[0] == "datetime-local") {
@@ -105,6 +107,8 @@ function insert_row(table_name, table_query_name, field_name, num_fields) {
         }
         new_values.push(new_value);
     }
+    console.log(new_values);
+    console.log(JSON.stringify(new_values));
     // Make data object to send to post request
     let data =  {insert_row: "get_field",
         table_name: table_name,
@@ -112,6 +116,8 @@ function insert_row(table_name, table_query_name, field_name, num_fields) {
         field_name: field_name,
         new_values: JSON.stringify(new_values)
     };
+    console.log(JSON.stringify(new_values));
+    console.log(data);
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
             console.log(response);
@@ -421,7 +427,7 @@ function generate_table_editable(table_name, table_query_name, max_width) {
                     } else {
                         html_string += `
                                     <td>
-                                        <button onClick="insert_row('${table_name}',  '${table_query_name}', '${field_array[j]}', '${id_field}', '${field_array.length}');">Add Row</button>
+                                        <button onClick="insert_row('${table_name}',  '${table_query_name}', '${id_field}', '${field_array.length}');">Add Row</button>
                                     </td>
                         `;
                     }

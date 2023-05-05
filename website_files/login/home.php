@@ -9,10 +9,10 @@ role.
 ----------------------------------------------------------------------------------------------->
 
 <?php
-
-$user_type = $_SESSION["User_Type"];
-
 include "../res/head.php";
+$user_type = $_SESSION["user_type"];
+
+
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
 	header('Location: login.php');
