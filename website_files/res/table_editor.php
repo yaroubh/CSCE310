@@ -1,3 +1,13 @@
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Jacob Enerio
+
+
+This file includes functions that generate HTML and JS for both editable and non-editable data_tables.
+It can also create two types of filters -> a simple search filter and a date range filter.
+It calls functions that are in table_editor.js. Both of these files are included in head.php.
+bookings.php shows examples of how to call these functions.
+
+----------------------------------------------------------------------------------------------->
 <?php
 # include "res/head.php"; 
 

@@ -1,3 +1,14 @@
+
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Jacob Enerio
+
+
+This file creates a data table class that has properties for a specific table. 
+When used in conjunction with table_editor.php, this allows for easy creation of tables for the UI.
+Each data_table has a central select query that is stored. Examples of data_table being used are 
+in bookings.php.
+
+----------------------------------------------------------------------------------------------->
 <?php
 /**
  * A Data Table Class that holds information useful for sending to the database
