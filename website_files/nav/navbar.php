@@ -1,9 +1,10 @@
 <!---------------------------------------------------------------------------------------------- 
 Author of code: Yaroub Hussein, Jacob Enrino, Uchenna Akahara
 
-Yaroub was responsible for coding the frame and setting up the navbar, constructing the buttons, and the functionalities of the Profile button at lines 11-18, and 66-92.
+Yaroub was responsible for coding the frame and setting up the navbar, constructing the buttons, and the functionalities of the Profile button at lines 11-18, and 91-116.
 Jacob  was responsible for coding the Bookings button functionality at lines 19-41.
 Uchenna was responsible for coding the Reviews button functionality at lines 46-61. 
+Krish was responsible for coding the Services button functionality at lines 69-87.
 
 This file holds the basic HTML and PHP framework and content that the navigation bar at the top of each page holds, as well as handling functionality of the buttons
 and their abilites to redirect to other pages. This file also checks the current user type and shows a different navigation bar with different accesses depending on the user type.
@@ -65,8 +66,26 @@ and their abilites to redirect to other pages. This file also checks the current
                     </a>             
                  <?php } ?>
 
-                 
                 
+                <li class="nav-item dropdown">
+                    <!-- The Services button (Krish wrote this section)-->
+                    <a class = "nav-link" href="<?php echo $backup . "services/services_cust.php"?>">
+                        Services
+
+                        <?php 
+                        // If we are an administrator or service worker, grant access to the service worker view of services page
+                        if ($_SESSION["employee_jobtype"] === "Administrator" || $_SESSION["employee_jobtype"] === "Service_Worker") {
+                        ?>
+                            <i class="fa fa-caret-down nav-carat"></i>
+                            </a>
+                            <!-- add service worker drop down menu options for Services button -->
+                            <ul class="dropdown-menu">
+                                <li class = ""><a class = "nav-link" href = <?php echo $backup . "services/services_serv.php"?>>Services (Service Worker View)</a></li>                            
+                            </ul>
+                        <?php } else { ?>
+                    </a>
+                        <?php } ?>
+                </li>
             </ul>
 
             <ul class = "nav navbar-nav ml-auto">
