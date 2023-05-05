@@ -1,4 +1,16 @@
-<?php include "../res/head.php"; ?>
+<?php 
+/**
+ * Author: Uchenna Akahara
+ * Func. Set 4
+ * 
+ * This code displays a list of hotel reviews retrieved from a database, 
+ * allowing an admin to delete reviews. It uses PHP and HTML to generate the page 
+ * and retrieve the necessary data from the database. Each review is displayed in a 
+ * list item, with information about the hotel, rating, review date, and description. 
+ * The code also handles the request to delete a review 
+ * by deleting the corresponding record from the database.
+ */
+include "../res/head.php"; ?>
 
 <!DOCTYPE html>
 <html>

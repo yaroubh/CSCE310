@@ -1,8 +1,18 @@
 <head>
-        <title>Delete Review</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
+    <title>Delete Review</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <?php
+/**
+ * Author: Uchenna Akahara
+ * Func. Set 4
+ * 
+ * This code deletes a review from a database if the password entered by the user matches 
+ * the password associated with the user who posted the review. It retrieves the review data and 
+ * the user data from the database, checks if the password matches, and then deletes the review 
+ * and displays a success message. If the password is incorrect, an error message is displayed. 
+ * After the process is complete, the page redirects to the hotel_reviews.php page.
+ */
 include "../res/head.php";
 
 $review_id = $_POST['review_id'];

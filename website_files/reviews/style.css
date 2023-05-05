@@ -1,8 +1,13 @@
+/*
+Author: Uchenna Akahara
+
+This file comprises of the css styling used in the reviews dir.
+*/
+
 #review-button {
     position: absolute;
     top: 70px;
     right: 10px;
-    /* padding-top: 50px; */
   }
 
 .title{
