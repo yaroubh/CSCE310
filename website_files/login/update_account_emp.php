@@ -1,3 +1,16 @@
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Yaroub Hussein
+
+Yaroub was responsible for coding this entire file.
+
+This file contains the connection to a table the inner joins the users table and employees table, and 
+contains the frame and content of the account update page. 
+This page is where an employee edits their account information or deletes their account. The code provides 
+textboxes with current values respective to the input fields to remind the user what values are currently 
+set to the shown attributes. The code also provides a button labeled "Delete Account" which calls 
+delete_account.php and has the account and all of its appropriate data removed from the database.
+----------------------------------------------------------------------------------------------->
+
 <?php
 include "../res/head.php";
 
@@ -34,6 +47,7 @@ $stmt->close();
 <html>
 	<head>
         <script>
+        // Prompts warning to user asking if they are sure they want to delete their account and that pressing the button was not an accident.
         function showWarning() {
             if (confirm("Are you sure you want to proceed?")) {
                 // Perform the action
@@ -55,36 +69,46 @@ $stmt->close();
 			<form method="post" action="update_account_handler_e.php">
                 <input type="hidden" name="id" value="<?php echo $user_id; ?>" />
 
+                <!-- Shows field for username -->
                 <label for="name">Username:</label>
                 <input type="text" name="username" placeholder="<?php echo $username; ?>" value="<?php echo $username; ?>" required />
 
+                <!-- Shows field for first name -->
                 <label for="name">First Name:</label>
                 <input type="text" name="fname" placeholder="<?php echo $fname; ?>" value="<?php echo $fname; ?>" required />
 
+                <!-- Shows field for last name -->
                 <label for="name">Last Name:</label>
                 <input type="text" name="lname" placeholder="<?php echo $lname; ?>" value="<?php echo $lname; ?>" required />
 
+                <!-- Shows field for hotel id-->
                 <label for="name">Hotel ID:</label>
                 <input type="text" name="hotelid" placeholder="<?php echo $hotel_id; ?>" value="<?php echo $hotel_id; ?>" required />
 
+                <!-- Shows field for employee role -->
                 <label for="name">Role:</label>
                 <input type="text" name="jobtype" placeholder="<?php echo $employee_jobtype; ?>" value="<?php echo $employee_jobtype; ?>" required />
 
+                <!-- Shows field for phone number -->
                 <label for="email">Phone Number:</label>
                 <input type="text" name="phone_no" placeholder="<?php echo $phone_no?>" value="<?php echo $phone_no; ?>" required />
 
+                <!-- Shows field for email -->
                 <label for="email">Email:</label>
                 <input type="email" name="email" placeholder="<?php echo $email?>" value="<?php echo $email; ?>" required />
 
+                <!-- Shows field for password -->
                 <label for="password">Password:</label>
                 <input type="password" name="new_password" placeholder="If desired, enter new password." />
 
+                <!-- Creates a button to submit the form and update the account if any modifications were made -->
                 <button type="submit" name="update">Update Account</button>
 			</form>
 
+            <!-- Creates a form and button for deleting the users account. Calls delete_account.php -->
             <form method="post" action="delete_account.php">
 				<input type="hidden" name="id" value="<?php echo $user_id; ?>" />
-				<!-- <p>Are you sure you want to delete your account?</p> -->
+                <!-- Calls and displays warning defined at the top of the code when the button is clicked. -->
 				<button onclick="return showWarning()" type="submit" name="delete">
                     Delete Account
                 </button>

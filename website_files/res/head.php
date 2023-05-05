@@ -1,24 +1,29 @@
+
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Jacob Enerio
+
+
+This file includes essential parts that can be used in multiple pages. For example, it initializes 
+the PHP session, creates a MySQL connection, stores file paths, and includes several other files. 
+Unlike head.php, this file does not contain a navbar.
+
+----------------------------------------------------------------------------------------------->
+
 <?php
 // We need to use sessions, so you should always start sessions using the below code.
 session_start();
 
-# set credentials
+// set credentials
 $servername='localhost';
 $username='root';
 $password='';
 $dbname = "test";
-# make connection
+// make connection
 $conn = new mysqli($servername,$username,$password,"$dbname");
 if(!$conn){
     die('Could not Connect MySql Server:' . $conn -> connect_error);
 } else {
     # print("success!");
-}
-
-// Go to login immediately if we are not logged in
-if (!isset($_SESSION['loggedin'])) {
-	header('Location: login.php');
-	exit;
 }
 
 # Get the base path of the file and ignore everything else. We can use this to easily navigate to other files
@@ -28,6 +33,7 @@ $path_parts = explode('/website_files/', $path);
 $path_editor = str_replace('\\', '/',  $_SERVER["PHP_SELF"]);
 $path_editor_parts = explode('/website_files/', $path_editor);
 $local_path_editor = array_pop($path_editor_parts);
+
 #  foreach ($path_parts as $path_part) {
 #      echo "<p>Part: " . $path_part . "</p>";
 #  }
@@ -38,12 +44,20 @@ for ($i = 0; $i < $folder_depth; $i++) {
     $backup .= "../";
 }
 
-// Initialize arrays for data_tables and data_filters
+// Go to login immediately if we are not logged in
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: ' . $path_editor_parts[0] . "/website_files/login/login.php");
+	exit();
+}
+
+// Initialize arrays for data_table and data_filter objects
 $data_tables = array();
 $data_editors = array();
 $data_filters = array();
-// Suspend output of the head.php file if desired
+
+// Suspend output of the head.php file if desired (useful for post requests)
 if (isset($suspend_head)) {
+    ob_clean();
     ob_start();
 }
 

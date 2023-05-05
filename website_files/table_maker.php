@@ -1,3 +1,14 @@
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Jacob Enerio, Uchenna Akahara, Yaroub Hussein 
+
+Jacob Enerio was responsible for coding everything related to Bookings, which include lines <>
+Uchenna Akahara was responsible for coding everything related to Reviews, which include lines <>
+Yaroub Hussein was responsible for coding everything related to Registration, Login, and Profile editing, which include lines <>
+
+This file initializes SQL tables, views, indexes, and triggers.
+
+----------------------------------------------------------------------------------------------->
+
 <?php
 include_once 'res/connect.php';
 # Make tables
@@ -128,6 +139,20 @@ try {
         echo "Table Room created successfully";
     } else {
         echo "Error creating table: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+$sql = 'CREATE INDEX IF NOT EXISTS idx_room_room_num ON Room (Room_Num)';
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Index idx_room_room_num created successfully";
+    } else {
+        echo "Error creating index: " . $conn->error;
     }
 } catch (Exception $ex) {
         echo $ex;

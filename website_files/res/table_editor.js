@@ -1,9 +1,19 @@
 
-
-
-/**
- * This file handles the JavaScript required to display tables. Additionally it makes post requests to get the information from PHP for the tables
- */
+/************************************************************************************************
+* Author of code: Jacob Enerio
+*
+*
+* This file handles the HTML and JavaScript required to display tables. 
+* Additionally it makes post requests to get the information from PHP for the tables. 
+* The post requests are made to query_handler.php, and table_generator.php, which should be included
+* in the PHP file that will display the tables.
+* Post requests are sent to query_handler.php when a table needs to be updated, or values need to 
+* be inserted / deleted. Post requests are sent to table_generator.php when a table needs to be 
+* generated. It essentially performs MySQL SELECT requests
+* This file is automatically included in head.php. None of these functions are made to be called directly 
+* from other files other than table_editor.php. This file is essentially a helper file for table_editor.php 
+*
+************************************************************************************************/
 
 /**
  * Updates a field in the table

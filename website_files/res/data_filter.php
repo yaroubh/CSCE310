@@ -1,6 +1,18 @@
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Jacob Enerio
+
+
+This file creates a data filter class that has properties for constructing a data filter. Data filters
+are used to filter out tables. Essentially, they can change the select query in a data_table object 
+(which is defined in data_table.php). For example, if you wanted to search by the maximum price 
+of a room, then you could use a data_filter to acommplish that. Multiple examples of how to use 
+the data_filter class are shown in bookings.php.
+
+----------------------------------------------------------------------------------------------->
+
 <?php
 /**
- * A Data Table Class that holds information useful for sending to the database
+ * A Data Filter Class that holds information for restricting a select query in a data_table
  */
 class data_filter {
 
