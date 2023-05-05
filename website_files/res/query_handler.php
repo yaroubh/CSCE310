@@ -2,13 +2,15 @@
 Author of code: Jacob Enerio
 
 
-This file includes functions and post request handling for inserting, updating, and deleting for MySQL.
+This file includes functions and post request handling for inserting, updating, and deleting for 
+a data_table object and MySQL.
 This is meant to work in conjunction with data_table.php and table_editor.js. 
 By default, data_table.php is meant for queries that are in the format "SELECT * FROM". 
 In the case that a Select query for a data_table object does not follow that format, functions from 
 query_overrides.php will be necessary. That file overrides the update and insertion SQL commands.
 Usually, overriding a delete command is unecessary since it is pretty easy to send in the post
 request the primary key value for an entity to be deleted. 
+
 ----------------------------------------------------------------------------------------------->
 
 <?php
@@ -27,7 +29,8 @@ function verify_table($conn, $table_name) {
     $result = $conn -> query($query);
     # echo $result;
     for($i=0; $row = $result->fetch_array(); $i++){
-        if ($row[0] === $check_table_name) {
+        // echo $row[0] . ' ' . $check_table_name . '\n';
+        if (strtolower($row[0]) === $check_table_name) {
             return true;
         }
     }
@@ -137,7 +140,7 @@ if(isset($_POST['insert_row']))
                 $query -> bind_param(str_repeat("s", $num_params), ...$new_values_array);
                 $stmt = $query -> execute();
                 $result = $query -> get_result();
-                echo json_encode(array("Success!", $result, $override_results));
+                echo json_encode(array("Success!", $result));
             }
         } catch (Exception $ex) {
             echo json_encode(array(get_class($ex), $ex->getMessage(), $new_values_array));
@@ -152,7 +155,9 @@ if(isset($_POST['delete_row']))
 {
     // Dump previous output so only the following output is sent back to the post request
     ob_clean();
+    $table_name = $_POST['table_name'];
     $table_query_name = $_POST['table_query_name'];
+    // echo $table_name . $table_query_name;
     $field_name = $_POST['field_name'];
     $id_field = $_POST['id_field'];
     $id_value = $_POST['id_value'];
