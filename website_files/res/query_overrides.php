@@ -1,8 +1,14 @@
-<?php
-/**
- * This file overrides insertion, deletion, and updating of certain table values
- */ 
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Jacob Enerio
 
+
+This file includes functions that override the default insert and update code found in query_handler.php.
+This is included in query_handler.php. This file is necessary for data_tables that do not have 
+Select statements that are not in the format of "SELECT * FROM". Different logic is required
+for updating and inserting for these data_table objects. For example, b-rv-users
+
+----------------------------------------------------------------------------------------------->
+<?php
 /**
  * Overrides the insertion of elements into a table
  *
@@ -15,6 +21,7 @@
  */
 function override_insert_sql($conn, $table_name, $table_query_name, $field_array, $user_id) {
     if  ($table_name === "b-rv-bookings-user") {
+        // Override the user's bookings table in bookings.php
         $stmt = $conn->prepare('SELECT Room.Room_ID FROM Room Inner Join Hotel on Hotel.Hotel_ID = Room.Hotel_ID WHERE Room.Room_Num = ? AND Hotel.Hotel_Name = ?');
         // Bind parameters (s = string, i = int, b = blob, etc)
         $stmt->bind_param('ss', $field_array[0], $field_array[1]);
@@ -25,7 +32,11 @@ function override_insert_sql($conn, $table_name, $table_query_name, $field_array
             $stmt -> bind_result($room_id);
             $stmt -> fetch();
             $stmt -> close();
-            // Reorder the fields now that we have the room id and user id
+            // Reorder the fields for the booking parameters now that we have the room id and user id
+            // The first field is room_id
+            // The second field is the user_id
+            // The third field is the start date of the booking
+            // The fourth field is the end date of the booking
             $new_field_array = array();
             array_push($new_field_array, $room_id);
             array_push($new_field_array, $user_id);
@@ -34,7 +45,7 @@ function override_insert_sql($conn, $table_name, $table_query_name, $field_array
             }
             $field_array = $new_field_array;
             $num_params = sizeof($field_array);
-            // Execute the SQL statement
+            // Execute the overrided insert SQL statement for a booking
             $query = $conn -> prepare("INSERT INTO " . $table_query_name . " VALUES  (NULL, ". str_repeat("?, ", $num_params - 1) ."?)");
             $query -> bind_param("ii" . str_repeat("s", $num_params - 2), ...$field_array);
             $stmt = $query -> execute();
@@ -81,7 +92,7 @@ function override_insert_sql($conn, $table_name, $table_query_name, $field_array
         $stmt->fetch();
         $stmt->close();
 
-        # Insert into employees table
+        // Insert into employees table
         $stmt = $conn->prepare('INSERT INTO employees (user_id, hotel_id, employee_jobtype) VALUES (?, ?, ?)'); 
         $stmt->bind_param('sis', $user_id, $field_array[6], $field_array[7]);
         $result = $stmt -> execute();
@@ -111,6 +122,8 @@ function override_insert_sql($conn, $table_name, $table_query_name, $field_array
  */
 function override_update_sql($conn, $table_name, $table_query_name, $field_name, $field_value, $col_num, $id_field, $id_value, $user_id) {
     if  ($table_name === "b-rv-bookings-user") {
+        // Override the user's bookings table in bookings.php
+        // Get the ID of the room, the room number, and the hotel name
         $stmt = $conn->prepare('SELECT Room.Room_ID, Room.Room_Num, Hotel.Hotel_Name FROM Booking Inner Join Room ON Booking.Room_ID = Room.Room_ID Inner Join Hotel ON Hotel.Hotel_ID = Room.Hotel_ID WHERE Booking.Booking_NO = ?');
         // Bind parameters (s = string, i = int, b = blob, etc)
         $stmt->bind_param('i', $id_value);
@@ -153,7 +166,7 @@ function override_update_sql($conn, $table_name, $table_query_name, $field_name,
                 }
 
             } else {
-                // Simply need to update the dates
+                // Simply need to update the dates for the bookings
                 $query = $conn -> prepare("UPDATE " . $table_query_name . " SET " . $field_name ." = ? WHERE " . $id_field . " = ?");
                 $query -> bind_param("ss", $new_value, $id_value);
                 $stmt = $query -> execute();

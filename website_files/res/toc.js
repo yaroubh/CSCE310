@@ -1,3 +1,12 @@
+/************************************************************************************************
+* Author of code: Jacob Enerio
+*
+*
+* This file makes a table of contents for elements with the class of 'toc-header'. It is useful 
+* for long pages.
+*
+************************************************************************************************/
+
 /**
  * This file makes a table of contents for elements with the class of 'toc-header'
  * Entire file responsible by Jacob Enerio

@@ -1,3 +1,14 @@
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Jacob Enerio, Uchenna Akahara 
+
+Jacob Enerio was responsible for coding everything not related to reviews, which are lines 12-98, 118-151, and 156-173.
+Uchenna Akahara was responsible for coding everything related to reviews, which are lines 100-116 and 153-154.
+
+This file adds several different types of entities to tables. This is useful for testing the database
+in the case test.sql fails.
+
+----------------------------------------------------------------------------------------------->
+
 <?php
 include_once 'res/connect.php';
 # Make tables

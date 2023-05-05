@@ -1,3 +1,16 @@
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Jacob Enerio
+
+
+This file includes performs select queries to a MySQL database. It is useful for getting all the
+information to generate a table. It can also append filters to queries. 
+This is meant to work in conjunction with data_table.php and table_editor.js. 
+Essentially, table_editor.js will post request this file, which should be included in the file that 
+is displaying the tables. Then, this file will query the MySQL database for the information regaurding
+a data_table object. 
+
+----------------------------------------------------------------------------------------------->
+
 <?php 
 /**
  * Generates data for an non-editable table view
