@@ -451,12 +451,6 @@ $sql = "CREATE OR REPLACE TRIGGER Service_Assign_Check BEFORE INSERT ON Service_
         END IF;
         END;";
 
-"(SELECT Hotel_ID FROM Employees WHERE NEW.User_ID = Employees.User_ID)
- INTERSECT
- (SELECT Hotel_ID FROM Room WHERE Room.Room_ID IN
-    (SELECT Room_ID FROM Booking WHERE Booking.Booking_NO IN
-        (SELECT Booking_NO FROM Hotel_Service WHERE NEW.Service_ID = Hotel_Service.Service_ID)))"
-
 echo "<p>";
 try {
     if ($conn->query($sql) === TRUE) {
