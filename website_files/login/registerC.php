@@ -62,9 +62,7 @@ if ($stmt = $con->prepare('SELECT user_id, password FROM users WHERE username = 
 			# There are six custom columns, so there are 6 letters, one for each column
 			$stmt->bind_param('sssssi', $_POST['firstname'], $_POST['lastname'], $_POST['username'], $_POST['password'], $_POST['email'], $_POST['phone']);
 			$stmt->execute();
-			echo 'execute';
 			$stmt->close();
-			echo 'after close result';
 
 			// We now need to get the user id
 			$stmt = $con->prepare('SELECT user_id FROM users WHERE username = ?');
