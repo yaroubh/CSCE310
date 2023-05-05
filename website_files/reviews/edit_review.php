@@ -1,4 +1,14 @@
-<?php include "../res/head.php"; ?>
+<?php /**
+ * Author: Uchenna Akahara
+ * Func. Set 4
+ * 
+ * This script allows a user to edit an existing review. It includes a form with 
+ * fields for the new review description, rating, and the user's password for authentication. 
+ * The script queries the database for the review data, and if the user's password is correct, updates the review 
+ * description and rating in the database. If the password is incorrect, an error message is displayed. 
+ * Finally, the script redirects the user back to the hotel_reviews.php page after a short delay.
+ */
+include "../res/head.php"; ?>
 <link rel="stylesheet" href="style.css">
 <div>
   <h1 class="title">Edit Review</h1>

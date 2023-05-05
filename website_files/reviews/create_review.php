@@ -1,4 +1,15 @@
-<?php include "../res/head.php"; ?>
+<?php include "../res/head.php"; 
+/**
+ * Author: Uchenna Akahara
+ * Func. Set 4
+ * This code is for editing a hotel review in a web application. 
+ * It retrieves the review details from the database based on the review ID passed through a 
+ * GET request, and displays a form to edit the review's description, rating, and requires the user 
+ * to input their password for authentication. 
+ * If the password is correct, the review is updated in the database and the user 
+ * is redirected back to the hotel_reviews.php page with a success message.
+ */
+?>
 <link rel="stylesheet" href="style.css">
 <div id = "review-button">
     <a href="hotel_reviews.php" class="btn btn-primary">Back to Review</a>
@@ -6,6 +17,8 @@
 
 <div>
   <h1 class="title">Create a Review</h1>
+
+  <!-- Create basic review form -->
 
   <form method="post" action="create_review.php">
     <div class="form-group">

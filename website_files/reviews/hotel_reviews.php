@@ -1,4 +1,15 @@
-<?php include "../res/head.php"; ?>
+<?php 
+/**
+ * Author: Uchenna Akahara
+ * Func. Set 4
+ * 
+ * This code displays a list of hotel reviews, with options to edit or delete each review. 
+ * The reviews are retrieved from a database and displayed in descending order of their review dates. 
+ * A button to create a new review is also provided. The code includes HTML and PHP, 
+ * and uses CSS styles from an external file. It also includes a form to delete each review, 
+ * which requires the user to enter their password before submitting the form.
+ */
+include "../res/head.php"; ?>
 <link rel="stylesheet" href="style.css">
 <div>
   <h1 class="title">Hotel Reviews</h1>
