@@ -32,12 +32,15 @@ include "../res/head.php";
 
 // Make the tables and filter objects
 // Allows administrators to edit hotels
+// Insert, Update, and Deletion is handled by res/query_handler.php
 $hotels_table = generate_data_editor($data_editors, $data_tables, "hotels-div", "b-rv-hotels", "Hotel", "SELECT * FROM Hotel ORDER BY Hotel_ID ASC", "Inf", ["text", "text", "text", "text"], []);
 // Allows administrators to edit rooms
+// Insert, Update, and Deletion is handled by res/query_handler.php
 $rooms_table = generate_data_editor($data_editors, $data_tables, "rooms-div", "b-rv-rooms", "Room", "SELECT * FROM Room ORDER BY Room_ID ASC", "Inf", ["text", "text", "text", "text"], []);
 // Allows administrators to view users (they can edit them in login/admin_accounts.php)
 $users_table = generate_data_table($data_tables, "users-div", "b-rv-users", "Users", "SELECT User_ID, FName, LName, Phone_NO, Email, Username FROM Users ORDER BY User_ID ASC", "Inf", ["text, text, text, text, text"], []);
 // Allows administrators to edit bookings
+// Insert, Update, and Deletion is handled by res/query_handler.php
 $bookings_table = generate_data_editor($data_editors, $data_tables, "bookings-div", "b-rv-bookings", "Booking", "SELECT * FROM Booking ORDER BY Booking_NO ASC", "Inf", ["text", "text", "datetime-local::start", "datetime-local::end"], []);
 
 // Include the query handler and table generator files

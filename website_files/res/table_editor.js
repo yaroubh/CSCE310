@@ -129,11 +129,11 @@ function insert_row(table_name, table_query_name, field_name, num_fields) {
                         ${parsed_resp[1]}
                     </div>
                 `;
-                update_table_input_child_htmls(table_name);
             } else if (parsed_resp == "Success!") {
                 // No warning by default
                 table_input_child_htmls[table_name][table_name] = '';
             }
+            update_table_input_child_htmls(table_name);
             regenerate_table(table_name);
         }
     });

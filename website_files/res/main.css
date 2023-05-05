@@ -8,98 +8,107 @@
 ************************************************************************************************/
 
 p {
-    font-size: 18px;
+  font-size: 18px;
 }
 
 .navtop {
-	background-color: #2f3947;
-	height: 60px;
-	width: 100%;
-	border: 0;
+background-color: #2f3947;
+height: 60px;
+width: 100%;
+border: 0;
 }
 
 nav .navbar-header a{
-	color: white !important;
-	font-weight: bold;
-  }
+color: white !important;
+font-weight: bold;
+}
+
+.toc {
+position: sticky;
+  border: 1px solid black;
+  float: left;
+  top: 0px;
+  background-color: white;
+z-index: 1000;
+}
 
 .dropdown:hover .dropdown-menu {
-	display: block;
-  }
-  
-  .dropdown-menu:hover {
-	display: block;
-  }
-  
-  .dropdown {
-	margin-top: auto;
-	margin-bottom: auto;
-  }
-  
-  /* .dropdown:hover {
-	background-color: black;
-  } */
-  
-  .dropdown-menu {
-	margin-top: -1px;
-	background-color: gray;
-  }
+display: block;
+}
 
-  .dropdown-menu li a {
-	color: white !important;
-  }
+.dropdown-menu:hover {
+display: block;
+}
 
-  .dropdown-menu li a:hover {
-	background-color: black;
-  }
+.dropdown {
+margin-top: auto;
+margin-bottom: auto;
+}
+
+/* .dropdown:hover {
+background-color: black;
+} */
+
+.dropdown-menu {
+margin-top: -1px;
+background-color: gray;
+}
+
+.dropdown-menu li a {
+color: white !important;
+}
+
+.dropdown-menu li a:hover {
+background-color: black;
+}
 
 .nav-carat {
-	margin-left: 5px;
-	color: white;
+margin-left: 5px;
+color: white;
 }
 
 
 
 .table-sql-view {
-    margin-left: 50px;
+  margin-left: 50px;
 }
 
 .border-black > thead > tr > th {
-    border:1px solid black;
+  border:1px solid black;
 }
 
 .border-black-td > tbody > tr > td {
-    border: 1px solid black !important;
+  border: 1px solid black !important;
 }
-  
+
 .table-hlimit {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 .date-range-label {
-    display: block;
+  display: block;
 }
 
 .date-range-filter {
-    width: 40%;
-    display: inline-block;
+  width: 40%;
+  display: inline-block;
 }
 
 .date-range-text {
-    display: inline-block;
+  display: inline-block;
 }
 
 .date-range-group {
-	margin-left: 50px;
+margin-left: 50px;
 }
 
 .form-check-input {
-	width: 20px;
-	height: 20px;
+width: 20px;
+height: 20px;
 }
 
 .filter-text {
-	width: 45%;
+width: 45%;
 }
