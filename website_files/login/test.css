@@ -1,3 +1,12 @@
+/************************************************************************************************
+* Author of code: Yaroub Hussein
+*
+* Yaroub was responsible for coding this entire file.
+*
+* This file provides the styling and asthetic design for the page where a customer and employee
+* can edit/delete their account.
+************************************************************************************************/
+
 .account-form {
     border: 1px solid #ccc;
     padding: 10px;
@@ -22,7 +31,7 @@
     border: 1px solid #ccc;
     border-radius: 3px;
   }
-  
+  /* Design for "Update" Button */
   .account-form form:nth-child(2) button[type="submit"] {
     background-color: #4CAF50;
     color: white;
@@ -35,7 +44,7 @@
   .account-form form:nth-child(2) button[type="submit"]:hover {
     background-color: #45a049;
   }
-
+  /* Design for "Delete" Button */
   .account-form form:nth-child(3) button[type="submit"] {
     background-color: red;
     text-align: center;

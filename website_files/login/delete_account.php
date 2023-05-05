@@ -1,3 +1,13 @@
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Yaroub Hussein
+
+Yaroub was responsible for coding this entire file.
+
+This file handles the functionality of deleting an account from the database from the users' profile page and
+redirecting them back to the login page.
+
+----------------------------------------------------------------------------------------------->
+
 <?php
 error_reporting(E_ALL);
 include "../res/head_no_nav.php";
