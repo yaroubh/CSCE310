@@ -4,7 +4,7 @@ Author of code: Jacob Enerio, Uchenna Akahara, Yaroub Hussein
 Jacob Enerio was responsible for coding everything related to Bookings, which include lines <>
 Uchenna Akahara was responsible for coding everything related to Reviews, which include lines <>
 Yaroub Hussein was responsible for coding everything related to Registration, Login, and Profile editing, which include lines <>
-Krish Chhabra was responsible for coding everything related to Services, which include lines <>
+Krish Chhabra was responsible for coding everything related to Services, which include lines 295-533.
 
 This file initializes SQL tables, views, indexes, and triggers.
 

@@ -3,7 +3,7 @@ Author of code: Jacob Enerio, Uchenna Akahara
 
 Jacob Enerio was responsible for coding everything not related to reviews or services, which are lines 12-98, 118-151, and 156-173.
 Uchenna Akahara was responsible for coding everything related to reviews, which are lines 100-116 and 153-154.
-Krish Chhabra was responsible for coding everything related to services, which are lines 175-244.
+Krish Chhabra was responsible for coding everything related to services, which are lines 175-246.
 This file adds several different types of entities to tables. This is useful for testing the database
 in the case test.sql fails.
 
@@ -229,15 +229,18 @@ function make_service_assignment($conn, $service_id, $user_id) {
     return true;
 }
 
+// initialize service type data
 make_service_type($conn, "Room Cleaning", 0.0);
 make_service_type($conn, "Food Delivery", 2.50);
 make_service_type($conn, "Room Repair", 0.0);
 
+// initialize hotel service data
 make_hotel_service($conn, 1, 1, "2022-05-13 13:55:12");
 make_hotel_service($conn, 1, 3, "2022-05-14 13:55:12");
 make_hotel_service($conn, 2, 1, "2022-05-18 10:10:10");
 make_hotel_service($conn, 3, 2, "2022-06-14 11:11:11");
 
+// initialize service assignments data
 make_service_assignment($conn, 1, 7);
 make_service_assignment($conn, 2, 8);
 make_service_assignment($conn, 3, 7);
