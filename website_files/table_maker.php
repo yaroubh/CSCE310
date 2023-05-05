@@ -4,6 +4,7 @@ Author of code: Jacob Enerio, Uchenna Akahara, Yaroub Hussein
 Jacob Enerio was responsible for coding everything related to Bookings, which include lines <>
 Uchenna Akahara was responsible for coding everything related to Reviews, which include lines <>
 Yaroub Hussein was responsible for coding everything related to Registration, Login, and Profile editing, which include lines <>
+Krish Chhabra was responsible for coding everything related to Services, which include lines <>
 
 This file initializes SQL tables, views, indexes, and triggers.
 
@@ -333,7 +334,7 @@ echo "</p>";
 $sql = 'CREATE TABLE Service_Assignment (
     SA_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Service_ID INT UNSIGNED NOT NULL,
-    User_ID INT UNSIGNED NOT NULL,
+    User_ID INT UNSIGNED,
     FOREIGN KEY (Service_ID) REFERENCES Hotel_Service(Service_ID) ON DELETE CASCADE,
     FOREIGN KEY (User_ID) REFERENCES Employees(User_ID) 
     )';
@@ -344,6 +345,48 @@ try {
         echo "Table Service Assignment created successfully";
     } else {
         echo "Error creating table: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+// create view for service operations
+$sql = 'CREATE VIEW IF NOT EXISTS Service_View WITH SCHEMABINDING AS
+        SELECT Hotel_Service.Service_ID AS Service_ID, Hotel_Service.Service_Date AS Service_Date, Service_Type.ST_ID AS ST_ID,
+               Service_Type.Service_Type AS Service_Type, Service_Type.Price AS Price, Service_Assignment.SA_ID AS SA_ID,
+               Service_Assignment.User_ID AS Emp_ID, Users.FName AS Emp_FName, Users.LName AS Emp_LName, Users.Email AS Emp_Email,
+               Booking.Booking_NO AS Booking_NO, Booking.User_ID AS Cust_ID, Booking.Start_Date AS Start_Date, Booking.End_Date AS End_Date,
+               Room.Room_ID AS Room_ID, Room.Room_Num AS Room_Num, Hotel.Hotel_ID AS Hotel_ID, Hotel.Hotel_Name AS Hotel_Name,
+               Hotel.Hotel_City AS Hotel_City, Hotel.Hotel_State AS Hotel_State, Hotel.Hotel_Country AS Hotel_Country
+        FROM ((((((Hotel_Service LEFT JOIN Service_Type       ON Hotel_Service.ST_ID = Service_Type.ST_ID)
+                                 LEFT JOIN Service_Assignment ON Hotel_Service.SA_ID = Service_Assignment.SA_ID)
+                                 LEFT JOIN Users              ON Service_Assignment.User_ID = Users.User_ID)
+                                 LEFT JOIN Booking            ON Hotel_Service.Booking_NO = Booking.Booking_NO)
+                                 LEFT JOIN Room               ON Booking.Room_ID = Room.Room_ID)
+                                 LEFT JOIN Hotel              ON Room.Hotel_ID = Hotel.Hotel_ID)';
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "View Service_View created successfully";
+    } else {
+        echo "Error creating view: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+// creating index for service view
+$sql = 'CREATE UNIQUE CLUSTERED INDEX IF NOT EXISTS idx_service_service_id ON Service_View (Service_ID)';
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Index idx_hotel_hotel_name created successfully";
+    } else {
+        echo "Error creating index: " . $conn->error;
     }
 } catch (Exception $ex) {
         echo $ex;

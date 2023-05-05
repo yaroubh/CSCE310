@@ -171,3 +171,16 @@ for ($i = 1; $i < 4; $i++) {
 make_booking($conn, 1, 1, "2022-05-12 13:55:12", "2022-05-15 13:55:12");
 make_booking($conn, 1, 2, "2022-05-17 10:10:10", "2022-05-19 10:10:10");
 make_booking($conn, 2, 2, "2022-05-30 10:10:10", "2022-06-17 11:11:11");
+
+function make_service_type() {
+    
+}
+
+function make_hotel_service() {
+
+}
+
+function make_service_assignment() {
+
+}
+?>
