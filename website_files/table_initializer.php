@@ -1,8 +1,9 @@
 <!---------------------------------------------------------------------------------------------- 
-Author of code: Jacob Enerio, Uchenna Akahara 
+Author of code: Jacob Enerio, Uchenna Akahara, Krish Chhabra
 
-Jacob Enerio was responsible for coding everything not related to reviews, which are lines 12-98, 118-151, and 156-173.
+Jacob Enerio was responsible for coding everything not related to reviews or services, which are lines 12-98, 118-151, and 156-173.
 Uchenna Akahara was responsible for coding everything related to reviews, which are lines 100-116 and 153-154.
+Krish Chhabra was responsible for coding everything related to services, which are lines 175-246.
 
 This file adds several different types of entities to tables. This is useful for testing the database
 in the case test.sql fails.
@@ -171,3 +172,77 @@ for ($i = 1; $i < 4; $i++) {
 make_booking($conn, 1, 1, "2022-05-12 13:55:12", "2022-05-15 13:55:12");
 make_booking($conn, 1, 2, "2022-05-17 10:10:10", "2022-05-19 10:10:10");
 make_booking($conn, 2, 2, "2022-05-30 10:10:10", "2022-06-17 11:11:11");
+
+// adds service type to db
+function make_service_type($conn, $service_type, $price) {
+    $sql = "INSERT INTO Service_Type (ST_ID, Service_Type, Price)
+            VALUES (null, '$service_type', '$price')";
+    echo "<p>";
+    try {
+        if ($conn->query($sql) === TRUE) {
+            echo "Added Service Type for type " . $service_type  . " of price " . $price . " successfully";
+        } else {
+            echo "Error creating service type: " . $conn->error;
+        }
+    } catch (Exception $ex) {
+            echo $ex;
+            return false;
+    }
+    echo "</p>";
+    return true;
+}
+
+// adds hotel service to db
+function make_hotel_service($conn, $booking_no, $st_id, $service_date) {
+    $sql = "INSERT INTO Hotel_Service (Service_ID, Booking_NO, ST_ID, Service_Date)
+            VALUES (null, '$booking_no', '$st_id', '$service_date')";
+    echo "<p>";
+    try {
+        if ($conn->query($sql) === TRUE) {
+            echo "Added Hotel Service for booking " . $booking_no  . " at " . $service_date . " successfully";
+        } else {
+            echo "Error creating service type: " . $conn->error;
+        }
+    } catch (Exception $ex) {
+            echo $ex;
+            return false;
+    }
+    echo "</p>";
+    return true;
+}
+
+// adds service assignment to db
+function make_service_assignment($conn, $service_id, $user_id) {
+    $sql = "INSERT INTO Service_Assignment (SA_ID, Service_ID, User_ID)
+            VALUES (null, '$service_id', '$user_id')";
+    echo "<p>";
+    try {
+        if ($conn->query($sql) === TRUE) {
+            echo "Added Service Assignment for service " . $service_id  . " and user " . $user_id . " successfully";
+        } else {
+            echo "Error creating service type: " . $conn->error;
+        }
+    } catch (Exception $ex) {
+            echo $ex;
+            return false;
+    }
+    echo "</p>";
+    return true;
+}
+
+// initialize service type data
+make_service_type($conn, "Room Cleaning", 0.0);
+make_service_type($conn, "Food Delivery", 2.50);
+make_service_type($conn, "Room Repair", 0.0);
+
+// initialize hotel service data
+make_hotel_service($conn, 1, 1, "2022-05-13 13:55:12");
+make_hotel_service($conn, 1, 3, "2022-05-14 13:55:12");
+make_hotel_service($conn, 2, 1, "2022-05-18 10:10:10");
+make_hotel_service($conn, 3, 2, "2022-06-14 11:11:11");
+
+// initialize service assignments data
+make_service_assignment($conn, 1, 7);
+make_service_assignment($conn, 2, 8);
+make_service_assignment($conn, 3, 7);
+?>

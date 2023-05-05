@@ -1,9 +1,10 @@
 <!---------------------------------------------------------------------------------------------- 
-Author of code: Jacob Enerio, Uchenna Akahara, Yaroub Hussein 
+Author of code: Jacob Enerio, Uchenna Akahara, Yaroub Hussein, Krish Chhabra
 
 Jacob Enerio was responsible for coding everything related to Bookings, which include lines <>
 Uchenna Akahara was responsible for coding everything related to Reviews, which include lines <>
 Yaroub Hussein was responsible for coding everything related to Registration, Login, and Profile editing, which include lines <>
+Krish Chhabra was responsible for coding everything related to Services, which include lines 295-533.
 
 This file initializes SQL tables, views, indexes, and triggers.
 
@@ -311,7 +312,7 @@ echo "</p>";
 
 $sql = 'CREATE TABLE Hotel_Service (
     Service_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    Booking_NO INT UNSIGNED NOT NULL,
+    Booking_NO INT UNSIGNED,
     ST_ID INT UNSIGNED NOT NULL,
     Service_Date DATETIME NOT NULL,
     FOREIGN KEY (Booking_NO) REFERENCES Booking(Booking_NO) ON DELETE CASCADE,
@@ -344,6 +345,187 @@ try {
         echo "Table Service Assignment created successfully";
     } else {
         echo "Error creating table: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+// create view for service operations
+$sql = 'CREATE VIEW IF NOT EXISTS Service_View AS
+        SELECT Hotel_Service.Service_ID AS Service_ID, Hotel_Service.Service_Date AS Service_Date, Service_Type.ST_ID AS ST_ID,
+               Service_Type.Service_Type AS Service_Type, Service_Type.Price AS Price, Service_Assignment.SA_ID AS SA_ID,
+               Service_Assignment.User_ID AS Emp_ID, Users.FName AS Emp_FName, Users.LName AS Emp_LName, Users.Email AS Emp_Email,
+               Booking.Booking_NO AS Booking_NO, Booking.User_ID AS Cust_ID, Booking.Start_Date AS Start_Date, Booking.End_Date AS End_Date,
+               Room.Room_ID AS Room_ID, Room.Room_Num AS Room_Num, Hotel.Hotel_ID AS Hotel_ID, Hotel.Hotel_Name AS Hotel_Name,
+               Hotel.Hotel_City AS Hotel_City, Hotel.Hotel_State AS Hotel_State, Hotel.Hotel_Country AS Hotel_Country
+        FROM ((((((Hotel_Service LEFT JOIN Service_Type       ON Hotel_Service.ST_ID = Service_Type.ST_ID)
+                                 LEFT JOIN Service_Assignment ON Hotel_Service.Service_ID = Service_Assignment.Service_ID)
+                                 LEFT JOIN Users              ON Service_Assignment.User_ID = Users.User_ID)
+                                 LEFT JOIN Booking            ON Hotel_Service.Booking_NO = Booking.Booking_NO)
+                                 LEFT JOIN Room               ON Booking.Room_ID = Room.Room_ID)
+                                 LEFT JOIN Hotel              ON Room.Hotel_ID = Hotel.Hotel_ID)';
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "View Service_View created successfully";
+    } else {
+        echo "Error creating view: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+// creating index for service view
+$sql = 'CREATE INDEX IF NOT EXISTS idx_service_service_id ON Hotel_Service (Service_ID)';
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Index idx_hotel_hotel_name created successfully";
+    } else {
+        echo "Error creating index: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+// create trigger on service date for hotel service
+$sql = "CREATE OR REPLACE TRIGGER Service_Date_Check BEFORE INSERT ON Hotel_Service 
+        FOR EACH ROW
+        BEGIN
+        IF EXISTS (SELECT * FROM Booking WHERE NEW.Booking_NO = Booking.Booking_NO AND (NEW.Service_Date < Booking.Start_Date OR NEW.Service_Date > Booking.End_Date)) THEN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Service must be scheduled during the booking it is linked to';
+        END IF;
+        END;";
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Trigger Service_Date_Check created successfully";
+    } else {
+        echo "Error creating trigger: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+$sql = "CREATE OR REPLACE TRIGGER Service_Date_Check_Update BEFORE UPDATE ON Hotel_Service 
+        FOR EACH ROW
+        BEGIN
+        IF EXISTS (SELECT * FROM Booking WHERE NEW.Booking_NO = Booking.Booking_NO AND (NEW.Service_Date < Booking.Start_Date OR NEW.Service_Date > Booking.End_Date)) THEN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Service must be scheduled during the booking it is linked to';
+        END IF;
+        END;";
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Trigger Service_Date_Check_Update created successfully";
+    } else {
+        echo "Error creating trigger: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+// create trigger on hotel id for service assignment
+$sql = "CREATE OR REPLACE TRIGGER Service_Assign_Check BEFORE INSERT ON Service_Assignment 
+        FOR EACH ROW
+        BEGIN
+        IF NOT EXISTS ((SELECT Hotel_ID FROM Employees WHERE NEW.User_ID = Employees.User_ID)
+                       INTERSECT
+                       (SELECT Hotel_ID FROM Room WHERE Room.Room_ID IN
+                        (SELECT Room_ID FROM Booking WHERE Booking.Booking_NO IN
+                         (SELECT Booking_NO FROM Hotel_Service WHERE NEW.Service_ID = Hotel_Service.Service_ID)))
+                      ) THEN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Employee assigned to service must work at the hotel the service occurs at';
+        END IF;
+        END;";
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Trigger Service_Assign_Check created successfully";
+    } else {
+        echo "Error creating trigger: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+$sql = "CREATE OR REPLACE TRIGGER Service_Assign_Update_Check BEFORE UPDATE ON Service_Assignment 
+        FOR EACH ROW
+        BEGIN
+        IF NOT EXISTS ((SELECT Hotel_ID FROM Employees WHERE NEW.User_ID = Employees.User_ID)
+                       INTERSECT
+                       (SELECT Hotel_ID FROM Room WHERE Room.Room_ID IN
+                        (SELECT Room_ID FROM Booking WHERE Booking.Booking_NO IN
+                         (SELECT Booking_NO FROM Hotel_Service WHERE NEW.Service_ID = Hotel_Service.Service_ID)))
+                      ) THEN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Employee assigned to service must work at the hotel the service occurs at';
+        END IF;
+        END;";
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Trigger Service_Assign_Update_Check created successfully";
+    } else {
+        echo "Error creating trigger: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+// create trigger on double assignment for service assignment
+$sql = "CREATE OR REPLACE TRIGGER Double_Assign_Check BEFORE INSERT ON Service_Assignment
+        FOR EACH ROW
+        BEGIN
+        IF EXISTS (SELECT * FROM Service_Assignment WHERE NEW.Service_ID = Service_Assignment.Service_ID AND NEW.User_ID = Service_Assignment.User_ID) THEN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Employee cannot be assigned same service multiple times';
+        END IF;
+        END;";
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Trigger Double_Assign_Check created successfully";
+    } else {
+        echo "Error creating trigger: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+$sql = "CREATE OR REPLACE TRIGGER Double_Assign_Update_Check BEFORE UPDATE ON Service_Assignment 
+        FOR EACH ROW
+        BEGIN
+        IF EXISTS (SELECT * FROM Service_Assignment WHERE NEW.Service_ID = Service_Assignment.Service_ID AND NEW.User_ID = Service_Assignment.User_ID) THEN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Employee cannot be assigned same service multiple times';
+        END IF;
+        END;";
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Trigger Double_Assign_Update_Check created successfully";
+    } else {
+        echo "Error creating trigger: " . $conn->error;
     }
 } catch (Exception $ex) {
         echo $ex;
