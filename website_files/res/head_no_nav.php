@@ -1,3 +1,12 @@
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Jacob Enerio
+
+
+This file includes essential parts that can be used in multiple pages. For example, it initializes 
+the PHP session, creates a MySQL connection, stores file paths, and includes several other files.
+Unlike head.php, this file does not contain a navbar.
+
+----------------------------------------------------------------------------------------------->
 <?php
 // We need to use sessions, so you should always start sessions using the below code.
 session_start();

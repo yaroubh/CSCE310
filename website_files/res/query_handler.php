@@ -1,3 +1,16 @@
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Jacob Enerio
+
+
+This file includes functions and post request handling for inserting, updating, and deleting for MySQL.
+This is meant to work in conjunction with data_table.php and table_editor.js. 
+By default, data_table.php is meant for queries that are in the format "SELECT * FROM". 
+In the case that a Select query for a data_table object does not follow that format, functions from 
+query_overrides.php will be necessary. That file overrides the update and insertion SQL commands.
+Usually, overriding a delete command is unecessary since it is pretty easy to send in the post
+request the primary key value for an entity to be deleted. 
+----------------------------------------------------------------------------------------------->
+
 <?php
 include "query_overrides.php";
 // We need to use sessions, so you should always start sessions using the below code.
@@ -65,16 +78,19 @@ if(isset($_POST['update_field']))
         # echo $valid_table;
         $valid_field = verify_column($conn, $table_query_name, $field_name);
         $valid_id_field = verify_column($conn, $table_query_name, $id_field);
+        // Make sure the the id field exists in the table
         if ($valid_id_field  === false) {
             echo json_encode(array("Invalid ID Field Name!", ""));
         } else {
             try {
+                // Execute the overrided update query - This will return "NO_OVERRIDE" if an update override doesn't exist for this table
                 $override_results = override_update_sql($conn, $table_name, $table_query_name, $field_name, $new_value, $col_num, $id_field, $id_value, $_SESSION["id"]);
                 if ($override_results  === "NO_OVERRIDE") {
                     // We need to make sure the field name is valid first
                     if ($valid_field  === false) {
                         echo json_encode(array("Invalid Field Name!", ""));
                     }
+                    // Run the default update query
                     $query = $conn -> prepare("UPDATE " . $table_query_name . " SET " . $field_name ." = ? WHERE " . $id_field . " = ?");
                     $query -> bind_param("ss", $new_value, $id_value);
                     $stmt = $query -> execute();
@@ -107,13 +123,16 @@ if(isset($_POST['insert_row']))
         echo json_encode(array("Invalid table name and query!", ""));
         exit();
     }
+    // Make sure the table exists in the database
     $valid_table = verify_table($conn, $table_query_name);
     if ($valid_table === false) {
         echo json_encode(array("Invalid Table Name!", ""));
     } else {
         try {
+            // Execute the overrided insert query - This will return "NO_OVERRIDE" if an insert override doesn't exist for this table
             $override_results = override_insert_sql($conn, $table_name, $table_query_name, $new_values_array, $_SESSION["id"]);
             if ($override_results  === "NO_OVERRIDE") {
+                // Execute the default insert query if no override is required.
                 $num_params = sizeof($new_values_array);
                 $query = $conn -> prepare("INSERT INTO " . $table_query_name . " VALUES  (NULL, ". str_repeat("?, ", $num_params - 1) ."?)");
                 $query -> bind_param(str_repeat("s", $num_params), ...$new_values_array);
@@ -145,20 +164,24 @@ if(isset($_POST['delete_row']))
         echo json_encode(array("Invalid table name and query!", ""));
         exit();
     }
+    // Make sure the table exists in the database
     $valid_table = verify_table($conn, $table_query_name);
     if ($valid_table === false) {
         echo json_encode(array("Invalid Table Name!", ""));
     } else {
         # echo $valid_table;
+        // Make sure the field exists in the table
         $valid_field = verify_column($conn, $table_query_name, $field_name);
         if ($valid_field  === false) {
             echo json_encode(array("Invalid Field Name!", ""));
         } else {
+            // Make sure the the id field exists in the table
             $valid_id_field = verify_column($conn, $table_query_name, $id_field);
             if ($valid_id_field  === false) {
                 echo json_encode(array("Invalid ID Field Name!", ""));
             } else {
                 try {
+                    // Execute the delete query
                     $query = $conn -> prepare("DELETE FROM " . $table_query_name . " WHERE " . $id_field . " = ?");
                     $query -> bind_param("s", $id_value);
                     $stmt = $query -> execute();

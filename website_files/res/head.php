@@ -1,13 +1,24 @@
+
+<!---------------------------------------------------------------------------------------------- 
+Author of code: Jacob Enerio
+
+
+This file includes essential parts that can be used in multiple pages. For example, it initializes 
+the PHP session, creates a MySQL connection, stores file paths, and includes several other files. 
+Unlike head.php, this file does not contain a navbar.
+
+----------------------------------------------------------------------------------------------->
+
 <?php
 // We need to use sessions, so you should always start sessions using the below code.
 session_start();
 
-# set credentials
+// set credentials
 $servername='localhost';
 $username='root';
 $password='';
 $dbname = "test";
-# make connection
+// make connection
 $conn = new mysqli($servername,$username,$password,"$dbname");
 if(!$conn){
     die('Could not Connect MySql Server:' . $conn -> connect_error);
@@ -39,12 +50,14 @@ if (!isset($_SESSION['loggedin'])) {
 	exit();
 }
 
-// Initialize arrays for data_tables and data_filters
+// Initialize arrays for data_table and data_filter objects
 $data_tables = array();
 $data_editors = array();
 $data_filters = array();
-// Suspend output of the head.php file if desired
+
+// Suspend output of the head.php file if desired (useful for post requests)
 if (isset($suspend_head)) {
+    ob_clean();
     ob_start();
 }
 
