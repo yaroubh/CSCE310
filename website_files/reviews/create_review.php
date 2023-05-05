@@ -52,7 +52,7 @@
         $date_time = date('Y-m-d H:i:s', strtotime($_POST['date_time']));
         
         // Query database to check if username and hotel exist
-        $username_result = $conn->query("SELECT * FROM Users WHERE lower(trim(Username)) = '$actual_username'");
+        $username_result = $conn->query("SELECT * FROM Users WHERE lower(trim(Username)) = '$username'");
         $hotel_result = $conn->query("SELECT * FROM Hotel WHERE lower(trim(Hotel_Name)) = '$hotel'");
 
         if ($username_result->num_rows == 0) {

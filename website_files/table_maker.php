@@ -1,5 +1,5 @@
 <?php
-include 'res/connect.php';
+include_once 'res/connect.php';
 # Make tables
 # Initializes all database tables
 $sql = 'CREATE TABLE Users (
@@ -25,7 +25,7 @@ try {
 }
 echo "</p>";
 
-$sql = 'CREATE VIEW User_View AS
+$sql = 'CREATE VIEW IF NOT EXISTS User_View AS
         SELECT FName, LName, Phone_No, Email, Username, Password, User_Type
         FROM Users';
 
@@ -61,7 +61,7 @@ try {
 }
 echo "</p>";
 
-$sql = 'CREATE VIEW Hotel_View AS
+$sql = 'CREATE VIEW IF NOT EXISTS Hotel_View AS
         SELECT Hotel_Name, Hotel_City, Hotel_State, Hotel_Country
         FROM Hotel';
 
@@ -97,7 +97,7 @@ try {
 }
 echo "</p>";
 
-$sql = 'CREATE VIEW Employee_View AS
+$sql = 'CREATE VIEW IF NOT EXISTS Employee_View AS
         SELECT Users.FName, Users.LName, Users.Phone_No, Users.Email, Users.Username, Users.Password, Employees.Employee_JobType
         FROM Users Inner Join Employees ON Users.user_ID = Employees.user_ID';
 
@@ -218,6 +218,48 @@ try {
         echo "Table Reviews created successfully";
     } else {
         echo "Error creating table: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+$sql = 'CREATE INDEX IF NOT EXISTS idx_users_username ON Users (Username)';
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Index idx_users_username created successfully";
+    } else {
+        echo "Error creating index: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+$sql = 'CREATE INDEX IF NOT EXISTS idx_hotel_hotel_name ON Hotel (Hotel_Name)';
+
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "Index idx_hotel_hotel_name created successfully";
+    } else {
+        echo "Error creating index: " . $conn->error;
+    }
+} catch (Exception $ex) {
+        echo $ex;
+}
+echo "</p>";
+
+// create view of the rating, description and date columns from review table.
+$sql = "CREATE VIEW Review_View AS SELECT Hotel_ID, Review_ID, Rating, Description, Review_Date FROM Reviews";
+echo "<p>";
+try {
+    if ($conn->query($sql) === TRUE) {
+        echo "View Review_View created successfully";
+    } else {
+        echo "Error creating view: " . $conn->error;
     }
 } catch (Exception $ex) {
         echo $ex;
