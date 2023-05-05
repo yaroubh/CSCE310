@@ -153,6 +153,7 @@ function delete_row(table_name, table_query_name, field_name, id_field, id_value
     var ajaxurl = query_handler_url;
     // Make data object to send to post request
     let data =  {delete_row: "delete_row",
+        table_name: table_name,
         table_query_name: table_query_name,
         field_name: field_name,
         id_field: id_field,
