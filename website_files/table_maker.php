@@ -379,7 +379,7 @@ try {
 echo "</p>";
 
 // creating index for service view
-$sql = 'CREATE UNIQUE CLUSTERED INDEX IF NOT EXISTS idx_service_service_id ON Hotel_Service (Service_ID)';
+$sql = 'CREATE INDEX IF NOT EXISTS idx_service_service_id ON Hotel_Service (Service_ID)';
 
 echo "<p>";
 try {
@@ -466,7 +466,6 @@ echo "</p>";
 $sql = "CREATE OR REPLACE TRIGGER Service_Assign_Update_Check BEFORE UPDATE ON Service_Assignment 
         FOR EACH ROW
         BEGIN
-        BEGIN
         IF NOT EXISTS ((SELECT Hotel_ID FROM Employees WHERE NEW.User_ID = Employees.User_ID)
                        INTERSECT
                        (SELECT Hotel_ID FROM Room WHERE Room.Room_ID IN
@@ -491,12 +490,12 @@ try {
 echo "</p>";
 
 // create trigger on double assignment for service assignment
-$sql = "CREATE OR REPLACE TRIGGER Double_Assign_Check BEFORE INSERT ON Service_Assignment 
+$sql = "CREATE OR REPLACE TRIGGER Double_Assign_Check BEFORE INSERT ON Service_Assignment
         FOR EACH ROW
         BEGIN
         IF EXISTS (SELECT * FROM Service_Assignment WHERE NEW.Service_ID = Service_Assignment.Service_ID AND NEW.User_ID = Service_Assignment.User_ID) THEN
                 SIGNAL SQLSTATE '45000'
-                SET MESSAGE_TEXT = 'Employee can't be assigned to same service multiple times';
+                SET MESSAGE_TEXT = 'Employee cannot be assigned same service multiple times';
         END IF;
         END;";
 
@@ -517,7 +516,7 @@ $sql = "CREATE OR REPLACE TRIGGER Double_Assign_Update_Check BEFORE UPDATE ON Se
         BEGIN
         IF EXISTS (SELECT * FROM Service_Assignment WHERE NEW.Service_ID = Service_Assignment.Service_ID AND NEW.User_ID = Service_Assignment.User_ID) THEN
                 SIGNAL SQLSTATE '45000'
-                SET MESSAGE_TEXT = 'Employee can't be assigned to same service multiple times';
+                SET MESSAGE_TEXT = 'Employee cannot be assigned same service multiple times';
         END IF;
         END;";
 
