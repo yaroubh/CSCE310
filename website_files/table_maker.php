@@ -278,10 +278,7 @@ try {
 echo "</p>";
 
 // create view of the rating, description and date columns from review table.
-$sql = "CREATE VIEW IF NOT EXISTS Review_View 
-AS SELECT Reviews.Review_ID, Users.User_ID, Users.username, Hotel.Hotel_ID, Hotel.Hotel_Name, Reviews.Rating, Reviews.Description, Reviews.Review_Date FROM Reviews
-INNER JOIN Users on Users.User_ID = Reviews.User_ID
-INNER JOIN Hotel on Hotel.Hotel_ID = Reviews.Hotel_ID";
+$sql = "CREATE VIEW Review_View AS SELECT Hotel_ID, Review_ID, Rating, Description, Review_Date FROM Reviews";
 echo "<p>";
 try {
     if ($conn->query($sql) === TRUE) {

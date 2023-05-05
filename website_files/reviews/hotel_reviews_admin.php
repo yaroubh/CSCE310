@@ -16,9 +16,10 @@
             // echo "Review ID: " . $review_id;
             $sql = "DELETE FROM Reviews WHERE Review_ID = $review_id";
             if ($conn->query($sql) === TRUE) {
-                echo "Review deleted successfully";
+                echo "<p class='success'>Review deleted successfully</p>";
             } else {
-                echo "Error deleting review: " . $conn->error;
+                echo "<p class='error'>Error deleting review: </p>";
+                echo $conn->error;
             }
         }
 
@@ -35,8 +36,11 @@
                 echo "<li>";
                 echo "<div class='review'>";
                 echo "<div class='review-header'>";
-                echo "<div class='hotel-info'><p>Username (User_ID): " . $row["username"] . " (" . $row["User_ID"] . ")</p>";
-                echo "<p>Hotel_Name (Hotel_ID): "  . $row["Hotel_Name"] . " (" . $row["Hotel_ID"] . ")</p>";
+                echo "<div class='hotel-info'>";
+                $sql = "SELECT Hotel_Name FROM Hotel WHERE Hotel_ID = '$row[Hotel_ID]'";
+                $r = $conn->query($sql);
+                $name = $r->fetch_assoc();
+                echo "<p>Hotel_Name (Hotel_ID): "  . $name["Hotel_Name"] . " (" . $row["Hotel_ID"] . ")</p>";
                 echo "<p>Rating: " .$row["Rating"] . " | ". $row["Review_Date"] . "</p></div>";
                 echo "</div>";
                 echo "<div class='review-description'>" . $row["Description"] . "</div>";
@@ -50,7 +54,7 @@
             }
             echo "</ul>";
         } else {
-            echo "<p>No reviews found.</p>";
+            echo "<p class='error'>No reviews found.</p>";
         }
         ?>
     </body>

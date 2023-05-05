@@ -5,7 +5,6 @@
 
   <?php
   $review_id = $_GET['id'];
-//   echo "ID: " . $review_id . "    ";
   $q = "SELECT * FROM Reviews WHERE Review_ID = $review_id";
   $data = $conn->query($q);
   $row = $data->fetch_assoc();
@@ -13,14 +12,15 @@
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $review_id = $_POST['review_id'];
     $description = $_POST['description'];
+    $rating = $_POST['rating'];
     $password = $_POST['password'];
 
     // verify password
     $q = "SELECT * FROM Users WHERE User_ID = $row[User_ID] AND Password = '$password'";
     $data = $conn->query($q);
     if ($data->num_rows > 0) {
-      // update review description
-      $q = "UPDATE Reviews SET Description = '$description' WHERE Review_ID = $review_id";
+      // update review description and rating
+      $q = "UPDATE Reviews SET Description = '$description', Rating = '$rating' WHERE Review_ID = $review_id";
       $conn->query($q);
       echo "<p class='success'>Review updated successfully!</p>";
       // redirect back to hotel_reviews.php
@@ -38,6 +38,9 @@
     <label for='description'>New Review Description:</label>
     <textarea name='description'><?php echo $row["Description"]; ?></textarea>
     <br>
+    <label for='rating'>New Rating:</label>
+    <input type='number' name='rating' min='1' max='5' value='<?php echo $row["Rating"]; ?>'>
+    <br>
     <label for='password'>Enter your password:</label>
     <input type='password' name='password'>
     <br>
@@ -46,5 +49,3 @@
   </form>
 
 </div>
-
-

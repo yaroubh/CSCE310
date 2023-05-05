@@ -54,9 +54,8 @@ if ($stmt = $con->prepare('SELECT user_id, password FROM users WHERE username = 
             # the first column, fname should be a string, so it's "s"
             # The last custom column, phone_no, should be an integer, so it's "i"
             # There are six custom columns, so there are 6 letters, one for each column
-
             $stmt->bind_param('sssssi', $_POST['firstname'], $_POST['lastname'], $_POST['username'], $_POST['password'], $_POST['email'], $_POST['phone']);
-            $stmt->execute(); //causing problems
+            $stmt->execute();
             $stmt->close();
 
             // We now need to get the user id
@@ -71,7 +70,6 @@ if ($stmt = $con->prepare('SELECT user_id, password FROM users WHERE username = 
             # Insert into employees table
             if ($stmt = $con->prepare('INSERT INTO employees (user_id, hotel_id, employee_jobtype) VALUES (?, ?, ?)')) {
                 $stmt->bind_param('sis', $user_id, $_POST['hotelid'], $_POST['employeeType']);
-                
                 $stmt -> execute();
                 # We also need to make sure to add a new customer to the customers table
                 echo '<p>You have successfully registered! You can now login</p>';

@@ -46,10 +46,10 @@ function update_table(table_name, table_query_name, field_name, id_field, id_val
         id_value: id_value,
         col_num: col_num,
     };
-    // console.log(data);
+    console.log(data);
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
-            // console.log(response);
+            console.log(response);
             let parsed_resp = JSON.parse(response);
             // Add the warning to be made
             if (parsed_resp[0] == "mysqli_sql_exception") { 
@@ -112,10 +112,9 @@ function insert_row(table_name, table_query_name, field_name, num_fields) {
         field_name: field_name,
         new_values: JSON.stringify(new_values)
     };
-    // console.log(data);
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
-            // console.log(response);
+            console.log(response);
             let parsed_resp = JSON.parse(response);
             if (parsed_resp[0] == "mysqli_sql_exception") { 
                 // Make an error message
@@ -148,7 +147,6 @@ function delete_row(table_name, table_query_name, field_name, id_field, id_value
     var ajaxurl = query_handler_url;
     // Make data object to send to post request
     let data =  {delete_row: "delete_row",
-        table_name: table_name,
         table_query_name: table_query_name,
         field_name: field_name,
         id_field: id_field,
@@ -156,7 +154,7 @@ function delete_row(table_name, table_query_name, field_name, id_field, id_value
     };
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
-            // console.log(response);
+            console.log(response);
             let parsed_resp = JSON.parse(response);
             if (parsed_resp[0] == "Success!") {
                 regenerate_table(table_name);
@@ -188,7 +186,7 @@ function update_table_input_child_htmls(table_name) {
  * 
  * @param {string} table_name ID of table
  * @param {string} table_query_name Name of table in query
- * @param {string} max_width The maximum width of the table, or "Inf" if not constrained
+ * @param {int | string} max_width The maximum width of the table, or "Inf" if not constrained
  */
 function generate_table_view(table_name, table_query_name, max_width) {
     // Prepare post request
@@ -221,10 +219,10 @@ function generate_table_view(table_name, table_query_name, max_width) {
     }
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
-            // console.log(response);
+            console.log(response);
             let parsed_resp = JSON.parse(response);
             if (parsed_resp[0] == "Success!") {
-                // console.log("Making table view");
+                console.log("Making table view");
                 // Get the arrays
                 let data_array = parsed_resp[1];
                 let field_array = data_array[0];
@@ -301,7 +299,7 @@ function generate_table_view(table_name, table_query_name, max_width) {
  * 
  * @param {string} table_name ID of table
  * @param {string} table_query_name Name of table in query
- * @param {string} max_width The maximum width of the table, or "Inf" if not constrained
+ * @param {int | string} max_width The maximum width of the table, or "Inf" if not constrained
  */
 function generate_table_editable(table_name, table_query_name, max_width) {
     // Prepare Post Request
@@ -311,7 +309,7 @@ function generate_table_editable(table_name, table_query_name, max_width) {
         table_name: table_name,
         table_query_name: table_query_name
     };
-    // console.log(ajaxurl);
+    console.log(ajaxurl);
     // Launch post request via ajax
     $.ajax({type:'post', url:ajaxurl, data, success:function (response) {
             // console.log(response);
@@ -321,7 +319,6 @@ function generate_table_editable(table_name, table_query_name, max_width) {
                 // Get the arrays
                 let data_array = parsed_resp[1];
                 let field_array = data_array[0];
-                // console.log(field_array);
                 let row_array = data_array[1];
                 let insert_array = data_array[2];
                 // Get the input field types
@@ -416,17 +413,15 @@ function generate_table_editable(table_name, table_query_name, max_width) {
                                 }
                             }
                         }
-                        // Add a cell with the input
                         html_string += `
                                     <td>
                                         <input type = "${input_field_types[j - 1].split("::")[0]}" id = "${table_name}-INSERT-${j}"  ${on_change_text}>
                                     </td>
                         `;
                     } else {
-                        // console.log(field_array.length);
                         html_string += `
                                     <td>
-                                        <button onClick="insert_row('${table_name}',  '${table_query_name}', '${id_field}', '${field_array.length}');">Add Row</button>
+                                        <button onClick="insert_row('${table_name}',  '${table_query_name}', '${field_array[j]}', '${id_field}', '${field_array.length}');">Add Row</button>
                                     </td>
                         `;
                     }

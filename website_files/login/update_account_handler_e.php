@@ -25,7 +25,6 @@ $hotel = $_POST['hotelid'];
 
 //Get user ID from Session
 $user_id = $_SESSION['id'];
-$_SESSION['name'] = $_POST['username'];
 
 // Update user's account details in the database
 // If the user enters a new password, update everything else and the password
