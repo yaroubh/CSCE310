@@ -37,7 +37,9 @@
                 echo "<li>";
                 echo "<div class='review'>";
                 echo "<div class='review-header'>";
-                echo "<div class='hotel-info'>Rating: " . $row["Rating"] . " | ". $row["Review_Date"] . "</div>";
+                echo "<div class='hotel-info'>";
+                echo "<p>Hotel_Name (Hotel_ID): "  . $row["Hotel_Name"] . " (" . $row["Hotel_ID"] . ")</p>";
+                echo "<p>Rating: " .$row["Rating"] . " | ". $row["Review_Date"] . "</p></div>";
                 echo "</div>";
                 echo "<div class='review-description'>" . $row["Description"] . "</div>";
                 // Add delete button for each review

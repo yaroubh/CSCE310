@@ -4,11 +4,7 @@
   <h1 class="title">Hotel Reviews</h1>
   
     <?php
-    $q = "SELECT r.*, u.Username, h.Hotel_Name FROM Reviews r 
-    JOIN Users u ON r.User_ID = u.User_ID 
-    JOIN Hotel h ON r.Hotel_ID = h.Hotel_ID 
-    WHERE u.User_Type = 'Customer'
-    ORDER BY Review_Date ASC";
+    $q = "SELECT * FROM Reviews ORDER BY Review_Date ASC";
     $data = $conn->query($q);
     // iterate through reviews in db and print to screen. If there are no reviews, print 0.
     if ($data->num_rows > 0) {
