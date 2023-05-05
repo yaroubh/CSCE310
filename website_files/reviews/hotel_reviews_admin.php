@@ -22,8 +22,6 @@
             }
         }
 
-        // create view of the rating, description and date columns from review table.
-        $sql = "CREATE VIEW Review_View AS SELECT Review_ID, Rating, Description, Review_Date FROM Reviews";
         // echo $sql;
 
         // Get reviews from Review_View
