@@ -1,5 +1,5 @@
 <!---------------------------------------------------------------------------------------------- 
-Author of code: Yaroub Hussein, Jacob Enrino, Uchenna Akahara
+Author of code: Yaroub Hussein, Jacob Enrino, Uchenna Akahara, Krish Chhabra
 
 Yaroub was responsible for coding the frame and setting up the navbar, constructing the buttons, and the functionalities of the Profile button at lines 11-18, and 91-116.
 Jacob  was responsible for coding the Bookings button functionality at lines 19-41.

@@ -1,9 +1,10 @@
 <!---------------------------------------------------------------------------------------------- 
-Author of code: Jacob Enerio, Uchenna Akahara 
+Author of code: Jacob Enerio, Uchenna Akahara, Krish Chhabra
 
 Jacob Enerio was responsible for coding everything not related to reviews or services, which are lines 12-98, 118-151, and 156-173.
 Uchenna Akahara was responsible for coding everything related to reviews, which are lines 100-116 and 153-154.
 Krish Chhabra was responsible for coding everything related to services, which are lines 175-246.
+
 This file adds several different types of entities to tables. This is useful for testing the database
 in the case test.sql fails.
 

@@ -1,5 +1,5 @@
 <!---------------------------------------------------------------------------------------------- 
-Author of code: Jacob Enerio, Uchenna Akahara, Yaroub Hussein 
+Author of code: Jacob Enerio, Uchenna Akahara, Yaroub Hussein, Krish Chhabra
 
 Jacob Enerio was responsible for coding everything related to Bookings, which include lines <>
 Uchenna Akahara was responsible for coding everything related to Reviews, which include lines <>
