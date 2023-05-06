@@ -167,11 +167,12 @@ function override_update_sql($conn, $table_name, $table_query_name, $field_name,
 
             } else {
                 // Simply need to update the dates for the bookings
+                $query_sql = "UPDATE " . $table_query_name . " SET " . $field_name ." = ? WHERE " . $id_field . " = ?";
                 $query = $conn -> prepare("UPDATE " . $table_query_name . " SET " . $field_name ." = ? WHERE " . $id_field . " = ?");
-                $query -> bind_param("ss", $new_value, $id_value);
+                $query -> bind_param("ss", $field_value, $id_value);
                 $stmt = $query -> execute();
                 $result = $query -> get_result();
-                echo json_encode(array("Success!", $result));
+                echo json_encode(array("Success!", $result, $query_sql, $field_value, $id_value));
                 return "SUCCESS";
             }
         } else {
