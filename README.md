@@ -1,4 +1,8 @@
 # CSCE310
+
+Project Report:
+
+[The Report](./Hotel_Managment_System_Report.pdf)
 # Note: Each person needs to use an index and use a view
 Guide:
 
