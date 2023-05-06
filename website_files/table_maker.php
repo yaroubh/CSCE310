@@ -1,10 +1,10 @@
 <!---------------------------------------------------------------------------------------------- 
 Author of code: Jacob Enerio, Uchenna Akahara, Yaroub Hussein, Krish Chhabra
 
-Jacob Enerio was responsible for coding everything related to Bookings, which include lines <>
-Uchenna Akahara was responsible for coding everything related to Reviews, which include lines <>
-Yaroub Hussein was responsible for coding everything related to Registration, Login, and Profile editing, which include lines <>
-Krish Chhabra was responsible for coding everything related to Services, which include lines 295-533.
+Jacob Enerio was responsible for coding everything related to including res/connect.php, Bookings and Review_View, which include lines 13-16, 128-228, and 281-296.
+Uchenna Akahara was responsible for coding everything related to Reviews, which include lines 230-279.
+Yaroub Hussein was responsible for coding everything related to Registration, Login, and Profile editing, which include lines 17-126.
+Krish Chhabra was responsible for coding everything related to Services, which include lines 298-533.
 
 This file initializes SQL tables, views, indexes, and triggers.
 
@@ -279,7 +279,10 @@ try {
 echo "</p>";
 
 // create view of the rating, description and date columns from review table.
-$sql = "CREATE VIEW Review_View AS SELECT Hotel_ID, Review_ID, Rating, Description, Review_Date FROM Reviews";
+$sql = "CREATE VIEW IF NOT EXISTS Review_View 
+AS SELECT Reviews.Review_ID, Users.User_ID, Users.username, Hotel.Hotel_ID, Hotel.Hotel_Name, Reviews.Rating, Reviews.Description, Reviews.Review_Date FROM Reviews
+INNER JOIN Users on Users.User_ID = Reviews.User_ID
+INNER JOIN Hotel on Hotel.Hotel_ID = Reviews.Hotel_ID";
 echo "<p>";
 try {
     if ($conn->query($sql) === TRUE) {
