@@ -93,8 +93,8 @@ function generate_data_filter(&$data_filters, $div_name, $table_name, $cond_name
  */
 function generate_date_range_filter_objs(&$data_filters, $div_name, $table_name, $sd_cond_name_start, $sd_cond_name_end, $ed_cond_name_start, $ed_cond_name_end, $cond_label, $default_start, $default_end) {
     // Make the filter objects - they will be stored in arrays for later due to the way generate_data_filter() works
-    $date_start_filter = generate_data_filter($data_filters, $div_name . "-start", $table_name, $sd_cond_name_start, ">", $sd_cond_name_end, "s", $cond_label, $default_start);
-    $date_end_filter = generate_data_filter($data_filters, $div_name . "-end", $table_name, $ed_cond_name_start, "<", $ed_cond_name_end, "s", $cond_label, $default_end);
+    $date_start_filter = generate_data_filter($data_filters, $div_name . "-start", $table_name, $sd_cond_name_start, "<=", $sd_cond_name_end, "s", $cond_label, $default_start);
+    $date_end_filter = generate_data_filter($data_filters, $div_name . "-end", $table_name, $ed_cond_name_start, ">=", $ed_cond_name_end, "s", $cond_label, $default_end);
     return array($date_start_filter, $date_end_filter);
 }
 
@@ -226,9 +226,9 @@ function generate_date_range_filter($filter_start, $filter_end) {
             table_filter_elements["<?php echo $table_name?>"] = {};
         }
         // Store relevant data
-        table_filters["<?php echo $table_name?>"]['<?php echo $filter_start -> div_name?>'] = 
-            ['<?php echo $filter_start -> default_value?>', true, '<?php echo $filter_start -> default_value?>'];
         table_filters["<?php echo $table_name?>"]['<?php echo $filter_end -> div_name?>'] = 
+            ['<?php echo $filter_start -> default_value?>', true, '<?php echo $filter_start -> default_value?>'];
+        table_filters["<?php echo $table_name?>"]['<?php echo $filter_start -> div_name?>'] = 
             ['<?php echo $filter_end -> default_value?>', true, '<?php echo $filter_end -> default_value?>'];
     </script>
     <div id = "<?php echo $filter_start -> div_name . "-" . $filter_end -> div_name?>-group" class = "date-range-group"> 

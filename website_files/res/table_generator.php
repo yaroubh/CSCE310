@@ -62,7 +62,7 @@ function get_table_viewable_data_filterable($conn, &$data_filters, $table_name, 
             $query .= " AND ";
         }
     }
-    // return $query;
+    // return array($query, $filters);
     // Execute Query
     $stmt = $conn->prepare($query);
     $stmt -> bind_param($filter_types, ...$filter_params);

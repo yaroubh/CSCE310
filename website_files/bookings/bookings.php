@@ -54,7 +54,7 @@ $receptionists_table = generate_data_table($data_tables, "receptionists-div", "b
 // This essentially changes the Query to "SELECT Hotel.Hotel_Name, Room.Room_Num, Room.Price, Room.Capacity FROM Room Inner Join Hotel ON Room.Hotel_ID = Hotel.Hotel_ID
 // WHERE NOT EXISTS (SELECT * FROM Booking WHERE Booking.Room_ID = Room.Room_ID AND Start_Date > ? AND End_Date < ?)
 // The date parameters will be binded to the query
-$filter_dates_rooms_objs = generate_date_range_filter_objs($data_filters, "rooms-dates-filter", "b-rv-rooms", "NOT EXISTS (SELECT * FROM Booking WHERE Booking.Room_ID = Room.Room_ID AND Start_Date", "", "End_Date", ")", "Select Rooms Open From", "2023-04-30 10:09:00" ,"2030-05-30 10:09:00");
+$filter_dates_rooms_objs = generate_date_range_filter_objs($data_filters, "rooms-dates-filter", "b-rv-rooms", "Start_Date", ")", "NOT EXISTS (SELECT * FROM Booking WHERE Booking.Room_ID = Room.Room_ID AND End_Date", "", "Select Rooms Open From", "2023-05-01 10:09:00" ,"2023-05-27 10:09:00");
 // Add the ability to filter by hotel name 
 // This essentially changes the Query to "SELECT Hotel.Hotel_Name, Room.Room_Num, Room.Price, Room.Capacity FROM Room Inner Join Hotel ON Room.Hotel_ID = Hotel.Hotel_ID
 // WHERE NOT EXISTS (SELECT * FROM Booking WHERE Booking.Room_ID = Room.Room_ID AND Start_Date > ? AND End_Date < ?) 
